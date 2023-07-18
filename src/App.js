@@ -1,5 +1,5 @@
 import Slider from './Home/Slider';
-// import Footer from './components/footer/Footer';
+import Footer from './Components/Footer/Footer'
 import Header from './Components/Header/Header';
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
     <div>
       <Header />
       <Slider images={images}/>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
