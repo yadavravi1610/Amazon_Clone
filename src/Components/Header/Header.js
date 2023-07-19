@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef} from 'react'
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+// import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import { location } from '../../assets/index';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { logo } from "../../assets/index"
 import { allItems } from '../../constants';
-import HeaderBottom from './HeaderBottom';
+
 
 const Header = () => {
     const [showAll, setShowAll] =useState(false);
@@ -20,8 +22,8 @@ const Header = () => {
         })
     },[ref, showAll])
     return (<>
-        <div className='w-full fixed'>
-            <div className='w-full bg-amazon_blue text-white px-2 py-2 flex items-center gap-4'>
+        <div className='w-full sticky top-0 z-50'>
+            <div className='w-full bg-amazon_blue text-white px-2 py-2 flex items-center gap-1 '>
                 {/* amazon logo start */}
                 <div className='headerHover'>
                     <img className='w-24 mt-2' src={logo} alt="logo" />
@@ -29,9 +31,9 @@ const Header = () => {
                 {/* amazon_logo end */}
                 {/* Address Start  */}
                 <div className='headerHover'>
-                    <LocationOnOutlinedIcon />
-                    <p className='text-xs text-lightText font-light flex flex-col'>
-                        Deliver to <span className='text-xs font-semibold -mt-1 text-whiteText'>Select your Address</span>
+                    <img  className='pt-2' src={location} />
+                    <p className='text-xs pl-1 text-lightText font-light flex flex-col leading-4'>
+                        Deliver to <span className='text-sm font-semibold -mt-1 text-whiteText'>Select your address</span>
                     </p>
                 </div>
                 {/* Address End */}
@@ -61,16 +63,23 @@ const Header = () => {
                     </span>
                 </div>
                 {/* search end  */}
+                {/* Language Start */}
+                <div className='headerHover'>
+                    <p className='flex'><img src='https://cdn-icons-png.flaticon.com/128/206/206606.png' className='w-[18px] mt-2 h-6' />
+                    <span className='pl-1 pt-[11px] font-bold text-sm'>EN</span>
+                    <span className='pt-2'><ArrowDropDownIcon/></span></p>
+                </div>
+                {/* Language End */}
                 {/* Signin Start  */}
                 <div className='flex flex-col items-start justify-center headerHover'>
-                    <p className='text-xs text-lightText font-light'>Hello, Sign in</p>
+                    <p className='text-xs font-medium'>Hello, Sign in</p>
                     <p className='text-sm font-semibold -mt-1 text-whiteText'>Accounts & Lists {""}                                           <span><ArrowDropDownOutlinedIcon /></span>
                     </p>
                 </div>
                 {/* Signin end */}
                 {/* Orders Start  */}
                 <div className='flex flex-col items-start justify-center headerHover'>
-                    <p className='text-xs text-lightText font-light'>Returns</p>
+                    <p className='text-xs font-medium'>Returns</p>
                     <p className='text-sm font-semibold -mt-1 text-whiteText'>& Orders</p>
                 </div>
                 {/* Orders End */}
@@ -83,7 +92,7 @@ const Header = () => {
                 </div>
                 {/* Cart End  */}
             </div>
-            <HeaderBottom />
+           
         </div>
     </>
     )

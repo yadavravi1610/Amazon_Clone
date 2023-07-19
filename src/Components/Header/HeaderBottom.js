@@ -21,13 +21,13 @@ const HeaderBottom = () => {
     <div className='w-full px-2 h-[36px] bg-amazon_light text-white flex items-center'>
       {/* Items start  */}
       <ul className='flex items-center gap-2 text-sm tracking-wide'>
-        <li onClick={() => setSideBar(true)} className='headerHover flex items-center gap-1'><MenuIcon />All</li>
-        <li className='headerHover'>Amazon miniTV</li>
-        <li className='headerHover'>Sell</li>
-        <li className='headerHover'>Best Seller</li>
-        <li className='headerHover'>Today's Deals</li>
-        <li className='headerHover'>Mobiles</li>
-        <li className='headerHover'>New Releases</li>
+        <li onClick={() => setSideBar(true)} className='headerHover h-8 mt-1 flex items-center gap-1'><MenuIcon />All</li>
+        <li className='headerHover h-8 mt-1'>Amazon miniTV</li>
+        <li className='headerHover h-8 mt-1'>Sell</li>
+        <li className='headerHover h-8 mt-1'>Best Seller</li>
+        <li className='headerHover h-8 mt-1'>Today's Deals</li>
+        <li className='headerHover h-8 mt-1'>Mobiles</li>
+        <li className='headerHover h-8 mt-1'>New Releases</li>
       </ul>
       {/* items end  */}
       {/* SideNavContent Start  */}

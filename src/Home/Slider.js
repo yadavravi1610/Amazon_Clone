@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import SimpleImageSlider from "react-simple-image-slider/dist/ImageSlider";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { back } from '../assets/index';
 
 function Slider({images}){
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -25,9 +24,9 @@ function Slider({images}){
     },[currentIndex]);
     return(
         <>
-            <div className="main flex pt-[100px]">
-                <div>
-                    <img src={ArrowBackIosIcon} className="" onClick={handleprevious} />
+            <div className="main flex relative">
+                <div className="absolute w-10 border-transparent cursor-pointer">
+                    <span>&lt;</span>
                 </div>
 
                 <div>
