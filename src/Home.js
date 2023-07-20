@@ -1,6 +1,6 @@
 import React from 'react';
-import Slider from './Home/Slider'
-import Products from './Home/Products';
+import Slider from './Home/Slider';
+import Products from './Home/products';
 
 const Home = () => {
     const images = [
@@ -13,7 +13,7 @@ const Home = () => {
     return (
         <div>
             <Slider images={images} />
-            <Products />
+            <div className='-mt-40'><Products /></div>
         </div>
     )
 }

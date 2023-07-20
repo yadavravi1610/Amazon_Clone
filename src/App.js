@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { productsData } from "./api/api";
 import Home from './Home';
+import Login from './Components/Login/Login'
 
 const Layout=()=>{
   return(
@@ -37,17 +38,15 @@ function App() {
         },
       ]
     },
+    {
+      path: "/Login",
+      element: <Login />,
+    }
     
   ])
 
   
   return (
-    // <div>
-    //   <Header />
-    //   <HeaderBottom />
-    //   <Slider images={images}/>
-    //   <Footer />
-    // </div>
     <RouterProvider router={router} />
   );
 }
