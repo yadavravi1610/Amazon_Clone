@@ -55,15 +55,15 @@ export default function Login() {
                             {needhelp ? <img src="https://cdn-icons-png.flaticon.com/128/60/60995.png" alt="arrow"
                                 className=" inline w-2 h-2  mt-4 ml-4" /> : <img src="https://cdn-icons-png.flaticon.com/128/724/724954.png" alt="arrow"
                                     className=" inline w-2 h-2  mt-4 ml-4" />}
-                            <a onClick={showneedhelp} className="font-semibold text-blue-700 hover:text-red-600 hover:underline text-xs p-3" >
+                            <span onClick={showneedhelp} className="font-semibold text-blue-700 hover:text-red-600 hover:underline text-xs p-3" >
                                 Need help?
-                            </a>
+                            </span>
                             {needhelp && <>
                                 <div className="mt-8 text-xs font-medium text-blue-700 -ml-20 pl-2 mb-5">
-                                    <a className="hover:text-red-600 hover:underline"> <div className="mr-12 mb-2 mt-1">Forgot Password</div>
-                                    </a>
-                                    <a className="hover:text-red-600 hover:underline "> <div>Other issues with Sign-In</div>
-                                    </a>
+                                    <span className="hover:text-red-600 hover:underline"> <div className="mr-12 mb-2 mt-1">Forgot Password</div>
+                                    </span>
+                                    <span className="hover:text-red-600 hover:underline "> <div>Other issues with Sign-In</div>
+                                    </span>
                                 </div>
                             </>}
                         </div>

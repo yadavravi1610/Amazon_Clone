@@ -6,7 +6,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 const SignUp = () => {
     return (
         <div className='w-full h-auto'>
-            <Link to='/'><img className='m-auto w-52' src="https://api.freelogodesign.org/assets/blog/img/20180911090509731amazon_logo_RGB.jpg" />
+            <Link to='/'><img className='m-auto w-52' alt='' src="https://api.freelogodesign.org/assets/blog/img/20180911090509731amazon_logo_RGB.jpg" />
             </Link>
             <div className="border border-1 border-gray-300 w-96 rounded-md m-auto h-auto px-4 py-4">
                 <span className='text-3xl font-normal'>Create Account</span>
@@ -28,7 +28,7 @@ const SignUp = () => {
                     <p className='flex flex-col'>Password
                         <input type='password' className='border border-gray-400 rounded-sm h-7 font-normal p-2' placeholder='At least 6 characters' />
                         <span className='flex'>
-                            <img className='w-3' src={info} />
+                            <img className='w-3' src={info} alt='info' />
                             <p className='pl-1 font-normal'>Password must be atleast 6 characters.</p>
                         </span>
                         <p className='mt-4 font-normal text-sm'>By enrolling your mobile phone number, you consent to receive automated security notifications via text message from Amazon. Message and data rates may apply.</p>
@@ -59,7 +59,7 @@ const SignUp = () => {
                     className="text-blue-700 text-xs font-medium hover:text-red-600 hover:underline">Help
                 </a>
             </div>
-            <div className="ml-[34%] text-xs mt-3 mb-5">© 1996-2023, Amazon.com, Inc. or its affiliates</div>
+            <div className="text-xs mt-3 mx-[34%]">© 1996-2023, Amazon.com, Inc. or its affiliates</div>
         </div>
     )
 }

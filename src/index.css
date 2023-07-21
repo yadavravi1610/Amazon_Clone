@@ -5,7 +5,7 @@
 
 @layer components{
     .headerHover{
-        @apply px-2 h-full flex items-center border border-transparent hover:border-white cursor-pointer duration-100
+        @apply px-2 h-12 flex items-center border border-transparent hover:border-white cursor-pointer duration-100
     }
     .footerlink{
         @apply text-sm tracking-wide hover:text-gray-100 cursor-pointer hover:underline duration-150

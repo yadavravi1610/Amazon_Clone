@@ -7,9 +7,9 @@ const Products = () => {
   const productsData = data.data;
   console.log(productsData);
   return (
-    <div className='max-w-screen-2xl mx-auto grid grid-cols-4 gap-10 px-4'>{
+    <div className='max-w-screen-2xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 lgl:grid-cols-3 xl:grid-cols-4 gap-10 px-4'>{
       productsData.map((item)=>(
-        <div key={item.id} className='bg-white h-auto border-[1px] border-gray-200 py-6 z-30 hover:border-transparent shadow-none hover:shadow-testShadow duration-200 flex flex-col gap-4 relative'>
+        <div key={item.id} className='bg-white h-auto border-[1px] border-gray-200 py-6 z-20 hover:border-transparent shadow-none hover:shadow-testShadow duration-200 flex flex-col gap-4 relative'>
         <div className='w-full h-auto flex items-center justify-center'>
             <img className='w-52 h-64 object-contain' src={item.image} alt='Product'/>
         </div>

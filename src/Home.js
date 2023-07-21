@@ -3,7 +3,7 @@ import Slider from './Home/Slider';
 import Products from './Home/products';
 
 const Home = () => {
-    const images = [
+    const sampleImage = [
         "https://images-eu.ssl-images-amazon.com/images/G/31/prime/PD23/ACQ/hero/v2/PC_Hero_3000x1200_2X_EN._CB600991698_.jpg",
         "https://images-eu.ssl-images-amazon.com/images/G/31/img23/Beauty/GW/ATF/revised/new/Skincare-Herofader-PC._CB594538667_.jpg",
         "https://images-eu.ssl-images-amazon.com/images/G/31/IMG20/Home/2023/BAU2023/ATFGW/July_Bedsheets_Desk_3000x1200_Unrec._CB601155232_.jpg",
@@ -12,8 +12,8 @@ const Home = () => {
     ]
     return (
         <div>
-            <Slider images={images} />
-            <div className='-mt-40'><Products /></div>
+            <Slider images={sampleImage} />
+            <div className='mdl:-mt-40 xs:-mt-16'><Products /></div>
         </div>
     )
 }

@@ -85,3 +85,51 @@ export const middleList=[
         ],
     }
 ];
+
+export const BottomList =[
+    {
+        id:3001,
+        title:"AbeBooks",
+        desc:"Books,art & collectibles"
+    },
+    {
+        id:3002,
+        title:"Amazon Web Services",
+        desc:"Scalable Cloud Computing Services"
+    },
+    {
+        id:3003,
+        title:"Audible",
+        desc:"Download Audio Books"
+    },
+    {
+        id:3004,
+        title:"DPReview",
+        desc:"Digital Photography"
+    },
+    {
+        id:3005,
+        title:"IMDb",
+        desc:"Movies,TV &Celebrities"
+    },
+    {
+        id:3006,
+        title:"Shopbop",
+        desc:"Designer Fashion Brands"
+    },
+    {
+        id:3007,
+        title:"Amazon Business",
+        desc:"Everything For Your Business"
+    },
+    {
+        id:3008,
+        title:"Prime Now",
+        desc:"2-Hour Delivery on Everyday Items"
+    },
+    {
+        id:3009,
+        title:"Amazon Prime Music",
+        desc:"100 million songs,ad-free Over 15 million podcast episodes"
+    },
+]

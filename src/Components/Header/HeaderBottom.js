@@ -20,7 +20,7 @@ const HeaderBottom = () => {
   return (
     <div className='w-full px-2 h-[36px] bg-amazon_light text-white flex items-center'>
       {/* Items start  */}
-      <ul className='flex items-center gap-2 text-sm tracking-wide'>
+      <ul className='flex items-center gap-2 mdl:text-sm tracking-wide xs:text-xs'>
         <li onClick={() => setSideBar(true)} className='headerHover h-8 mt-1 flex items-center gap-1'><MenuIcon />All</li>
         <li className='headerHover h-8 mt-1'>Amazon miniTV</li>
         <li className='headerHover h-8 mt-1'>Sell</li>
@@ -32,9 +32,9 @@ const HeaderBottom = () => {
       {/* items end  */}
       {/* SideNavContent Start  */}
       {sidebar && (
-        <div className='w-full h-screen text-black fixed top-0 left-0 bg-amazon_blue bg-opacity-50'>
-          <div className='w-full h-full relative'>
-            <motion.div ref={ref} initial={{x:-500,opacity:0}} animate={{x:0,opacity:1}} transition={{duration:.5}} className='w-[350px] h-full bg-white border border-black'>
+        <div className='w-full h-screen text-black fixed top-0 left-0 bg-amazon_blue bg-opacity-50 z-50 flex'>
+          
+            <motion.div ref={ref} initial={{x:-500,opacity:0}} animate={{x:0,opacity:1}} transition={{duration:.5}} className='mdl:w-[30%] lgl:w-[20%] sml:w-[50%] overflow-y-scroll h-full bg-white border border-black'>
               <div className='w-full bg-amazon_light text-white py-2 px-6 flex items-center gap-4'>
                 <AccountCircleIcon />
                 <h3>Hello, Sign In</h3>
@@ -57,10 +57,11 @@ const HeaderBottom = () => {
                 two="TV, Appliances, Electronics"
                 three="Men's Fashion"
               />
-              <span onClick={() => setSideBar(false)} className='cursor pointer absolute top-0 left-[360px] w-10 h-10 text-black flex items-center justify-center border bg-gray-200 hover:bg-red-500 hover:text-white duration-300'><CloseIcon />
-              </span>
+              
             </motion.div>
-          </div>
+            <div onClick={() => setSideBar(false)} className='w-10 absolute cursor-pointer h-10 mdl:ml-[31%] lgl:ml-[21%] sml:ml-[51%] text-black flex items-center justify-center border bg-gray-200 hover:bg-red-500 hover:text-white duration-300'><CloseIcon />
+              </div>
+          
         </div>
       )}
 

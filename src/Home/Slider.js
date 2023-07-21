@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { back } from '../assets/index';
+// import { back } from '../assets/index';
 
 function Slider({images}){
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -16,24 +16,25 @@ function Slider({images}){
 
     useEffect(()=>{
         const interval = setInterval(()=>{
-            handlenext();
+            setCurrentIndex((prevIndex)=>
+            prevIndex===images.length-1?0: prevIndex+1)
         },3000);
         return()=>{
             clearInterval(interval);
         };
-    },[currentIndex]);
+    },[images.length]);
     return(
         <>
             <div className="main flex relative">
-                <div className="absolute w-10 border-transparent cursor-pointer">
-                    <span>&lt;</span>
+                <div onClick={handleprevious} className="absolute w-[5%] h-full cursor-pointer">
+                    <span className="absolute h-2/3 sml:text-[40px] pt-[100%] mdl:text-[80px] font-light border border-transparent active:border-black">&lt;</span>
                 </div>
 
                 <div>
-                    <img src={images[currentIndex]} alt="Image slider" className="" />
+                    <img src={images[currentIndex]} alt="slider" />
                 </div>
-                <div>
-                    <button onClick={handlenext} className="">Next</button>
+                <div onClick={handlenext} className="absolute ml-[96.4%] w-[5%] h-full cursor-pointer">
+                    <span className="absolute h-2/3 sml:text-[40px] pt-[100%] mdl:text-[80px] font-light border border-transparent active:border-black">&gt;</span>
                 </div>
             </div>
         </>
