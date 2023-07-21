@@ -34,7 +34,7 @@ export default function Login() {
     return (
 
         <>
-            <div className="flex flex-col">
+            
                 <div className="main flex flex-col">
                     <Link to='/'>
                         <img className="w-48 m-auto mt-5" src="https://api.freelogodesign.org/assets/blog/img/20180911090509731amazon_logo_RGB.jpg" alt="amazon_log" />
@@ -70,7 +70,9 @@ export default function Login() {
                     </div>
 
                     <div className="mt-5 text-gray-400 text-xs font-medium m-auto">New to Amazon? </div>
-                    <div className="mt-3 p-2 text-xs font-medium border border-gray-300 w-80 rounded-md m-auto text-center">Create your Amazon account</div>
+                    <Link to='/SignUp'>
+                    <div className="mt-3 p-2 text-xs font-medium border border-gray-300 w-80 rounded-md m-auto text-center cursor-pointer">Create your Amazon account</div>
+                    </Link>
                     <hr className="block mt-8 m-auto w-80" />
                     <div className="flex justify-evenly w-80 m-auto mt-5">
                         <a href="https://www.amazon.in/gp/help/customer/display.html/ref=ap_desktop_footer_cou?ie=UTF8&nodeId=200545940" className="text-blue-700 text-xs font-medium hover:text-red-600 hover:underline">Conditions of use
@@ -84,7 +86,6 @@ export default function Login() {
                     </div>
                     <div className="m-auto text-xs mt-3">© 1996-2023, Amazon.com, Inc. or its affiliates</div>
                 </div>
-            </div >
         </>
     )
 }

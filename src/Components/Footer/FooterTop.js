@@ -13,7 +13,7 @@ const FooterTop = () => {
             </button>
           </Link>
           <p className='text-xs'>New Customer?{""}
-            <span className='text-green-600 ml-1 cursor-pointer'>Start here.</span>
+            <Link to='/SignUp'><span className='text-green-600 ml-1 cursor-pointer'>Start here.</span></Link>
           </p>
         </div>
       </div>

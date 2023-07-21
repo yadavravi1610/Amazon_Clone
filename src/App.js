@@ -11,6 +11,7 @@ import {
 import { productsData } from "./api/api";
 import Home from './Home';
 import Login from './Components/Login/Login'
+import SignUp from './Components/Login/SignUp';
 
 const Layout=()=>{
   return(
@@ -41,6 +42,10 @@ function App() {
     {
       path: "/Login",
       element: <Login />,
+    },
+    {
+      path: "/SignUp",
+      element: <SignUp />,
     }
     
   ])
