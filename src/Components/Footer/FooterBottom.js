@@ -4,7 +4,7 @@ import { BottomList } from '../../constants'
 const FooterBottom = () => {
   return (
     <div className='w-full bg-footerBottom'>
-      <div className='w-full p-10 border-b-[1px] border-gray-500'>
+      <div className='w-full px-10 border-b-[1px] border-gray-500'>
                     <div className='max-w-5xl mx-auto text-gray-50'>
                         <div className='w-full grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 items-start'>
           {

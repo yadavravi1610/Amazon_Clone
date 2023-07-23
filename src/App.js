@@ -7,17 +7,20 @@ import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
+  ScrollRestoration,
 } from "react-router-dom";
 import { productsData } from "./api/api";
-import Home from './Home';
-import Login from './Components/Login/Login'
+import Home from './Pages/Home';
+import Login from './Components/Login/Login';
 import SignUp from './Components/Login/SignUp';
+import Cart from './Pages/Cart';
 
 const Layout=()=>{
   return(
     <>
     <Header />
     <HeaderBottom />
+    <ScrollRestoration />
     <Outlet />
     <Footer />
     
@@ -37,6 +40,10 @@ function App() {
           loader: productsData,
           element : <Home />,
         },
+        {
+          path: "/Cart",
+          element: <Cart />,
+        },
       ]
     },
     {
@@ -46,13 +53,16 @@ function App() {
     {
       path: "/SignUp",
       element: <SignUp />,
-    }
+    },
+    
     
   ])
 
   
   return (
+    <div className='bg-gray-100 overflow-x-hidden'>
     <RouterProvider router={router} />
+    </div>
   );
 }
 
