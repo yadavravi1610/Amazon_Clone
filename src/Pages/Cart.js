@@ -11,7 +11,7 @@ import { clearCart } from '../Redux/amazonSlice';
 const Cart = () => {
   const [showText, setShowText] = useState(false);
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.amazonReducer.products);
+  const products = useSelector((state) => state.amazon.products);
   const [totalPrice, setTotalPrice] = useState('');
   useEffect(() => {
     var Total = 0;
@@ -26,9 +26,9 @@ const Cart = () => {
     <div className='w-full h-auto min-h-[20rem] bg-gray-100 p-4'>
       {products.length === 0 ?
         <div className='w-full h-full'>
-          <p className=' flex flex-row justify-center p-2'>
+          <p className=' flex sml:flex-col lgl:flex-row justify-center p-2'>
             <img src={emptyCart} alt='' />
-            <div className='w-[30%] h-auto bg-white my-4  rounded-md'>
+            <div className='lgl:w-[30%] h-auto bg-white my-4  rounded-md'>
                   <p className='text-xl pl-[20%] font-bold mt-4'>Your Cart feels lonely.</p>
                   <p className='tracking-tight pl-[10%]'>Your Shopping cart lives to serve. Give it purpose - fill it with books, electronics, videos, etc. and make it happy.</p>
                   <Link to='/'>
@@ -36,8 +36,8 @@ const Cart = () => {
             </div>
           </p>
         </div> :
-        <div className='bg-gray-100 grid mdl:grid-cols-5 grid-cols-4 gap-5'>
-          <div className='w-full h-auto px-3 bg-white mdl:col-span-4 col-span-3'>
+        <div className='bg-gray-100 grid sml:flex-col lgl:grid-cols-5  gap-5'>
+          <div className='w-full h-auto px-3 bg-white  lgl:col-span-4'>
             <div className='py-2 flex justify-between items-end border-b-[1px] border-b-gray-200'>
               <p className='font-semibold text-3xl'>Shopping Cart</p>
             </div>
@@ -79,9 +79,9 @@ const Cart = () => {
             </div>
             <button className='w-[90%] mx-4 font-medium bg-gradient-to-tr from-yellow-400 to-yellow-200 hover:from-yellow-300 hover:to-yellow-500 border border-yellow-500 hover:border-yellow-700 active:bg-gradient-to-bl active:from-yellow-400 active:to-yellow-500 text-xs duration-200 py-1.5 rounded-md mt-3'>Proceed to Buy</button>
             <div onClick={() => setShowText(!showText)} className='w-[87%] my-4 mx-auto border border-gray-300 rounded-b-md'>
-              <p className='p-2 ml-4 text-xs'>EMI Available
+              <p className='p-2 ml-4 text-xs flex justify-between'>EMI Available
                 {
-                  showText ? <span className='pl-[50%]'><KeyboardArrowUpIcon /></span> : <span className='pl-[50%]'><KeyboardArrowDownIcon /></span>
+                  showText ? <span className='lgl:pl-[50%]'><KeyboardArrowUpIcon /></span> : <span className='lgl:pl-[50%]'><KeyboardArrowDownIcon /></span>
                 }
                 {
                   showText &&

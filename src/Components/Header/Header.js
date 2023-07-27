@@ -13,8 +13,8 @@ import { useSelector } from 'react-redux';
 
 const Header = () => {
     const [showAll, setShowAll] = useState(false);
-    const products = useSelector((state) => state.amazonReducer.products);
-    // console.log(products);
+    const products = useSelector((state) => state.amazon.products);
+    console.log(products);
     const ref = useRef();
     useEffect(() => {
         document.body.addEventListener("click", (e) => {
@@ -95,7 +95,9 @@ const Header = () => {
                     <div className='flex flex-row items-start justify-center headerHover pt-2 relative'>
                         <ShoppingCartOutlinedIcon />
                         <p className='text-xs font-semibold mt-3 text-whiteText'>
-                            Cart <span className='absolute text-xs top-1 left-6 font-semibold p-1 h-4 bg-[#f3a847] text-amazon_blue rounded-full flex justify-center items-center'>{products.length > 0 ? products.length : 0}</span>
+                            Cart <span className='absolute text-xs top-1 left-6 font-semibold p-1 h-4 bg-[#f3a847] text-amazon_blue rounded-full flex justify-center items-center'>
+                                {products.length > 0 ? products.length : 0}
+                                </span>
                         </p>
                     </div>
                 </Link>
