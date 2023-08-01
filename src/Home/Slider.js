@@ -31,7 +31,7 @@ function Slider({images}){
                 </div>
 
                 <div>
-                    <img src={images[currentIndex]} alt="slider" />
+                    <img className="sm:object-center" src={images[currentIndex]} alt="slider" />
                 </div>
                 <div onClick={handlenext} className="absolute ml-[96.4%] w-[5%] h-full cursor-pointer">
                     <span className="absolute h-2/3 sml:text-[40px] pt-[100%] mdl:text-[80px] font-light border border-transparent active:border-black">&gt;</span>

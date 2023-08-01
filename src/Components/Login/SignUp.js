@@ -19,10 +19,11 @@ const SignUp = () => {
     const validate = () => {
         const reqemail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const reqpassword = /^(?=.*[A-Z])(?=.*[\W_@]).{6,}$/;
+        const reqmobile = /^\d{10}$/;
         if (inputValue === "") {
             setErrorMessage("Enter Name");
         }
-        if (mobileNumber.length < 10) {
+        if (!reqmobile.test(mobileNumber)) {
             setErrorMobile("Enter Valid Mobile Number");
         }
         if (email !== "") {
