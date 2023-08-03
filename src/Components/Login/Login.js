@@ -1,9 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { info } from "../../assets";
+import { motion } from "framer-motion";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { exclamation } from "../../assets";
+import { RotatingLines } from "react-loader-spinner";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../../Redux/amazonSlice";
+
 
 export default function Login() {
+    const auth = getAuth();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [loading, setLoading] =useState(false);
     const [needhelp, setNeedhelp] = useState(false);
     const showneedhelp = () => {
         setNeedhelp(!needhelp);
@@ -12,14 +22,17 @@ export default function Login() {
     const [inputValue, setInputValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [password, setPassword] = useState('');
-    // const [errorPassword, setErrorPassword] = useState('');
+    const [errorPassword, setErrorPassword] = useState('');
+    const [successMsg, setSuccessMsg] = useState('');
 
-    const handlePassword = (e)=>{
+    const handlePassword = (e) => {
         setPassword(e.target.value);
+        setErrorPassword("");
     }
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
+        setErrorMessage('');
     };
 
     const validateInput = () => {
@@ -32,13 +45,53 @@ export default function Login() {
         } else {
             setErrorMessage('Please enter a valid email address or mobile number.');
         }
+
+        if (!password) {
+            setErrorPassword("Enter your password");
+        }
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         validateInput();
-        setInputValue("");   
-        setPassword("");
+        
+        if (inputValue && password) {
+            setLoading(true);
+            signInWithEmailAndPassword(auth, inputValue, password)
+                .then((userCredential) => {
+                    // Signed in 
+                    const user = userCredential.user;
+                    dispatch(setUserInfo({
+                        id: user.uid,
+                        username: user.displayName,
+                        email: user.email,
+                        image:user.photoURL,
+                    }))
+                    setLoading(false);
+                    setSuccessMsg("Logged in successfully");
+                    setTimeout(()=>{
+                        navigate("/")
+                        setSuccessMsg("");
+                    },3000)
+                    // ...
+                })
+                .catch((error) => {
+                    setLoading(false);
+                    const errorCode = error.code;
+                    if(errorCode.includes("auth/user-not-found")){
+                        setErrorMessage("Invalid Email");
+                    }
+                    if(errorCode.includes("auth/wrong-password")){
+                        setErrorPassword("Wrong Password! try again");
+                    }
+                    console.log(errorCode)
+                    // const errorMessage = error.message;
+                    // console.log(errorCode, errorMessage)
+                });
+            setInputValue("");
+            setPassword("");
+        }
+
     };
 
     return (
@@ -51,7 +104,7 @@ export default function Login() {
                 </Link>
                 <div className="border border-1-smoke w-80 rounded-md m-auto">
                     <h1 className="mt-6 text-2xl ml-4  font-semibold">Sign in</h1>
-                    
+
                     <form onSubmit={handleSubmit}>
                         <p className="block mt-3 font-semibold text-sm ml-3 pl-2">Email or mobile phone number</p>
                         <input value={inputValue}
@@ -64,8 +117,30 @@ export default function Login() {
                         }
                         <p className="block mt-3 font-semibold text-sm ml-3 pl-2">Password</p>
                         <input type="password" onChange={handlePassword} value={password} className="w-72 ml-4 rounded-sm pl-1 mt-2 border border-gray-400 h-7" />
+                        {errorPassword &&
+                            <div className="text-xs font-normal italic text-red-500 p-2 flex flex-row">
+                                <img className='w-4 text-red-500' src={exclamation} alt='info' />
+                                <p>{errorPassword}</p>
+                            </div>
+                        }
                         <button type="submit" className="mt-4 bg-yellow-400 w-72 rounded-lg text-sm h-8 block m-auto">Continue</button>
+                        {
+                            successMsg && <div>
+                                <motion.p initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }} className='text-base font-semibold text-green-600 border-[1px] text-center'>{successMsg}</motion.p>
+                            </div>
+                        }
                     </form>
+                    {
+                        loading && <div className='flex justify-center '>
+                            <RotatingLines
+                                strokeColor="orange"
+                                strokeWidth="5"
+                                animationDuration="0.75"
+                                width="50"
+                                visible={true}
+                            />
+                        </div>
+                    }
 
                     <div className="block text-xs ml-3 w-72 mt-4 font-medium">
                         By continuing, you agree to Amazon's <a href="https://www.amazon.in/gp/help/customer/display.html/ref=ap_signin_notification_condition_of_use?ie=UTF8&nodeId=200545940" className="text-blue-700 font-medium hover:text-red-600 hover:underline">Conditions of Use</a> and <a href="https://www.amazon.in/gp/help/customer/display.html/ref=ap_signin_notification_privacy_notice?ie=UTF8&nodeId=200534380" className="text-blue-700 font-medium hover:text-red-600 hover:underline">Privacy Notice</a>.

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState={
     products:[],
-    userInfo:[],
+    userInfo:null,
 }
 
 export const amazonSlice = createSlice({
@@ -24,9 +24,13 @@ export const amazonSlice = createSlice({
         },
         clearCart:(state)=>{
             state.products=[]
+        },
+
+        setUserInfo :(state,action)=>{
+            state.userInfo= action.payload
         }
     }
 })
 
-export const{addToCart , removeFromCart, clearCart} = amazonSlice.actions;
+export const{addToCart , removeFromCart, clearCart, setUserInfo} = amazonSlice.actions;
 export default amazonSlice.reducer; 

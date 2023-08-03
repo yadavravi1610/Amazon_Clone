@@ -4,8 +4,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SideNavContent from './SideNavContent';
 import { motion } from 'framer-motion';
+import { useSelector} from 'react-redux';
 
 const HeaderBottom = () => {
+  const userInfo = useSelector((state) => state.amazon.userInfo);
   const ref=useRef();
   const [sidebar, setSideBar] = useState(false);
   // console.log(sidebar);
@@ -36,8 +38,14 @@ const HeaderBottom = () => {
           
             <motion.div ref={ref} initial={{x:-500,opacity:0}} animate={{x:0,opacity:1}} transition={{duration:.5}} className='mdl:w-[30%] lgl:w-[20%] sml:w-[50%] overflow-y-scroll h-full bg-white border border-black'>
               <div className='w-full bg-amazon_light text-white py-2 px-6 flex items-center gap-4'>
-                <AccountCircleIcon />
-                <h3>Hello, Sign In</h3>
+                {
+                  userInfo?<img alt='image' src={userInfo.image} className='w-10 h-10 rounded-full' /> :<AccountCircleIcon />
+                }
+                
+                {
+                  userInfo ? <h3>Hello,{userInfo.username}</h3>:<h3>Hello, Sign In</h3>
+                }
+                
               </div>
               <SideNavContent
                 title="Trending"

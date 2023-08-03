@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 const Header = () => {
     const [showAll, setShowAll] = useState(false);
     const products = useSelector((state) => state.amazon.products);
+    const userInfo = useSelector((state) => state.amazon.userInfo);
     console.log(products);
     const ref = useRef();
     useEffect(() => {
@@ -78,7 +79,8 @@ const Header = () => {
                 {/* Signin Start  */}
                 <Link to='/Login'>
                     <div className='flex flex-col items-start justify-center headerHover'>
-                        <p className='xs:text-sm md:text-xs font-medium'>Hello, Sign in</p>
+                        { userInfo? <p className='xs:text-sm md:text-sm font-medium'>{userInfo.username}</p>:
+                        <p className='xs:text-sm md:text-xs font-medium'>Hello, Sign in</p>}
                         <p className='text-sm font-semibold -mt-1 text-whiteText hidden mdl:inline-flex'>Accounts & Lists {""}                                           <span><ArrowDropDownOutlinedIcon /></span>
                         </p>
                     </div>
