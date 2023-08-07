@@ -5,6 +5,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SideNavContent from './SideNavContent';
 import { motion } from 'framer-motion';
 import { useSelector} from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const HeaderBottom = () => {
   const userInfo = useSelector((state) => state.amazon.userInfo);
@@ -28,7 +29,7 @@ const HeaderBottom = () => {
         <li className='headerHover h-8 mt-1'>Sell</li>
         <li className='headerHover h-8 mt-1'>Best Seller</li>
         <li className='headerHover h-8 mt-1'>Today's Deals</li>
-        <li className='headerHover h-8 mt-1'>Mobiles</li>
+        <Link to ="/Smartphones" ><li className='headerHover h-8 mt-1'>Mobiles</li></Link>
         <li className='headerHover h-8 mt-1'>New Releases</li>
       </ul>
       {/* items end  */}
@@ -39,7 +40,7 @@ const HeaderBottom = () => {
             <motion.div ref={ref} initial={{x:-500,opacity:0}} animate={{x:0,opacity:1}} transition={{duration:.5}} className='mdl:w-[30%] lgl:w-[20%] sml:w-[50%] overflow-y-scroll h-full bg-white border border-black'>
               <div className='w-full bg-amazon_light text-white py-2 px-6 flex items-center gap-4'>
                 {
-                  userInfo?<img alt='image' src={userInfo.image} className='w-10 h-10 rounded-full' /> :<AccountCircleIcon />
+                  userInfo?<img  src={userInfo.image} className='w-10 h-10 rounded-full' alt='user' /> :<AccountCircleIcon />
                 }
                 
                 {

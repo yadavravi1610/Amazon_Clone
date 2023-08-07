@@ -28,9 +28,13 @@ export const amazonSlice = createSlice({
 
         setUserInfo :(state,action)=>{
             state.userInfo= action.payload
+        },
+
+        logout: (state)=>{
+            state.userInfo = null
         }
     }
 })
 
-export const{addToCart , removeFromCart, clearCart, setUserInfo} = amazonSlice.actions;
+export const{addToCart , removeFromCart, clearCart, setUserInfo, logout} = amazonSlice.actions;
 export default amazonSlice.reducer; 

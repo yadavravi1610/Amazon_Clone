@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import { info } from "../../assets";
 import { motion } from "framer-motion";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, sendEmailVerification, GoogleAuthProvider, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
 import { exclamation } from "../../assets";
 import { RotatingLines } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
@@ -13,7 +13,9 @@ export default function Login() {
     const auth = getAuth();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [loading, setLoading] =useState(false);
+    const provider = new GoogleAuthProvider();
+    const fbProvider = new FacebookAuthProvider();
+    const [loading, setLoading] = useState(false);
     const [needhelp, setNeedhelp] = useState(false);
     const showneedhelp = () => {
         setNeedhelp(!needhelp);
@@ -54,45 +56,105 @@ export default function Login() {
     const handleSubmit = (event) => {
         event.preventDefault();
         validateInput();
-        
+
         if (inputValue && password) {
             setLoading(true);
             signInWithEmailAndPassword(auth, inputValue, password)
                 .then((userCredential) => {
                     // Signed in 
                     const user = userCredential.user;
+                    
                     dispatch(setUserInfo({
                         id: user.uid,
                         username: user.displayName,
                         email: user.email,
-                        image:user.photoURL,
+                        image: user.photoURL,
                     }))
+                    sendEmailVerification(auth.currentUser)
+                        .then(() => {
+                            console.log("Email verification sent")
+                        });
+                    // console.log(user);
                     setLoading(false);
                     setSuccessMsg("Logged in successfully");
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         navigate("/")
                         setSuccessMsg("");
-                    },3000)
+                    }, 3000)
                     // ...
                 })
                 .catch((error) => {
                     setLoading(false);
                     const errorCode = error.code;
-                    if(errorCode.includes("auth/user-not-found")){
+                    if (errorCode.includes("auth/user-not-found")) {
                         setErrorMessage("Invalid Email");
                     }
-                    if(errorCode.includes("auth/wrong-password")){
+                    if (errorCode.includes("auth/wrong-password")) {
                         setErrorPassword("Wrong Password! try again");
                     }
                     console.log(errorCode)
-                    // const errorMessage = error.message;
-                    // console.log(errorCode, errorMessage)
+
                 });
             setInputValue("");
             setPassword("");
         }
 
     };
+
+    const handleGoogleSignin = () => {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const user = result.user;
+                dispatch(setUserInfo({
+                    id: user.uid,
+                    username: user.displayName,
+                    email: user.email,
+                    image: user.photoURL,
+                }))
+                handleSubmit({ preventDefault: () => {} });
+                // console.log("Google", user);
+                setTimeout(() => {
+                    navigate("/")
+
+                }, 3000)
+
+            }).catch((error) => {
+
+            });
+    }
+
+    const handleFBSignin = () => {
+        
+        signInWithPopup(auth, fbProvider)
+            .then((result) => {
+               
+                         
+                const user = result.user;
+                sendEmailVerification(auth.currentUser)
+        .then(() => {
+            console.log("Email verification sent");
+            
+
+        });
+                console.log("Facebook", user);
+                dispatch(setUserInfo({
+                    id: user.uid,
+                    username: user.displayName,
+                    email: user.email,
+                    image: user.photoURL,
+                }))
+                handleSubmit({ preventDefault: () => {} });
+                // console.log("Google", user);
+                setTimeout(() => {
+                    navigate("/")
+
+                }, 3000)
+            })
+            .catch((error) => {
+                console.log(error);
+            
+        });
+    }
 
     return (
 
@@ -129,7 +191,11 @@ export default function Login() {
                                 <motion.p initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }} className='text-base font-semibold text-green-600 border-[1px] text-center'>{successMsg}</motion.p>
                             </div>
                         }
+
                     </form>
+                    <button onClick={handleGoogleSignin} className="mt-4 bg-yellow-400 w-72 rounded-lg text-sm h-8 block m-auto">Sign In with Google</button>
+                    <button onClick={handleFBSignin} className="mt-4 bg-yellow-400 w-72 rounded-lg text-sm h-8 block m-auto">Sign In with Facebook</button>
+
                     {
                         loading && <div className='flex justify-center '>
                             <RotatingLines
