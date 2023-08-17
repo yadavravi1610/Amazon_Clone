@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 import Product from "./Product";
 
 const Products = () => {
     const data = useLoaderData();
     const productsData = data.data.products;
     // console.log(productsData);
+
+    const { category } = useParams(); // Get the category parameter from the URL
+
+  // Filter products based on the selected category
+  const categoryProducts = category
+    ? productsData.filter(product => product.category === category)
+    : productsData;
 
     const [filteredProducts, setFilteredProducts] = useState(productsData);
     const [priceRange, setPriceRange] = useState("");
@@ -110,12 +117,13 @@ const Products = () => {
                         <option value="highToLow">Price : High to Low</option>
                         <option value="avgReview">Avg. Customer Review</option>
                     </select>
-                    <h1>Total : {filteredProducts.length}</h1>
+                    <h1>Total : {categoryProducts.length}</h1>
                 </div>
 
                 <div className='w-full flex flex-wrap justify-evenly '>
 
-                    <Product productsData={sortedProducts.length > 0 ? sortedProducts : filteredProducts} />
+                    {/* <Product productsData={sortedProducts.length > 0 ? sortedProducts : filteredProducts} /> */}
+                    <Product productsData={categoryProducts} />
 
                 </div>
             </div>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 // import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import { location } from '../../assets/index';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -8,18 +7,32 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import { logo } from "../../assets/index"
 import { allItems } from '../../constants';
 import { Link } from 'react-router-dom';
-import { logout } from '../../Redux/amazonSlice';
+import { userSignOut } from '../../Redux/amazonSlice';
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
+import Pincode from './pincode';
+
+// import { useParams } from 'react-router-dom';
 
 
 const Header = () => {
     const dispatch = useDispatch();
     const auth = getAuth();
+
     const [showAll, setShowAll] = useState(false);
     const [showSignin, setShowSignin] = useState(false);
     const products = useSelector((state) => state.amazon.products);
     const userInfo = useSelector((state) => state.amazon.userInfo);
+
+    const [quantity, setQuantity] = useState(0);
+
+    useEffect(()=>{
+        let quan = 0;
+        products.map((item)=>{
+            return setQuantity(quan+=item.quantity);
+        })
+    },[products])
+
     // console.log(products);
     const ref = useRef();
     useEffect(() => {
@@ -28,6 +41,7 @@ const Header = () => {
                 setShowAll(false);
             }
             // console.log(e.target.contains(ref.current));
+            
         })
     }, [ref, showAll]);
 
@@ -35,7 +49,7 @@ const Header = () => {
     { 
         e.preventDefault();  
         signOut(auth).then(() => {
-            dispatch(logout());
+            dispatch(userSignOut());
           }).catch((error) => {
             // An error happened.
           });
@@ -51,12 +65,7 @@ const Header = () => {
                 </Link>
                 {/* amazon_logo end */}
                 {/* Address Start  */}
-                <div className='headerHover hidden mdl:inline-flex'>
-                    <img className='pt-2' alt='' src={location} />
-                    <p className='text-xs pl-1 text-lightText font-light flex flex-col leading-4'>
-                        Deliver to <span className='text-sm font-semibold -mt-1 text-whiteText'>Select your address</span>
-                    </p>
-                </div>
+                <Pincode />
                 {/* Address End */}
                 {/* search start  */}
                 <div className='h-10 rounded-md hidden mdl:flex flex-grow relative'>
@@ -199,7 +208,7 @@ const Header = () => {
                         <ShoppingCartOutlinedIcon />
                         <p className='text-xs font-semibold mt-3 text-whiteText'>
                             Cart <span className='absolute text-xs top-1 left-6 font-semibold p-1 h-4 bg-[#f3a847] text-amazon_blue rounded-full flex justify-center items-center'>
-                                {products.length > 0 ? products.length : 0}
+                                {products.length>0 ? quantity: 0}
                             </span>
                         </p>
                     </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import Slider from '../Home/Slider';
 // import Products from '../Home/products';
 import Category from '../Components/Category/Category';
+import ProductsSlider from '../Home/productSlider';
 
 const Home = () => {
     const sampleImage = [
@@ -14,8 +15,9 @@ const Home = () => {
     return (
         <div>
             <Slider images={sampleImage} />
-            <div className='sml:-mt-28 mdl:-mt-52' ><Category /></div>
+            <div className='sml:-mt-28 mdl:-mt-60' ><Category /></div>
             {/* <div><Product /></div> */}
+            <div><ProductsSlider /></div>
         </div>
     )
 }

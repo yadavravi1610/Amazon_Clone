@@ -1,14 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../Redux/amazonSlice';
 
 const Product = (props) => {
     const { productsData } = props;
+    const dispatch = useDispatch();
     return (
         productsData.map((product) => (
             <div className='w-96 my-5 rounded border-[1px] border-gray-200 shadow-none hover:shadow-testShadow duration-200' key={product.id}>
-                <div className=" bg-gray-100 border-b-[1px] border-gray-200 flex justify-center items-center cursor-pointer relative group" >
-                    <img className="w-full h-72" src={product.thumbnail} alt="productImage" />
-                </div>
+                <Link to={`${product.title}`} >
+                    <div className=" bg-gray-100 border-b-[1px] border-gray-200 flex justify-center items-center cursor-pointer relative group" >
+                        <img className="w-full h-72" src={product.thumbnail} alt="productImage" />
+                    </div>
+                </Link>
+
                 <div className='p-2 '>
                     <Link to={`${product.title}`} >
                         <div>
@@ -26,7 +32,22 @@ const Product = (props) => {
                         <span className='text-[26px] font-medium'>{product.price}</span>
                         <span>&nbsp;({product.discountPercentage}% Off)</span>
                     </div>
-                    <button className={`text-lg font-medium w-full text-center rounded-lg bg-yellow-300 hover:bg-yellow-400 p-[4px] mt-3 shadow active:ring-2 active:ring-offset-1 active:ring-blue-500`}
+                    <button onClick={() => {
+                        dispatch(addToCart({
+                            id: product.id,
+                            title: product.title,
+                            description: product.description,
+                            price: product.price,
+                            category: product.category,
+                            thumbnail: product.thumbnail,
+                            discountPercentage: product.discountPercentage,
+                            images: product.imgaes,
+                            rating: product.rating,
+                            stock: product.stock,
+                            brand: product.brand,
+                            quantity: 1,
+                        })); console.log(product)
+                    }} className={`text-lg font-medium w-full text-center rounded-lg bg-yellow-300 hover:bg-yellow-400 p-[4px] mt-3 shadow active:ring-2 active:ring-offset-1 active:ring-blue-500`}
                     >Add to Cart</button>
                 </div>
             </div>

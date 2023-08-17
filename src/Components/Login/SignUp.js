@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
 import { info, exclamation } from '../../assets';
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, updateProfile } from "firebase/auth";
+import { getAuth, RecaptchaVerifier,
+    //  signInWithEmailAndPassword, signInWithPhoneNumber, 
+     updateProfile ,sendEmailVerification , createUserWithEmailAndPassword} from "firebase/auth";
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+// import { useDispatch } from 'react-redux';
+import {collection,doc, getDoc,setDoc} from "firebase/firestore";
+import {db} from "../../firebase.config";
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { RotatingLines } from "react-loader-spinner";
+
 
 const SignUp = () => {
 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [successMsg, setSuccessMsg] = useState("");
-    const [otpVerify, setOtpVerify] = useState('');
+    // const [otpVerify, setOtpVerify] = useState('');
 
+    // const dispatch = useDispatch();
     const auth = getAuth();
-    const [final, setfinal] = useState('');
+    // const [final, setfinal] = useState('');
 
-    const [otp, setotp] = useState('');
-    const [verify, setVerify] = useState(false);
+    // const [otp, setotp] = useState('');
+    // const [verify, setVerify] = useState(false);
 
-    // const [firebaseError, setFirebaseError] = useState('');
+    const [firebaseError, setFirebaseError] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -31,6 +38,37 @@ const SignUp = () => {
 
     const [password, setPassword] = useState('');
     const [errorPassword, setErrorPassword] = useState('');
+
+    const saveUserDataToFirebase = async(user) =>{
+        const userCollectionRef = collection(db,"users");
+        const userRef = doc(userCollectionRef, user.email);
+        try{
+            const userRefSnapshot = await getDoc(userRef);
+            if(!userRefSnapshot.exists()){
+                const userDetailsRef = doc (userRef, "details", user.uid);
+                const userDetailsSnapshot = await getDoc(userDetailsRef);
+                if(!userDetailsSnapshot.exists()){
+                    await setDoc(userDetailsRef, {
+                        id:user.uid,
+                        name: user.displayName,
+                        email: user.email,
+                        image: user.photoURL,
+                        mobile: user.phoneNumber,
+                        createdOn: new Date(),
+                    });
+                }
+                else{
+                    console.log("User Details already exists in Firestore")
+                }
+            }
+            else{
+                console.log("User email already exists in Firestore")
+            }
+        }
+        catch(error){
+            console.log("Error Fetching user details",error);
+        }
+    }
 
     const emailValidation = (email) => {
         return String(email)
@@ -47,11 +85,11 @@ const SignUp = () => {
             setErrorMessage("Enter Name");
             isvalid = false;
         }
-        if (!mobileNumber) {
-            setErrorMobile("Enter Mobile Number");
-            isvalid = false;
+        // if (!mobileNumber) {
+        //     setErrorMobile("Enter Mobile Number");
+        //     isvalid = false;
 
-        }
+        // }
         // else if (mobileNumber.length < 10 || !reqmobile.test(mobileNumber)) {
         //         setErrorMobile("Enter a valid mobile number")
         //         isvalid = false;
@@ -110,24 +148,57 @@ const SignUp = () => {
         setLoading(true);
 
         verifier();
-        if (mobileNumber) {
-            let appVerifier = window.recaptchaVerifier;
-            signInWithPhoneNumber(auth, mobileNumber, appVerifier)
-                .then((result) => {
-                    updateProfile(auth.currentUser, {
-                                    name: inputValue,
-                                    // photoURL: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp",
-                                })
-                    setfinal(result);
-                    const user = result;
-                    console.log(user);
-                    setLoading(false);
-                    setVerify(true);
+        // if (mobileNumber) {
+        //     let appVerifier = window.recaptchaVerifier;
+        //     signInWithPhoneNumber(auth, mobileNumber, appVerifier)
+        //         .then((result) => {
+        //             updateProfile(auth.currentUser, {
+        //                             name: inputValue,
+        //                             // photoURL: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp",
+        //                         })
+        //             setfinal(result);
+        //             const user = result;
+        //             console.log(user);
+        //             setLoading(false);
+        //             setVerify(true);
+        //         })
+        //         .catch((err) => {
+        //             alert(err);
+        //             window.location.reload()
+        //         });
+        // }
+        if(email && password){
+            setLoading(true);
+            createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in 
+                updateProfile(auth.currentUser, {
+                    displayName: inputValue,
+                    photoURL: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp",
                 })
-                .catch((err) => {
-                    alert(err);
-                    window.location.reload()
-                });
+                const user = userCredential.user;
+                saveUserDataToFirebase(user);
+                sendEmailVerification(auth.currentUser)
+                        .then(() => {
+                            console.log("Email verification sent")
+                        });
+                setLoading(false);
+                setSuccessMsg("Account Created Successfully");
+                setTimeout(()=>{
+                    navigate("/Login");
+                    setSuccessMsg("");
+                },3000)
+                console.log(user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                // const errorMessage = error.message;
+                // ..
+                if (errorCode.includes("auth/email-already-in-use")) {
+                    setFirebaseError("Email is already in use ! Try another one");
+                }
+                // console.log(errorCode, errorMessage);
+            });
         }
         setInputValue("");
         setMobileNumber("");
@@ -136,19 +207,19 @@ const SignUp = () => {
 
     };
 
-    const validateOtp = (e) => {
-        e.preventDefault();
-        if (otp === null || final === null)
-            return;
-        final.confirm(otp).then((result) => {
-            setSuccessMsg("Account Created Successfully");
-                navigate("/Login");
+    // const validateOtp = (e) => {
+    //     e.preventDefault();
+    //     if (otp === null || final === null)
+    //         return;
+    //     final.confirm(otp).then((result) => {
+    //         setSuccessMsg("Account Created Successfully");
+    //             navigate("/Login");
             
-        }).catch((err) => {
-            // alert("Wrong code");
-            setOtpVerify("Otp Not Matched");
-        })
-    }
+    //     }).catch((err) => {
+    //         // alert("Wrong code");
+    //         setOtpVerify("Otp Not Matched");
+    //     })
+    // }
 
     const verifier = () => {
         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
@@ -171,24 +242,24 @@ const SignUp = () => {
             <div className="border border-1 border-gray-300 w-96 rounded-md m-auto h-auto px-4 py-4">
                 <span className='text-3xl font-normal'>Create Account</span>
                 {
-                    verify ?
-                        <form className='mt-3 text-xs font-bold mb-4 flex flex-col gap-4' onSubmit={validateOtp}>
-                            <input type='text' placeholder='Enter Your Otp' onChange={(e) => {setotp(e.target.value); setOtpVerify("")}} className='border border-gray-400 rounded-sm h-7 font-normal p-2' />
-                            <button type='submit' className='bg-yellow-300 p-2 rounded-md font-medium tracking-wide'>Verify OTP</button>
-                            {
-                                successMsg && <div>
-                                    <motion.p initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }} className='text-base font-semibold text-green-600 border-[1px] text-center'>{successMsg}</motion.p>
-                                </div>
-                            }
-                            {
-                                otpVerify &&
-                                <div className="text-xs font-normal italic text-red-500 pl-2 flex flex-row">
-                                    <img className='w-4 text-red-500' src={exclamation} alt='info' />
-                                    <p>{otpVerify}</p>
-                                </div>
-                            }
-                        </form>
-                        :
+                    // verify ?
+                    //     <form className='mt-3 text-xs font-bold mb-4 flex flex-col gap-4' onSubmit={validateOtp}>
+                    //         <input type='text' placeholder='Enter Your Otp' onChange={(e) => {setotp(e.target.value); setOtpVerify("")}} className='border border-gray-400 rounded-sm h-7 font-normal p-2' />
+                    //         <button type='submit' className='bg-yellow-300 p-2 rounded-md font-medium tracking-wide'>Verify OTP</button>
+                    //         {
+                    //             successMsg && <div>
+                    //                 <motion.p initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }} className='text-base font-semibold text-green-600 border-[1px] text-center'>{successMsg}</motion.p>
+                    //             </div>
+                    //         }
+                    //         {
+                    //             otpVerify &&
+                    //             <div className="text-xs font-normal italic text-red-500 pl-2 flex flex-row">
+                    //                 <img className='w-4 text-red-500' src={exclamation} alt='info' />
+                    //                 <p>{otpVerify}</p>
+                    //             </div>
+                    //         }
+                    //     </form>
+                    //     :
                         <form className='mt-3 text-xs font-bold mb-4 flex flex-col gap-4' onSubmit={handleSubmit}>
                             <div className='flex flex-col gap-1 h-auto'>Your Name
                                 <input type='text' value={inputValue} onChange={handleInputChange} className='border border-gray-400 rounded-sm h-7 font-normal p-2' placeholder='First and Last Name' />
@@ -215,10 +286,10 @@ const SignUp = () => {
                             </div>
                             <div className='flex flex-col'>Email (optional)
                                 <input type='text' value={email} onChange={handleEmail} className='border border-gray-400 rounded-sm h-7 font-normal p-2' />
-                                {(errorEmail) &&
+                                {(errorEmail || firebaseError) &&
                                     <div className="text-xs font-normal italic text-red-500 pl-2 flex flex-row">
                                         <img className='w-4 text-red-500' src={exclamation} alt='info' />
-                                        <p>{errorEmail}</p>
+                                        <p>{errorEmail || firebaseError}</p>
                                     </div>
                                 }
                             </div>
