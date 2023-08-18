@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import { ScrollRestoration, useLoaderData, Link} from 'react-router-dom';
+import { ScrollRestoration, useLoaderData, Link } from 'react-router-dom';
 import { star, halfStar, emptyStar, offers, delivery, cod, exchange, delivered, transaction } from "../../assets/index";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, buyNow } from '../../Redux/amazonSlice';
@@ -30,6 +30,7 @@ const ProductDetails = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % product.images.length);
+      // console.log(currentImageIndex);
     }, 5000);
     return () => clearInterval(interval);
   }, [product.images.length]);
@@ -90,20 +91,20 @@ const ProductDetails = () => {
   const handleAddToCart = (product) => {
     // If user is not authenticated, add to Redux cart
     // if (!authenticated) {
-      dispatch(addToCart({
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        description: product.description,
-        category: product.category,
-        images: product.images,
-        thumbnail: product.thumbnail,
-        brand: product.brand,
-        quantity: selectedQuantity,
-        discountPercentage: product.discountPercentage,
-        rating: product.rating,
-        stock: product.stock
-      }));
+    dispatch(addToCart({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      description: product.description,
+      category: product.category,
+      images: product.images,
+      thumbnail: product.thumbnail,
+      brand: product.brand,
+      quantity: selectedQuantity,
+      discountPercentage: product.discountPercentage,
+      rating: product.rating,
+      stock: product.stock
+    }));
     // }
     // else {
     //   // If user is authenticated, save to Firebase cart
@@ -135,9 +136,9 @@ const ProductDetails = () => {
     return <h1>Details of this product available in its category page. please go back to this product's category page then select this product to see its details.</h1>
   }
   return (
-    <div className='flex bg-white justify-between'>
+    <div className='flex sml:flex-col mdl:flex-row gap-2 bg-white justify-between'>
       <ScrollRestoration />
-      <div className='w-[5%] mt-10 ml-1 sticky'>
+      <div className='sml:hidden lgl:block lgl:w-[5%] mt-10 ml-1 sticky'>
         {product.images.map((item, index) => (
           <div key={index} className='border-[1px] border-black rounded-lg mb-5'
             onClick={() => handleImageClick(index)}>
@@ -146,9 +147,9 @@ const ProductDetails = () => {
         ))}
       </div>
 
-      <div className='w-[38%] mt-4'><img src={product.images[currentImageIndex]} className='w-full h-[85%]' alt="productImage" /></div>
+      <div className='w-full lgl:w-[38%] mdl:h-60 lg:h-[600px] mt-4'><img src={product.images[currentImageIndex]} className='w-full h-[85%]' alt="productImage" /></div>
 
-      <div className='w-[35%] mt-2 ' >
+      <div className='w-full xs:ml-2 lgl:w-[35%] mt-2 ' >
         <h1 className='text-[26px] font-bold'>{product.title}</h1>
         <p className='text-blue-500 capitalize '>Brand : {product.brand}</p>
         <div className='flex border-b-[1px] border-gray-200 pb-1'>
@@ -221,7 +222,7 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      <div className='w-[20%] h-[430px] border-[0.066rem] border-gray-200 rounded-lg p-5 mt-2 mr-1'>
+      <div className='w-full lgl:w-[20%] h-[430px] border-[0.066rem] border-gray-200 rounded-lg p-5 mt-2 mr-1'>
         <div className='flex items-center mt-1'>
           <span className='text-[26px] font-medium text-red-600'>₹&nbsp;{product.price}</span>
           <span>&nbsp;({product.discountPercentage}% Off)</span>
@@ -239,36 +240,38 @@ const ProductDetails = () => {
             <option value="5">5</option>
           </select>
         </div>
-        {cartButton
-          ? <Link to="/Cart">
-            <button className={`pt-2 w-full text-center text-blue-600 rounded-2xl  bg-gray-100 border-gray-200 p-[4px] mt-3 active:ring-2     active:ring-offset-1 active:ring-blue-600`}>
-              Go to Cart
-            </button>
-          </Link>
-          : <button
-            onClick={() => {
-              handleAddToCart(product);
-              setCartButton(true);
-            }}
-            className={`pt-2 w-full text-center rounded-2xl bg-yellow-300 hover:bg-yellow-400 p-[4px] mt-3 shadow active:ring-2 active:ring-offset-1 active:ring-blue-500`}>
-            Add to Cart
-          </button>}
-        {
-          authenticated
-            ? <Link to="/checkout">
-              <button
-                onClick={() => handleBuyNow(product)}
-                className={`pt-2 w-full text-center rounded-2xl bg-orange-400 hover:bg-orange-500 p-[4px] mt-3 shadow active:ring-2 active:ring-offset-1 active:ring-blue-500`}>
-                Buy Now
+        <div className=''>
+          {cartButton
+            ? <Link to="/Cart">
+              <button className={`pt-2 sml:w-[45%] lgl:w-full text-center text-blue-600 rounded-2xl  bg-gray-100 border-gray-200 p-[4px] mt-3 active:ring-2     active:ring-offset-1 active:ring-blue-600`}>
+                Go to Cart
               </button>
             </Link>
-            : <Link to="/signIn">
-              <button
-                className={`pt-2 w-full text-center rounded-2xl bg-orange-400 hover:bg-orange-500 p-[4px] mt-3 shadow active:ring-2 active:ring-offset-1 active:ring-blue-500`}>
-                Buy Now
-              </button>
-            </Link>
-        }
+            : <button
+              onClick={() => {
+                handleAddToCart(product);
+                setCartButton(true);
+              }}
+              className={`pt-2 sml:w-[45%] lgl:w-full text-center rounded-2xl bg-yellow-300 hover:bg-yellow-400 p-[4px] mt-3 shadow active:ring-2 active:ring-offset-1 active:ring-blue-500`}>
+              Add to Cart
+            </button>}
+          {
+            authenticated
+              ? <Link to="/checkout">
+                <button
+                  onClick={() => handleBuyNow(product)}
+                  className={`pt-2 xs:ml-10 lgl:ml-0 sml:w-[45%] lgl:w-full text-center rounded-2xl bg-orange-400 hover:bg-orange-500 p-[4px] mt-3 shadow active:ring-2 active:ring-offset-1 active:ring-blue-500`}>
+                  Buy Now
+                </button>
+              </Link>
+              : <Link to="/signIn">
+                <button
+                  className={`pt-2 xs:ml-10 lgl:ml-0 sml:w-[45%] lgl:w-full text-center rounded-2xl bg-orange-400 hover:bg-orange-500 p-[4px] mt-3 shadow active:ring-2 active:ring-offset-1 active:ring-blue-500`}>
+                  Buy Now
+                </button>
+              </Link>
+          }
+        </div>
 
         <p className='text-blue-500 pt-3'>Secure transaction</p>
       </div>

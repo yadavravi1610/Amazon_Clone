@@ -5,12 +5,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { logo } from "../../assets/index"
-import { allItems } from '../../constants';
 import { Link } from 'react-router-dom';
 import { userSignOut } from '../../Redux/amazonSlice';
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import Pincode from './pincode';
+import { useLoaderData } from 'react-router-dom';
+import SignInoptions from './signInoptions';
 
 // import { useParams } from 'react-router-dom';
 
@@ -19,19 +20,28 @@ const Header = () => {
     const dispatch = useDispatch();
     const auth = getAuth();
 
+    const product = useLoaderData();
+    const productsData = product.data.products;
+    // console.log(productsData);
+    var productCategories = [];
+    productsData.forEach(product => {
+        if (!productCategories.includes(product.category)) {
+            productCategories.push(product.category);
+        }
+    });
     const [showAll, setShowAll] = useState(false);
     const [showSignin, setShowSignin] = useState(false);
     const products = useSelector((state) => state.amazon.products);
     const userInfo = useSelector((state) => state.amazon.userInfo);
-
+    console.log(userInfo);
     const [quantity, setQuantity] = useState(0);
 
-    useEffect(()=>{
+    useEffect(() => {
         let quan = 0;
-        products.map((item)=>{
-            return setQuantity(quan+=item.quantity);
+        products.map((item) => {
+            return setQuantity(quan += item.quantity);
         })
-    },[products])
+    }, [products])
 
     // console.log(products);
     const ref = useRef();
@@ -41,18 +51,17 @@ const Header = () => {
                 setShowAll(false);
             }
             // console.log(e.target.contains(ref.current));
-            
+
         })
     }, [ref, showAll]);
 
-    const handleLogout= (e) => 
-    { 
-        e.preventDefault();  
+    const handleLogout = (e) => {
+        e.preventDefault();
         signOut(auth).then(() => {
             dispatch(userSignOut());
-          }).catch((error) => {
+        }).catch((error) => {
             // An error happened.
-          });
+        });
     }
     return (<>
         <div className='w-full fixed z-50 top-0'>
@@ -78,8 +87,10 @@ const Header = () => {
                             <div className='w-full h-screen text-black fixed top-1 left-4 bg-amazon_blue bg-opacity-0' >
                                 <div ref={ref}>
                                     <ul className='absolute w-56 h-80 top-10 left-72 right-4 overflow-y-scroll overflow-x-hidden bg-white border-[1px] border-gray-300 text-black  flex-col gap-1 z-50'>
-                                        {allItems.map((item) => (
-                                            <li key={item.id} className='text-sm tracking-wide font-semibold p-1 border-b-[1px] border-b-transparent hover:bg-blue-600 hover:text-white cursor-pointer duration-200'>{item.title}</li>
+                                        {productCategories.map((category) => (
+                                            <Link to={`${category}`}>
+                                                <li key={category.id} className='text-sm tracking-wide font-semibold p-1 border-b-[1px] border-b-transparent hover:bg-blue-600 hover:text-white cursor-pointer duration-200 capitalize'>{category}</li>
+                                            </Link>
                                         ))}
                                     </ul>
                                 </div>
@@ -103,49 +114,25 @@ const Header = () => {
                 {/* Signin Start  */}
                 <Link to='/Login'>
                     <div className='flex flex-col items-start justify-center headerHover' onMouseEnter={() => setShowSignin(true)} onMouseLeave={() => setShowSignin(false)}>
-                        {userInfo ? <p className='xs:text-sm md:text-sm font-medium'>{userInfo.username}</p> :
+                        {userInfo ? <p className='xs:text-sm md:text-xs lg:text-sm font-medium'>Hello, {userInfo.name}</p> :
                             <p className='xs:text-sm md:text-xs font-medium'>Hello, Sign in</p>}
-                        <p className='text-sm font-semibold -mt-1 text-whiteText hidden mdl:inline-flex'>Accounts & Lists {""}<span><ArrowDropDownOutlinedIcon /></span>
+                        <p className='text-xs lg:text-sm font-semibold -mt-1 text-whiteText hidden mdl:inline-flex'>Accounts & Lists {""}<span><ArrowDropDownOutlinedIcon /></span>
                         </p>
                         {
-                            showSignin && <div className='w-full h-screen text-black fixed top-16 left-0 bg-amazon_blue bg-opacity-50 flex justify-end'>
-                                <div onMouseLeave={() => setShowSignin(false)} onClick={(e)=>e.preventDefault()} className='mdl:w-[50%] lgl:w-[40%] sml:w-[50%] mr-10 rounded-sm sml:h-[50%] mdl:h-[70%] overflow-hidden   -mt-2 bg-white border border-transparent '>
+                            showSignin &&
+                            <div className='w-full h-screen text-black fixed top-16 left-0 bg-amazon_blue bg-opacity-50 flex justify-end'>
+                                <div onMouseLeave={() => setShowSignin(false)} onClick={(e) => e.preventDefault()} className='mdl:w-[50%] lgl:w-[32%] sml:w-[50%] mr-10 rounded-sm h-auto overflow-hidden sml:h-[60%] mdl:h-[55%] lg:h-[70%] lgl:h-[60%] -mt-2 bg-white border border-transparent '>
                                     {
                                         userInfo ?
-                                            <div className='grid grid-cols-2 mt-1 ml-8 pt-2 '>
-                                                <div className='flex flex-col gap-2'>
-                                                    <h3 className='font-medium text-sm mdl:text-lg lgl:text-xl'>Your Lists</h3>
-                                                    <ul className='text-xs mdl:text-sm lgl:text-lg font-normal flex flex-col gap-2'>
-                                                        <li className='hover:text-orange-500 hover:underline'>Shopping List</li>
-                                                        <hr className='w-[80%]' />
-                                                        <li className='hover:text-orange-500 hover:underline'>Create a WishList</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Wish from Any Website</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Baby Wishlist</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Discover Your Style</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Explore Showroom</li>
-                                                    </ul>
+                                            <>
+                                                <SignInoptions />
+                                                <div className='flex flex-col gap-1 text-xs lgl:text-sm font-normal sml:ml-52 lg:ml-64 mt-3 '>
+                                                <hr className='w-32'/>
+                                                <h4 className='hover:text-orange-500 hover:underline'>Switch Accounts</h4>
+                                                <h4 className='hover:text-orange-500 hover:underline' onClick={handleLogout}>Sign Out</h4>
                                                 </div>
-                                                <div className='flex flex-col gap-1'>
-                                                    <h3 className='font-medium text-sm mdl:text-lg lgl:text-xl'>Your Account</h3>
-                                                    <ul className='text-xs mdl:text-sm lgl:text-lg font-normal flex flex-col lgl:gap-1'>
-                                                        <li className='hover:text-orange-500 hover:underline'>Your Account</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Your Orders</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Your Wishlist</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Your Recommendations</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Your Prime Membership</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Your Prime Video</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Your Subscribe & Save Items</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Memberships & Subscriptions</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Your Seller Account</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Manage Your Content and Devices</li>
-                                                        <li className='hover:text-orange-500 hover:underline'>Your Free Amazon Business Account</li>
-                                                        <hr />
-                                                        <li className='hover:text-orange-500 hover:underline'>Switch Accounts</li>
-                                                        <li className='hover:text-orange-500 hover:underline' onClick={handleLogout}>Sign Out</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            : <div>
+                                            </>
+                                            : <>
                                                 <div className='flex flex-col justify-center gap-1 mb-2 mt-5 text-center'>
                                                     <Link to="/Login">
                                                         <button className='w-60 h-8 text-sm bg-yellow-400 rounded-md py-1 font-semibold cursor-pointer'>
@@ -157,37 +144,8 @@ const Header = () => {
                                                     </p>
                                                 </div>
                                                 <hr className='w-[80%] mx-auto' />
-                                                <div className='grid grid-cols-2 mt-1 ml-8'>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <h3 className='font-medium text-xs mdl:text-sm lgl:text-lg'>Your Lists</h3>
-                                                        <ul className='text-xs lgl:text-sm font-normal flex flex-col gap-3 '>
-                                                            <li className='hover:text-orange-500 hover:underline'>Shopping List</li>
-                                                            <hr className='w-[80%]' />
-                                                            <li className='hover:text-orange-500 hover:underline'>Create a WishList</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Wish from Any Website</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Baby Wishlist</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Discover Your Style</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Explore Showroom</li>
-                                                        </ul>
-                                                    </div>
-                                                    <div className='flex flex-col gap-2'>
-                                                        <h3 className='font-medium text-xs mdl:text-sm lgl:text-lg'>Your Account</h3>
-                                                        <ul className='text-xs lgl:text-sm font-normal flex flex-col gap-3'>
-                                                            <li className='hover:text-orange-500 hover:underline'>Your Account</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Your Orders</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Your Wishlist</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Your Recommendations</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Your Prime Membership</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Your Prime Video</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Your Subscribe & Save Items</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Memberships & Subscriptions</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Your Seller Account</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Manage Your Content and Devices</li>
-                                                            <li className='hover:text-orange-500 hover:underline'>Your Free Amazon Business Account</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <SignInoptions />
+                                            </>
                                     }
                                 </div>
                             </div>
@@ -208,7 +166,7 @@ const Header = () => {
                         <ShoppingCartOutlinedIcon />
                         <p className='text-xs font-semibold mt-3 text-whiteText'>
                             Cart <span className='absolute text-xs top-1 left-6 font-semibold p-1 h-4 bg-[#f3a847] text-amazon_blue rounded-full flex justify-center items-center'>
-                                {products.length>0 ? quantity: 0}
+                                {products.length > 0 ? quantity : 0}
                             </span>
                         </p>
                     </div>

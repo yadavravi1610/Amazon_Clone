@@ -84,25 +84,25 @@ const Products = () => {
         <div className='w-full relative my-6 flex flex-row bg-white'>
             <div className='w-[18%]  bg-white border-r-2 '>
 
-                <div className='px-5 py-[10px]'>
-                    <p className='text-[18px] underline font-bold mb-1'>Price</p>
-                    <p className={`font-medium mb-[1px] cursor-pointer ${priceRange === "0 - 10" ? "text-blue-500" : ""}`}
+                <div className='xs:px-1 mdl:px-5 py-[10px]'>
+                    <p className='text-xl underline font-bold mb-1'>Price</p>
+                    <p className={`sm:text-xs mdl:text-sm lgl:text-lg font-medium mb-[1px] cursor-pointer ${priceRange === "0 - 10" ? "text-blue-500" : ""}`}
                         onClick={() => handlePriceFilter("0 - 10")}
                     > Under ₹10
                     </p>
-                    <p className={`font-medium mb-[1px] cursor-pointer ${priceRange === "10 - 100" ? "text-blue-500" : ""}`}
+                    <p className={`sm:text-xs mdl:text-sm lgl:text-lg font-medium mb-[1px] cursor-pointer ${priceRange === "10 - 100" ? "text-blue-500" : ""}`}
                         onClick={() => handlePriceFilter("10 - 100")}
                     >₹10 - ₹100
                     </p>
-                    <p className={`font-medium mb-[1px] cursor-pointer ${priceRange === "100 - 500" ? "text-blue-500" : ""}`}
+                    <p className={`sm:text-xs mdl:text-sm lgl:text-lg font-medium mb-[1px] cursor-pointer ${priceRange === "100 - 500" ? "text-blue-500" : ""}`}
                         onClick={() => handlePriceFilter("100 - 500")}
                     >₹100 - ₹500
                     </p>
-                    <p className={`font-medium mb-[1px] cursor-pointer ${priceRange === "500 - 1,000" ? "text-blue-500" : ""}`}
+                    <p className={`sm:text-xs mdl:text-sm lgl:text-lg font-medium mb-[1px] cursor-pointer ${priceRange === "500 - 1,000" ? "text-blue-500" : ""}`}
                         onClick={() => handlePriceFilter("500 - 1,000")}
                     >₹500 - ₹1,000
                     </p>
-                    <p className={`font-medium mb-[1px] cursor-pointer ${priceRange === "1,000 - 100,000,000" ? "text-blue-500" : ""}`}
+                    <p className={`sm:text-xs mdl:text-sm lgl:text-lg font-medium mb-[1px] cursor-pointer ${priceRange === "1,000 - 100,000,000" ? "text-blue-500" : ""}`}
                         onClick={() => handlePriceFilter("1,000 - 100,000,000")}>
                         Over ₹1,000
                     </p>
