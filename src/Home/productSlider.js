@@ -46,13 +46,13 @@ const ProductsSlider = () => {
                     ))
                 }
             </div>
-            <div className="prev-btn text-[32px] bg-[rgba(245,245,245,0.3)] font-bold text-gray-700 w-12 h-24 ml-5 absolute bottom-[123px] 
+            <div className="prev-btn text-[32px] bg-[rgba(245,245,245,0.3)] font-bold text-gray-700 w-12 h-24 ml-2 mdl:ml-5 absolute bottom-[123px] 
       flex justify-center items-center rounded shadow active:shadow-gray-500 active:shadow-sm active:border-[1px] active:border-cyan-200 opacity-0 group-hover:opacity-100 transition-opacity duration-700" onClick={() => handleScroll('left')} >
                 <button >
                     &lt;
                 </button>
             </div>
-            <div className="prev-btn text-[32px] bg-[rgba(245,245,245,0.3)] font-bold text-gray-700 w-12 h-24  absolute bottom-[123px] left-[95%]
+            <div className="prev-btn text-[32px] bg-[rgba(245,245,245,0.3)] font-bold text-gray-700 w-12 h-24  absolute bottom-[123px] left-[88%] mdl:left-[96%]
       flex justify-center items-center rounded shadow active:shadow-gray-500 active:shadow-sm active:border-[1px] active:border-cyan-200 opacity-0 group-hover:opacity-100 transition-opacity duration-700" onClick={() => handleScroll('right')} >
                 <button >
                     &gt;

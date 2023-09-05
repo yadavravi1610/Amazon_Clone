@@ -81,11 +81,11 @@ const Products = () => {
     };
 
     return (
-        <div className='w-full relative my-6 flex flex-row bg-white'>
-            <div className='w-[18%]  bg-white border-r-2 '>
+        <div className='w-full relative my-6 flex flex-col mdl:flex-row bg-white'>
+            <div className='w-full mdl:w-[18%] bg-white border-b-2 mdl:border-r-2 '>
 
-                <div className='xs:px-1 mdl:px-5 py-[10px]'>
-                    <p className='text-xl underline font-bold mb-1'>Price</p>
+                <div className='flex flex-row mdl:flex-col items-baseline mx-[4%] gap-3 xs:px-1 mdl:px-5 py-[10px]'>
+                    <p className=' mdl:text-xl underline font-bold mb-1'>Price</p>
                     <p className={`sm:text-xs mdl:text-sm lgl:text-lg font-medium mb-[1px] cursor-pointer ${priceRange === "0 - 10" ? "text-blue-500" : ""}`}
                         onClick={() => handlePriceFilter("0 - 10")}
                     > Under ₹10
@@ -108,8 +108,8 @@ const Products = () => {
                     </p>
                 </div>
             </div>
-            <div className='w-[82%] bg-white'>
-                <div className=' flex items-center justify-between mx-7 mt-2 text-[18px] font-bold'>
+            <div className='w-full mdl:w-[82%] bg-white'>
+                <div className=' flex items-center justify-between mx-7 mt-2 text-sm mdl:text-base font-bold'>
                     <h1>Results </h1>
                     <select onChange={handleSortingChange} value={sortOrder}>
                         <option value="default">Default Sorting</option>

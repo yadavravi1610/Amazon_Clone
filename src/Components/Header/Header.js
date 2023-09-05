@@ -6,12 +6,13 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { logo } from "../../assets/index"
 import { Link } from 'react-router-dom';
-import { userSignOut } from '../../Redux/amazonSlice';
+import { setUserAuthentication, userSignOut} from '../../Redux/amazonSlice';
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import Pincode from './pincode';
 import { useLoaderData } from 'react-router-dom';
 import SignInoptions from './signInoptions';
+import { useCart } from '../../context/userCartContext';
 
 // import { useParams } from 'react-router-dom';
 
@@ -20,6 +21,8 @@ const Header = () => {
     const dispatch = useDispatch();
     const auth = getAuth();
 
+    const {cartTotalQty} = useCart();
+    // console.log(cartTotalQty);
     const product = useLoaderData();
     const productsData = product.data.products;
     // console.log(productsData);
@@ -33,15 +36,18 @@ const Header = () => {
     const [showSignin, setShowSignin] = useState(false);
     const products = useSelector((state) => state.amazon.products);
     const userInfo = useSelector((state) => state.amazon.userInfo);
-    console.log(userInfo);
+    const authenticated = useSelector((state)=> state.amazon.isAuthenticated);
+    // console.log(userInfo);
+    console.log(authenticated);
     const [quantity, setQuantity] = useState(0);
 
     useEffect(() => {
-        let quan = 0;
-        products.map((item) => {
-            return setQuantity(quan += item.quantity);
-        })
-    }, [products])
+        let allQty = 0;
+        products.forEach((product) => {
+            allQty += product.quantity;
+        });
+        setQuantity(allQty);
+    }, [products]);
 
     // console.log(products);
     const ref = useRef();
@@ -55,10 +61,13 @@ const Header = () => {
         })
     }, [ref, showAll]);
 
-    const handleLogout = (e) => {
-        e.preventDefault();
-        signOut(auth).then(() => {
+    const handleLogout = () => {
+        // e.preventDefault();
+        signOut(auth)
+        .then(() => {
             dispatch(userSignOut());
+            dispatch(setUserAuthentication(false));
+
         }).catch((error) => {
             // An error happened.
         });
@@ -166,7 +175,7 @@ const Header = () => {
                         <ShoppingCartOutlinedIcon />
                         <p className='text-xs font-semibold mt-3 text-whiteText'>
                             Cart <span className='absolute text-xs top-1 left-6 font-semibold p-1 h-4 bg-[#f3a847] text-amazon_blue rounded-full flex justify-center items-center'>
-                                {products.length > 0 ? quantity : 0}
+                            {cartTotalQty > 0 ? cartTotalQty : quantity}
                             </span>
                         </p>
                     </div>

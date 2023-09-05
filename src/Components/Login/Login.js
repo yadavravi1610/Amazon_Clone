@@ -5,13 +5,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { right, down, exclamation, google, facebook } from "../../assets/index";
 import { RotatingLines } from "react-loader-spinner";
 import { motion } from "framer-motion";
-// import ScrollToTop from "../ScrollToTop";
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, linkWithCredential, FacebookAuthProvider, fetchSignInMethodsForEmail } from "firebase/auth";
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo, setUserAuthentication, resetCart } from "../../Redux/amazonSlice";
 import { db } from '../../firebase.config';
 import { collection, doc, setDoc, getDoc } from 'firebase/firestore';
-// import { useCart } from "../../context/userCartContext";
+import { useCart } from "../../context/userCartContext";
 
 const SignIn = () => {
     const dispatch = useDispatch();
@@ -67,16 +66,12 @@ const SignIn = () => {
         const usersCollectionRef = collection(db, "users");
         const userRef = doc(usersCollectionRef, user.email);
         try {
-            const userRefSnapshot = await getDoc(userRef);
-            // console.log(userRefSnapshot.exists())       
-            // console.log(userRefSnapshot)           
+            const userRefSnapshot = await getDoc(userRef);         
             if (!userRefSnapshot.exists()) {
                 const userDetailsRef = doc(userRef, "details", user.uid);
                 const userDetailsSnapshot = await getDoc(userDetailsRef);
-                // console.log(userDetailsSnapshot.exists())       
-                // console.log(userDetailsSnapshot)            
+                       
                 if (!userDetailsSnapshot.exists()) {
-                    // If the user details don't exist, save them to Firestore
                     await setDoc(userDetailsRef, {
                         id: user.uid,
                         name: user.displayName,
@@ -85,7 +80,7 @@ const SignIn = () => {
                         mobile: user.phoneNumber,
                         createdOn: new Date(),
                     }, { merge: true });
-                    // console.log("User details saved to Firestore.");
+                    
                 } else {
                     console.log("User details already exist in Firestore.");
                 }
@@ -97,40 +92,33 @@ const SignIn = () => {
         }
     };
 
-    // Use the updateUserCart function from custom hook created in userCartContext.js
-    // const { updateUserCart } = useCart();
+    const { updateUserCart } = useCart();
 
     const saveLocalCartToFirebase = async (user) => {
         const usersCollectionRef = collection(db, "users");
+        console.log(usersCollectionRef);
         const userRef = doc(usersCollectionRef, user.email);
         const userCartRef = collection(userRef, "cart");
         const cartRef = doc(userCartRef, user.uid);
         const docSnapshot = await getDoc(cartRef);
         const firebaseCartItems = docSnapshot.exists() ? docSnapshot.data().cart : [];
         const localCartItems = cartItems;
-        // Create a map to track items using their unique identifiers (e.g., product title)
         const mergedItemsMap = new Map();
-        // Add Firebase cart items to the mergedItemsMap using set function
         firebaseCartItems.forEach((item) => {
             mergedItemsMap.set(item.title, item);
         });
         localCartItems.forEach((item) => {
             if (mergedItemsMap.has(item.title)) {
-                // If the item already exists in the Firebase cart, update its quantity
                 const existingItem = mergedItemsMap.get(item.title);
-                existingItem.quantity += item.quantity; // Update the quantity
+                existingItem.quantity += item.quantity; 
             } else {
-                // If the item doesn't exist in the Firebase cart, add it to the mergedItemsMap
                 mergedItemsMap.set(item.title, item);
             }
         });
-        // Convert the mergedItemsMap back to an array of items
         const mergedCartItems = Array.from(mergedItemsMap.values());
-        // Update the cart in Firestore with the merged cart items
-        await setDoc(cartRef, { cart: mergedCartItems });
-        // Update the cart context with the merged cart items
-        // updateUserCart(mergedCartItems);
-        // After successfully saving to Firebase, clear the local cart
+        console.log(mergedCartItems);
+         setDoc(cartRef, { cart: mergedCartItems });
+        updateUserCart(mergedCartItems);
         dispatch(resetCart());
     };
 
@@ -151,7 +139,7 @@ const SignIn = () => {
                     image: user.photoURL
                 }));
                 dispatch(setUserAuthentication(true));
-                saveLocalCartToFirebase(user);
+                saveLocalCartToFirebase(user); 
                 setLoading(false);
                 setSuccessMsg("Successfully Logged-in! Welcome back.");
                 setTimeout(() => {
@@ -193,10 +181,7 @@ const SignIn = () => {
                 const userRef = doc(db, "users", user.email);
                 getDoc(userRef)
                     .then((docSnapshot) => {
-                        // console.log(docSnapshot);
-                        // console.log("!docSnapshot.exists()",!docSnapshot.exists());
                         if (!docSnapshot.exists()) {
-                            // If the user data doesn't exist, save it to Firestore
                             saveUserDataToFirebase(user);
                         }
                     })
@@ -212,7 +197,6 @@ const SignIn = () => {
             }).catch((error) => {
                 const errorCode = error.code;
                 console.log("error", errorCode)
-                // The email of the user's account used.
                 const email = error.customData.email;
                 console.log(email)
             });
@@ -235,7 +219,6 @@ const SignIn = () => {
                 getDoc(userRef)
                     .then((docSnapshot) => {
                         if (!docSnapshot.exists()) {
-                            // If the user data doesn't exist, save it to Firestore
                             saveUserDataToFirebase(user);
                         }
                     })
@@ -250,7 +233,6 @@ const SignIn = () => {
                 }, 2000);
             })
             .catch((error) => {
-                // Check if the error is due to account linking
                 if (error.code === "auth/account-exists-with-different-credential") {
                     const pendingCred = FacebookAuthProvider.credentialFromError(error);
                     const email = error.customData.email;

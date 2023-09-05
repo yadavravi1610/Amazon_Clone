@@ -1,40 +1,49 @@
- import Footer from './Components/Footer/Footer'
+import Footer from './Components/Footer/Footer'
 import Header from './Components/Header/Header';
 import HeaderBottom from './Components/Header/HeaderBottom';
- import ErrorPage from './Components/Error/Error';
+import ErrorPage from './Components/Error/Error';
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
   ScrollRestoration,
 } from "react-router-dom";
-import { productsData} from "./api/api";
+import { productsData } from "./api/api";
 import Home from './Pages/Home';
 import Login from './Components/Login/Login';
 import SignUp from './Components/Login/SignUp';
 import Cart from './Pages/Cart';
 import Products from './Components/Products/Products';
 import ProductDetails from './Components/Products/productDetails';
+import { UserCartProvider } from './context/userCartContext';
+// import { useEffect } from 'react';
+// import { setUserAuthentication } from './Redux/amazonSlice';
+// import { useDispatch } from 'react-redux';
 
-const Layout=()=>{
-  return(
+const Layout = () => {
+  return (
     <>
-    <Header />
-    <HeaderBottom />
-    <ScrollRestoration />
-    <Outlet />
-    <Footer />
-    
+      <Header />
+      <HeaderBottom />
+      <ScrollRestoration />
+      <Outlet />
+      <Footer />
+
     </>
   );
 }
 function App() {
-  
+
+  // const dispatch = useDispatch();
+  // useEffect(()=>{
+  //   dispatch(setUserAuthentication(false));
+  // },[dispatch])
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
-      loader:productsData,
+      loader: productsData,
       errorElement: <ErrorPage />,
       children: [
         {
@@ -89,7 +98,7 @@ function App() {
         },
         // {
         //   path: "forgotPassword",
-           // element: <ForgotPassword />,
+        // element: <ForgotPassword />,
         // },
       ],
     },
@@ -103,11 +112,13 @@ function App() {
     // },
   ])
 
-  
+
   return (
-    <div className='bg-gray-100 overflow-x-hidden'>
-    <RouterProvider router={router} />
-    </div>
+    <UserCartProvider>
+      <div className='bg-gray-100 overflow-x-hidden'>
+        <RouterProvider router={router} />
+      </div>
+    </UserCartProvider>
   );
 }
 
