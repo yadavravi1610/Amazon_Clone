@@ -38,7 +38,7 @@ const Header = () => {
     const userInfo = useSelector((state) => state.amazon.userInfo);
     const authenticated = useSelector((state)=> state.amazon.isAuthenticated);
     // console.log(userInfo);
-    console.log(authenticated);
+    // console.log(authenticated);
     const [quantity, setQuantity] = useState(0);
 
     useEffect(() => {

@@ -6,6 +6,7 @@ const initialState = {
   isAuthenticated: false,
   buyNowProduct: null,
   allProducts:[],
+  cart:[]
 };
 
 export const amazonSlice = createSlice({
@@ -21,13 +22,13 @@ export const amazonSlice = createSlice({
       }
     },
     deleteProduct: (state, action) => {
-      state.products= state.products.filter((item)=>item.id!==action.payload.id);
+      state.products = state.products.filter((product) => product.title !== action.payload);
     },
     resetCart: (state) => {
       state.products = [];
     },
     increaseQuantity: (state, action) => {
-      const product = state.products.find((product) => product.title === action.payload);
+      const product = state.products.find(product => product.title === action.payload);
       product.quantity++;
     },
     decreaseQuantity: (state, action) => {

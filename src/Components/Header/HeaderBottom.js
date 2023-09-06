@@ -4,11 +4,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // import SideNavContent from './SideNavContent';
 import { motion } from 'framer-motion';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getAuth, signOut } from 'firebase/auth';
 import { useLoaderData } from 'react-router-dom';
+import { setUserAuthentication, userSignOut} from '../../Redux/amazonSlice';
+
 
 const HeaderBottom = () => {
+  const auth = getAuth();
+  const dispatch = useDispatch();
   const product = useLoaderData();
   const productsData = product.data.products;
   var productCategories = [];
@@ -29,6 +34,18 @@ const HeaderBottom = () => {
       // console.log(e.target.contains(ref.current));
     })
   }, [ref, sidebar])
+
+  const handleLogout = () => {
+    // e.preventDefault();
+    signOut(auth)
+    .then(() => {
+        dispatch(userSignOut());
+        dispatch(setUserAuthentication(false));
+
+    }).catch((error) => {
+        // An error happened.
+    });
+}
   return (
     <div className='w-full mt-16 px-2 h-[36px] bg-amazon_light text-white flex items-center'>
       {/* Items start  */}
@@ -53,7 +70,10 @@ const HeaderBottom = () => {
               }
 
               {
-                userInfo ? <h3>Hello,{userInfo.name}</h3> : <h3>Hello, Sign In</h3>
+                userInfo ? <h3>Hello,{userInfo.name}</h3> :
+                  <Link to="/Login" >
+                    <h3>Hello, Sign In</h3>
+                  </Link>
               }
 
             </div>
@@ -69,7 +89,11 @@ const HeaderBottom = () => {
               </ul>
             </div>
             <hr className='py-1' />
-            <h4 className='hover:text-orange-500 pb-4 ml-3 text-lg font-normal'>Sign Out</h4>
+            {
+              userInfo ?
+               <h4 onClick={handleLogout} className='hover:text-orange-500 pb-4 ml-3 text-lg font-normal cursor-pointer'>Sign Out</h4>: <h4></h4>
+            }
+            
           </motion.div>
           <div onClick={() => setSideBar(false)} className='w-10 absolute cursor-pointer h-10 mdl:ml-[31%] lgl:ml-[21%] sml:ml-[51%] text-black flex items-center justify-center border bg-gray-200 hover:bg-red-500 hover:text-white duration-300'><CloseIcon />
           </div>

@@ -12,7 +12,7 @@ const Product = (props) => {
     const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.amazon.userInfo);
     const authenticated = useSelector((state) => state.amazon.isAuthenticated);
-    console.log(authenticated);
+    // console.log(authenticated);
     const { userCart, updateUserCart } = useCart();
 
     const saveProductToFirsebase = async (product) => {

@@ -96,7 +96,7 @@ const SignIn = () => {
 
     const saveLocalCartToFirebase = async (user) => {
         const usersCollectionRef = collection(db, "users");
-        console.log(usersCollectionRef);
+        // console.log(usersCollectionRef);
         const userRef = doc(usersCollectionRef, user.email);
         const userCartRef = collection(userRef, "cart");
         const cartRef = doc(userCartRef, user.uid);
@@ -117,7 +117,7 @@ const SignIn = () => {
         });
         const mergedCartItems = Array.from(mergedItemsMap.values());
         console.log(mergedCartItems);
-         setDoc(cartRef, { cart: mergedCartItems });
+        await setDoc(cartRef, { cart: mergedCartItems });
         updateUserCart(mergedCartItems);
         dispatch(resetCart());
     };
