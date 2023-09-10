@@ -3,8 +3,7 @@
 import React, { useState } from "react";
 import CardDetails from "./cardDetails";
 import { useAddress } from '../context/userAddressContext';
-import { loadStripe } from "@stripe/stripe-js";
-import { useCart } from "../context/userCartContext";
+
 // import { CardElement, useStripe } from "react-stripe-js";
 
 const PaymentMethod = () => {
@@ -13,8 +12,7 @@ const PaymentMethod = () => {
 
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
-    const { userCart} = useCart();
-    console.log(userCart);
+    
 
     const handleSelectPaymentMethod = (event) => {
         setSelectedPaymentMethod(event.target.value);
@@ -25,31 +23,7 @@ const PaymentMethod = () => {
     //     // TODO: Add a new payment method
     // };
 
-    const makePayment = async()=>{
-        const stripe = await loadStripe("pk_test_51Nnzd0SFIAKZeCgTe4JS9DJtxjlhXQkEvg8zO2rIWavOTbapgLuF4CWpXrMsWMWSYwx8FR48pqVLihfpMjEPDP7s00NWhNaOqa")
     
-        const body = {
-            products: userCart
-        }
-        const headers = {
-            "Content-Type": "application/json"
-        }
-        const response = await fetch("http://localhost:3000/api/create-checkout-session",{
-            method:"POST",
-            headers:headers,
-            body:JSON.stringify(body)
-        });
-
-        const session = await response.json();
-
-        const result = stripe.redirectToCheckout({
-            sessionId:session.id 
-        });
-
-        if(result.error){
-            console.log(result.error);
-        }
-    }
 
     return (
         <div>
@@ -59,11 +33,11 @@ const PaymentMethod = () => {
                     <p className="text-lg font-semibold border-b border-gray-400">Payment methods</p>
                     <div className="flex flex-col gap-4 mt-2 font-semibold">
                         <label className="inline-flex items-center">
-                            <input type="radio" name="paymentMethod" value="Credit/Debit Card" onClick={makePayment} onChange={handleSelectPaymentMethod} />
+                            <input type="radio" name="paymentMethod" value="Credit/Debit Card" onChange={handleSelectPaymentMethod} />
                             <span className="ml-2">Credit or debit card</span>
                         </label>
 
-                        {(selectedPaymentMethod === "Credit/Debit Card") && <CardDetails />}
+                        {/* {(selectedPaymentMethod === "Credit/Debit Card") && <CardDetails />} */}
 
                         <label className="inline-flex items-center">
                             <input type="radio" name="paymentMethod" value="Upi Apps" onChange={handleSelectPaymentMethod} />

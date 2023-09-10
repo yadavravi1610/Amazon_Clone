@@ -3,10 +3,13 @@ import { useCart } from '../context/userCartContext';
 import { useAddress } from '../context/userAddressContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetBuyNowProduct } from '../Redux/amazonSlice';
+import { loadStripe } from "@stripe/stripe-js";
 
 const OrderSummary = () => {
   const dispatch = useDispatch();
 
+  const { userCart} = useCart();
+    console.log(userCart);
   // getting product from BuyNow option in ProductDetails
   const product = useSelector((state) => state.amazon.buyNowProduct);
   if (product) {
@@ -43,6 +46,32 @@ const OrderSummary = () => {
       window.removeEventListener('popstate', resetBuyNow);
     };
   }, [dispatch]);
+
+  const makePayment = async()=>{
+    const stripe = await loadStripe("pk_test_51Nnzd0SFIAKZeCgTe4JS9DJtxjlhXQkEvg8zO2rIWavOTbapgLuF4CWpXrMsWMWSYwx8FR48pqVLihfpMjEPDP7s00NWhNaOqa")
+
+    const body = {
+        products: userCart
+    }
+    const headers = {
+        "Content-Type": "application/json"
+    }
+    const response = await fetch("http://localhost:7000/api/create-checkout-session",{
+        method:"POST",
+        headers:headers,
+        body:JSON.stringify(body)
+    });
+
+    const session = await response.json();
+
+    const result = stripe.redirectToCheckout({
+        sessionId:session.id 
+    });
+
+    if(result.error){
+        console.log(result.error);
+    }
+}
 
   return (
     <div>
@@ -91,7 +120,7 @@ const OrderSummary = () => {
 
         <div className='mx-[18px] border-t border-gray-400'>
           {(selectedAddress && selectedPayment) &&
-            <button className="w-full text-center text-sm rounded-lg bg-yellow-300 hover:bg-yellow-400 p-[7px] mt-2 active:ring-2 active:ring-offset-1 active:ring-blue-500">
+            <button onClick={makePayment} className="w-full text-center text-sm rounded-lg bg-yellow-300 hover:bg-yellow-400 p-[7px] mt-2 active:ring-2 active:ring-offset-1 active:ring-blue-500">
               Place your order
             </button>
           }
