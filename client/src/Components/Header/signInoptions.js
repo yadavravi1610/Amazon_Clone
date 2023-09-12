@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const SignInoptions = () => {
     return (
@@ -19,7 +20,7 @@ const SignInoptions = () => {
                 <h3 className='font-medium text-xs mdl:text-sm lgl:text-lg'>Your Account</h3>
                 <ul className='text-xs lgl:text-sm font-normal flex flex-col gap-2'>
                     <li className='hover:text-orange-500 hover:underline'>Your Account</li>
-                    <li className='hover:text-orange-500 hover:underline'>Your Orders</li>
+                    <Link to="/orderDetails"><li className='hover:text-orange-500 hover:underline'>Your Orders</li></Link>
                     <li className='hover:text-orange-500 hover:underline'>Your Wishlist</li>
                     <li className='hover:text-orange-500 hover:underline'>Your Recommendations</li>
                     <li className='hover:text-orange-500 hover:underline'>Your Prime Membership</li>

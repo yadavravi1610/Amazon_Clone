@@ -139,9 +139,9 @@ const ProductDetails = () => {
     return <h1>Details of this product available in its category page. please go back to this product's category page then select this product to see its details.</h1>
   }
   return (
-    <div className='flex bg-white justify-between'>
+    <div className='flex flex-col mdl:flex-row bg-white justify-between'>
       <ScrollRestoration />
-      <div className='w-[5%] mt-10 ml-1'>
+      <div className='w-[5%] mt-10 ml-1 hidden mdl:block'>
         {product.images.map((item, index) => (
           <div key={index} className='border-[1px] border-black rounded-lg mb-5'
             onClick={() => handleImageClick(index)}>
@@ -150,9 +150,9 @@ const ProductDetails = () => {
         ))}
       </div>
 
-      <div className='w-[38%] mt-4 '><img src={product.images[currentImageIndex]} className='w-full h-[85%]' alt="productImage" /></div>
+      <div className='w-full mdl:w-[38%] mt-4 '><img src={product.images[currentImageIndex]} className='w-full h-[85%]' alt="productImage" /></div>
 
-      <div className='w-[35%] mt-2 ' >
+      <div className='w-full mdl:w-[35%] mt-2 ml-2 mdl:ml-0 ' >
         <h1 className='text-[26px] font-bold'>{product.title}</h1>
         <p className='text-blue-500 capitalize '>Brand : {product.brand}</p>
         <div className='flex border-b-[1px] border-gray-200 pb-1'>
@@ -182,7 +182,7 @@ const ProductDetails = () => {
             <img className="w-7 h-7" src={offers} alt="offers" />
             <span className='ml-5 font-semibold text-lg' >Offers</span>
           </div>
-          <div className='flex justify-between'>
+          <div className='flex mr-2 text-sm mdl:text-base justify-between'>
             <div className='w-[30%] border-2 border-gray-200 rounded-lg p-2'>
               <p className='font-bold '>No Cost EMI</p>
               <p>EMI interest savings on Amazon Pay ICICI…</p>
@@ -225,7 +225,7 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      <div className='w-[20%] h-[430px] border-[0.066rem] border-gray-200 rounded-lg p-5 mt-2 mr-1'>
+      <div className='w-full mdl:w-[20%] h-[430px] border-[0.066rem] border-gray-200 rounded-lg p-5 mt-2 mr-1'>
         <div className='flex items-center mt-1'>
           <span className='text-[26px] font-medium text-red-600'>₹&nbsp;{product.price}</span>
           <span>&nbsp;({product.discountPercentage}% Off)</span>
@@ -266,7 +266,7 @@ const ProductDetails = () => {
                 Buy Now
               </button>
             </Link>
-            : <Link to="/signIn">
+            : <Link to="/Login">
               <button
                 className={`pt-2 w-full text-center rounded-2xl bg-orange-400 hover:bg-orange-500 p-[4px] mt-3 shadow active:ring-2 active:ring-offset-1 active:ring-blue-500`}>
                 Buy Now

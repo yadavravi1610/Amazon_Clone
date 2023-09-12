@@ -16,7 +16,7 @@ const Checkout = () => {
   const [showAddressForm, setShowAddressForm] = useState(userAddress.length === 0);
 
   return (
-    <div className='w-full h-full '>
+    <div className='w-full h-full  bg-white '>
       {/* header */}
       <div className='relative flex flex-row justify-around items-center pt-[18px] pb-2 mx-5 border-b-[1px] shadow-inner-bottom'>
         <Link to="/">
@@ -25,13 +25,13 @@ const Checkout = () => {
           </div>
         </Link>
         <div className=''>
-          <h1 className='text-[28px] font-semibold'>Checkout</h1>
+          <h1 className='text-3xl font-semibold'>Checkout</h1>
         </div>
       </div>
 
       {/* addresssForm or userAddress and PaymentMethod */}
-      <div className='flex flex-row mx-5 gap-6 mt-3 justify-center '>
-        <div className='w-[61%] '>
+      <div className='flex flex-col mdl:flex-row mx-5 gap-6 mt-3 justify-center '>
+        <div className='mdl:w-[61%] '>
 
           {
             showAddressForm || userAddress.length === 0
@@ -46,7 +46,7 @@ const Checkout = () => {
         </div>
 
         {/* OrderSummary */}
-        <div className='w-[22%] h-full sticky top-3'>
+        <div className='mdl:w-[22%] h-full sticky top-3'>
           <OrderSummary />
         </div>
 

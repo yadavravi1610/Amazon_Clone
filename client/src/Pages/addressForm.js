@@ -183,7 +183,7 @@ const AddressForm = ({setShowAddressForm}) => {
 
     return (
         <div>
-            <p className='text-lg font-semibold text-red-700'>1 &nbsp; Enter a new shipping address</p>
+            <p className='text-lg w-full font-semibold text-red-700'>1 &nbsp; Enter a new shipping address</p>
             <div className='w-full flex justify-end'>
                 <div className='w-[96%] border-[1px] border-gray-400 rounded-lg mt-1 pl-4 py-3'>
                     <p className='text-2xl font-semibold'>Add new address</p>
@@ -269,7 +269,7 @@ const AddressForm = ({setShowAddressForm}) => {
                                 }
                             </select>
                         </label>
-                        <button className="text-sm w-[50%] text-center rounded-lg bg-yellow-300 hover:bg-yellow-400 p-[6px] mt-5 ml-36 active:ring-2 active:ring-offset-1 active:ring-blue-500"
+                        <button className="text-sm mdl:w-[50%] text-center rounded-lg bg-yellow-300 hover:bg-yellow-400 p-[6px] mt-5 ml-10 mdl:ml-36 active:ring-2 active:ring-offset-1 active:ring-blue-500"
                         >Save this address</button>
                         {loading && <div className='flex justify-center mt-2'>
                             <RotatingLines

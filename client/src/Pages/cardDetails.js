@@ -3,7 +3,7 @@ import { months, years } from "../constants";
 import Stripe from 'stripe';
 import { RotatingLines } from "react-loader-spinner";
 import { useSelector } from 'react-redux';
-import { useCart } from '../context/userCartContext';
+import { useCart } from '../../context/userCartContext';
 
 function CardDetails() {
 

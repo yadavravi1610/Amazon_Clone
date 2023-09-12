@@ -9,15 +9,19 @@ import {
   ScrollRestoration,
 } from "react-router-dom";
 import { productsData } from "./api/api";
-import Home from './Pages/Home';
+import Home from './Home/Home';
 import Login from './Components/Login/Login';
 import SignUp from './Components/Login/SignUp';
 import Cart from './Pages/Cart';
+import OrderDetails from './Pages/orderDetails';
 import Products from './Components/Products/Products';
 import ProductDetails from './Components/Products/productDetails';
 import { UserCartProvider } from './context/userCartContext';
 import { UserAddressProvider } from './context/userAddressContext';
 import Checkout from './Pages/Checkout';
+import CancelOrder from './Pages/cancelOrder';
+import ForgotPassword from './Components/Login/ForgotPassword';
+
 // import { useEffect } from 'react';
 // import { setUserAuthentication } from './Redux/amazonSlice';
 // import { useDispatch } from 'react-redux';
@@ -81,13 +85,23 @@ function App() {
               path: ":title",
               loader: productsData,
               element: <ProductDetails />,
-            },
+            }, 
           ],
         },
         {
           path: "/Cart",
           loader: productsData,
           element: <Cart />
+        },
+        {
+          path: "/orderDetails",
+          loader: productsData,
+          element:<OrderDetails />
+        },
+        {
+          path: "/cancelOrder",
+          loader: productsData,
+          element:<CancelOrder />
         },
       ],
     },
@@ -98,20 +112,21 @@ function App() {
           index: true,
           element: <Login />
         },
-        // {
-        //   path: "forgotPassword",
-        // element: <ForgotPassword />,
-        // },
+       
       ],
+    },
+    {
+      path: "/forgotPassword",
+    element: <ForgotPassword />,
     },
     {
       path: "/createAccount",
       element: <SignUp />,
     },
-      {
-        path: "/checkout",
-        element: <Checkout />,
-      },
+    {
+      path: "/checkout",
+      element: <Checkout />,
+    },
   ])
 
 
@@ -119,7 +134,7 @@ function App() {
     <UserCartProvider>
       < UserAddressProvider>
 
-      <div className='bg-gray-100 overflow-x-hidden'>
+      <div className='overflow-x-hidden'>
         <RouterProvider router={router} />
       </div>
       </UserAddressProvider>

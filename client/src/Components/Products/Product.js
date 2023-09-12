@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { star, halfStar, emptyStar} from "../../assets/index";
-import { wishlist, cart, compare } from "../../assets/assets/index";
+// import { wishlist, cart, compare } from "../../assets/assets/index";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../Redux/amazonSlice';
 import { db } from '../../firebase.config';
@@ -85,18 +85,18 @@ const Product = (props) => {
   return (
     // Map through productsData and render product
     productsData.map((product, index) => (
-      <div className='w-[30%] my-5 rounded border-[1px] border-gray-200 shadow-none hover:shadow-testShadow duration-200' key={index}>
+      <div className='w-full mx-auto mdl:w-[30%] my-5 rounded border-[1px] border-gray-200 shadow-none hover:shadow-testShadow duration-200' key={index}>
         <div className=" bg-gray-100 border-b-[1px] border-gray-200 flex justify-center items-center cursor-pointer relative group" >
           <Link to={`${product.title}`} >
             <img className="w-full h-72" src={product.thumbnail} alt="productImage" />
           </Link>
-          <ul className='w-full h-32  bg-gray-100 flex flex-col items-end justify-center gap-2 px-2 absolute bottom-0 opacity-0 group-hover:opacity-100 transition-opacity  duration-700'>
+          {/* <ul className='w-full h-32  bg-gray-100 flex flex-col items-end justify-center gap-2 px-2 absolute bottom-0 opacity-0 group-hover:opacity-100 transition-opacity  duration-700'>
             <li className='productLi'>Compare <img src={compare} alt="compare" className='w-4 h-4' /></li>
             <li
               onClick={() => handleButton(product)}
               className='productLi'>Add to Cart <img src={cart} alt="cart" className='w-4 h-4' /></li>
             <li className='productLi '>Add to WishList <img src={wishlist} alt="wishlist" className='w-4 h-4' /></li>
-          </ul>
+          </ul> */}
         </div>
         <div className='p-2 '>
           <Link to={`${product.title}`} >

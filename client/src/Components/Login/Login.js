@@ -177,11 +177,15 @@ const SignIn = () => {
         setPasswordValue("");
     }
 
-    const handleGoogle = (e) => {
-        e.preventDefault();
+    const handleGoogle = async () => {
+        // e.preventDefault();
         signInWithPopup(auth, googleProvider)
             .then((result) => {
+                // const credential = GoogleAuthProvider.credentialFromResult(result);
+                // const token = credential.accessToken;
+                // console.log(token);
                 const user = result.user;
+                console.log(user);
                 dispatch(setUserInfo({
                     id: user.uid,
                     name: user.displayName,
@@ -209,6 +213,7 @@ const SignIn = () => {
                     navigate("/");
                     setSuccessMsg("");
                 }, 2000);
+
             }).catch((error) => {
                 const errorCode = error.code;
                 console.log("error", errorCode)
@@ -221,6 +226,9 @@ const SignIn = () => {
     const handleFacebook = () => {
         signInWithPopup(auth, facebookProvider)
             .then((result) => {
+                // const credential = FacebookAuthProvider.credentialFromResult(result);
+                // const token = credential.accessToken;
+                // console.log(token);
                 const user = result.user;
                 user.emailVerified = true;
                 dispatch(setUserInfo({
@@ -353,7 +361,9 @@ const SignIn = () => {
                                     </motion.p>
                                 </div>
                                 : <div>
-                                    <div onClick={handleGoogle} className=" cursor-pointer flex flex-row items-center my-3 border-[1px] p-[6px] border-black rounded-md hover:bg-slate-100 active:ring-2 active:ring-offset-1 active:ring-blue-600 active:border-transparent">
+                                    <div onClick={() => {
+                                        handleGoogle();
+                                    }} className=" cursor-pointer flex flex-row items-center my-3 border-[1px] p-[6px] border-black rounded-md hover:bg-slate-100 active:ring-2 active:ring-offset-1 active:ring-blue-600 active:border-transparent">
                                         <img src={google} alt="google" className="w-5 h-5 mx-5" />
                                         <p className="text-sm font-semibold">Continue with Google</p>
                                     </div>
@@ -433,7 +443,7 @@ const SignIn = () => {
                         {
                             needHelp ?
                                 (<div className=' text-xs  text-blue-500 cursor-pointer hover:underline hover:text-red-500 ml-4 mt-2 mb-5'>
-                                    <Link to="forgotPassword">
+                                    <Link to="/forgotPassword">
                                         Forgot password
                                     </Link>
                                 </div>)

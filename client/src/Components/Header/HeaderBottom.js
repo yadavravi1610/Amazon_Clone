@@ -91,11 +91,11 @@ const HeaderBottom = () => {
             <hr className='py-1' />
             {
               userInfo ?
-               <h4 onClick={handleLogout} className='hover:text-orange-500 pb-4 ml-3 text-lg font-normal cursor-pointer'>Sign Out</h4>: <h4></h4>
+               <h4 onClick={handleLogout} className='hover:text-orange-500 pb-4 ml-3 text-lg font-normal cursor-pointer'>Sign Out</h4>: " "
             }
             
           </motion.div>
-          <div onClick={() => setSideBar(false)} className='w-10 absolute cursor-pointer h-10 mdl:ml-[31%] lgl:ml-[21%] sml:ml-[51%] text-black flex items-center justify-center border bg-gray-200 hover:bg-red-500 hover:text-white duration-300'><CloseIcon />
+          <div onClick={() => setSideBar(false)} className='w-10 absolute cursor-pointer h-10 ml-[51%] mdl:ml-[31%] lgl:ml-[21%] sml:ml-[51%] text-black flex items-center justify-center border bg-gray-200 hover:bg-red-500 hover:text-white duration-300'><CloseIcon />
           </div>
 
         </div>

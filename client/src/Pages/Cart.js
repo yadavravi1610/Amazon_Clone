@@ -13,7 +13,7 @@ const Cart = () => {
     const { userCart } = useCart();
 
     return (
-        <div className='flex gap-5 w-full h-full bg-gray-200 '>
+        <div className='gap-5 w-full h-full bg-gray-200 '>
             <ScrollRestoration />
              {/* Check if there are products in the Redux store or user Firebasecart */}
             {

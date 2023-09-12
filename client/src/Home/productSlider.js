@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLoaderData } from 'react-router-dom';
-// import './scrollbar.css';
+import './scrollbar.css';
 import { useRef } from 'react';
 
 const ProductsSlider = () => {

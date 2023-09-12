@@ -6,7 +6,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { logo } from "../../assets/index"
 import { Link } from 'react-router-dom';
-import { setUserAuthentication, userSignOut} from '../../Redux/amazonSlice';
+import { setUserAuthentication, userSignOut } from '../../Redux/amazonSlice';
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import Pincode from './pincode';
@@ -21,7 +21,7 @@ const Header = () => {
     const dispatch = useDispatch();
     const auth = getAuth();
 
-    const {cartTotalQty} = useCart();
+    const { cartTotalQty } = useCart();
     // console.log(cartTotalQty);
     const product = useLoaderData();
     const productsData = product.data.products;
@@ -36,7 +36,7 @@ const Header = () => {
     const [showSignin, setShowSignin] = useState(false);
     const products = useSelector((state) => state.amazon.products);
     const userInfo = useSelector((state) => state.amazon.userInfo);
-    const authenticated = useSelector((state)=> state.amazon.isAuthenticated);
+    const authenticated = useSelector((state) => state.amazon.isAuthenticated);
     // console.log(userInfo);
     // console.log(authenticated);
     const [quantity, setQuantity] = useState(0);
@@ -64,13 +64,13 @@ const Header = () => {
     const handleLogout = () => {
         // e.preventDefault();
         signOut(auth)
-        .then(() => {
-            dispatch(userSignOut());
-            dispatch(setUserAuthentication(false));
+            .then(() => {
+                dispatch(userSignOut());
+                dispatch(setUserAuthentication(false));
 
-        }).catch((error) => {
-            // An error happened.
-        });
+            }).catch((error) => {
+                // An error happened.
+            });
     }
     return (<>
         <div className='w-full fixed z-50 top-0'>
@@ -93,7 +93,7 @@ const Header = () => {
                     </span>
                     {
                         showAll && (
-                            <div className='w-full h-screen text-black fixed top-1 left-4 bg-amazon_blue bg-opacity-0' >
+                            <div className='w-full h-screen text-black fixed top-3 left-1 bg-amazon_blue bg-opacity-0' >
                                 <div ref={ref}>
                                     <ul className='absolute w-56 h-80 top-10 left-72 right-4 overflow-y-scroll overflow-x-hidden bg-white border-[1px] border-gray-300 text-black  flex-col gap-1 z-50'>
                                         {productCategories.map((category) => (
@@ -130,44 +130,48 @@ const Header = () => {
                         {
                             showSignin &&
                             <div className='w-full h-screen text-black fixed top-16 left-0 bg-amazon_blue bg-opacity-50 flex justify-end'>
-                                <div onMouseLeave={() => setShowSignin(false)} onClick={(e) => e.preventDefault()} className='mdl:w-[50%] lgl:w-[32%] sml:w-[50%] mr-10 rounded-sm h-auto overflow-hidden sml:h-[60%] mdl:h-[55%] lg:h-[70%] lgl:h-[60%] -mt-2 bg-white border border-transparent '>
-                                    {
-                                        userInfo ?
-                                            <>
-                                                <SignInoptions />
-                                                <div className='flex flex-col gap-1 text-xs lgl:text-sm font-normal sml:ml-52 lg:ml-64 mt-3 '>
-                                                <hr className='w-32'/>
+                                <div className='w-full absolute left-[40%] md:left-[45%] lgl:left-[60%]'>
+                                {
+                                    userInfo ?
+                                        <div onMouseLeave={() => setShowSignin(false)} onClick={(e) => e.preventDefault()} className='mdl:w-[50%] lgl:w-[32%] sml:w-[50%] mr-10 rounded-sm h-[96] overflow-hidden -mt-2 bg-white border border-transparent '>
+                                            <SignInoptions />
+                                            <div className='flex flex-col gap-1 text-xs lgl:text-sm font-normal items-start mt-3 ml-[53%] '>
+                                                <hr className='w-32' />
                                                 <h4 className='hover:text-orange-500 hover:underline'>Switch Accounts</h4>
                                                 <h4 className='hover:text-orange-500 hover:underline' onClick={handleLogout}>Sign Out</h4>
-                                                </div>
-                                            </>
-                                            : <>
-                                                <div className='flex flex-col justify-center gap-1 mb-2 mt-5 text-center'>
-                                                    <Link to="/Login">
-                                                        <button className='w-60 h-8 text-sm bg-yellow-400 rounded-md py-1 font-semibold cursor-pointer'>
-                                                            Sign in
-                                                        </button>
-                                                    </Link>
-                                                    <p className='text-xs'>New Customer?{""}
-                                                        <Link to='/SignUp'><span className='text-green-600 ml-1 cursor-pointer hover:text-orange-500 hover:underline'>Start here.</span></Link>
-                                                    </p>
-                                                </div>
-                                                <hr className='w-[80%] mx-auto' />
-                                                <SignInoptions />
-                                            </>
-                                    }
+                                            </div>
+                                        </div>
+                                        : 
+                                        <div onMouseLeave={() => setShowSignin(false)} onClick={(e) => e.preventDefault()} className='mdl:w-[50%] lgl:w-[32%] sml:w-[50%] mr-10 rounded-sm  overflow-hidden sml:h-[60%] mdl:h-[55%] lg:h-[70%] lgl:h-[60%] -mt-2 bg-white border border-transparent '>
+                                            <div className='flex flex-col justify-center gap-1 mb-2 mt-5 text-center'>
+                                                <Link to="/Login">
+                                                    <button className='w-60 h-8 text-sm bg-yellow-400 rounded-md py-1 font-semibold cursor-pointer'>
+                                                        Sign in
+                                                    </button>
+                                                </Link>
+                                                <p className='text-xs'>New Customer?{""}
+                                                    <Link to='/SignUp'><span className='text-green-600 ml-1 cursor-pointer hover:text-orange-500 hover:underline'>Start here.</span></Link>
+                                                </p>
+                                            </div>
+                                            <hr className='w-[80%] mx-auto' />
+                                            <SignInoptions />
+                                        </div>
+                                }
                                 </div>
                             </div>
+
                         }
 
                     </div>
                 </Link>
                 {/* Signin end */}
                 {/* Orders Start  */}
-                <div className='hidden lgl:flex flex-col items-start justify-center headerHover'>
-                    <p className='text-xs font-medium'>Returns</p>
-                    <p className='text-sm font-semibold -mt-1 text-whiteText'>& Orders</p>
-                </div>
+                <Link to={authenticated ? "/orderDetails" : "/Login"}>
+                    <div className='hidden lgl:flex flex-col items-start justify-center headerHover'>
+                        <p className='text-xs font-medium'>Returns</p>
+                        <p className='text-sm font-semibold -mt-1 text-whiteText'>& Orders</p>
+                    </div>
+                </Link>
                 {/* Orders End */}
                 {/* Cart Start */}
                 <Link to='/Cart'>
@@ -175,7 +179,7 @@ const Header = () => {
                         <ShoppingCartOutlinedIcon />
                         <p className='text-xs font-semibold mt-3 text-whiteText'>
                             Cart <span className='absolute text-xs top-1 left-6 font-semibold p-1 h-4 bg-[#f3a847] text-amazon_blue rounded-full flex justify-center items-center'>
-                            {cartTotalQty > 0 ? cartTotalQty : quantity}
+                                {cartTotalQty > 0 ? cartTotalQty : quantity}
                             </span>
                         </p>
                     </div>

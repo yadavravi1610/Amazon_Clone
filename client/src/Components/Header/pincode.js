@@ -3,6 +3,7 @@ import { exclamation, location } from '../../assets/index';
 import axios from 'axios';
 import { RotatingLines } from 'react-loader-spinner';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 const Pincode = () => {
@@ -10,6 +11,7 @@ const Pincode = () => {
     const ref = useRef();
     const [showpin, setShowpin] = useState(false);
     // console.log(showpin);
+    const authenticated = useSelector((state) => state.amazon.isAuthenticated);
 
     const [userZipCode, setUserZipCode] = useState(''); // State for the user's entered ZIP code
     const [locationName, setLocationName] = useState(null);
@@ -25,7 +27,7 @@ const Pincode = () => {
             setLoading(false);
             setShowpin(false);
         }
-        else{
+        else {
             setLocationWarning(true);
             setLoading(false)
         }
@@ -47,7 +49,7 @@ const Pincode = () => {
             setWarning("Please enter Pincode");
             valid = false;
         }
-    
+
         if (userZipCode.length > 0) {
             if (!reqPincode.test(userZipCode)) {
                 setWarning("Please enter a valid Pincode");
@@ -87,18 +89,23 @@ const Pincode = () => {
                         <div className='w-96 h-auto bg-white rounded-md '>
                             <div className='flex pl-10 items-center h-16 rounded-md bg-slate-100 text-lg font-semibold'>
                                 Choose Your Location
-                            </div>
-                            <div className='flex flex-col gap-4 my-3 px-5'>
-                                <p className='text-sm text-slate-500 '>Select a delivery to see product availability and delivery options</p>
-                                <Link to="/Login">
-                                <button className='w-72 ml-3 h-8 text-sm bg-yellow-400 rounded-md py-1 font-semibold cursor-pointer'>
-                                    Sign in
-                                </button>
-                                </Link>
-                                <hr className='w-80' />
-                            </div>
+                            </div> <p className='px-5 my-3 text-sm text-slate-500 '>Select a delivery to see product availability and delivery options</p>
+
+
+                            {
+                                authenticated ? ""
+                                    :
+                                    <div className='flex flex-col gap-4 my-3 px-5'>
+                                        <Link to="/Login">
+                                            <button className='w-72 ml-3 h-8 text-sm bg-yellow-400 rounded-md py-1 font-semibold cursor-pointer'>
+                                                Sign in
+                                            </button>
+
+                                        </Link><hr className='w-80' />
+                                    </div>}
+
                             <form className='w-full h-full px-5 pb-4'>
-                                <input type='text' placeholder='Enter your Pincode' className='w-56 pl-2 rounded h-7 border border-black ' onChange={(e) => {setUserZipCode(e.target.value); setWarning(false); setLocationWarning(false)}} />
+                                <input type='text' placeholder='Enter your Pincode' className='w-56 pl-2 rounded h-7 border border-black ' onChange={(e) => { setUserZipCode(e.target.value); setWarning(false); setLocationWarning(false) }} />
                                 <button onClick={handleSumit} className='mx-5 p-1 w-20 border rounded border-slate-400 hover:bg-slate-100 text-sm active:ring-2 active:ring-offset-1 active:ring-blue-300'>Apply</button>
                                 {
                                     warning && <div className="flex items-center pl- mt-1 pb-2">

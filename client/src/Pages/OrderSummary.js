@@ -9,7 +9,7 @@ const OrderSummary = () => {
   const dispatch = useDispatch();
 
   const { userCart} = useCart();
-    console.log(userCart);
+    // console.log(userCart);
   // getting product from BuyNow option in ProductDetails
   const product = useSelector((state) => state.amazon.buyNowProduct);
   if (product) {
