@@ -9,9 +9,9 @@ import { Link } from 'react-router-dom';
 import { setUserAuthentication, userSignOut } from '../../Redux/amazonSlice';
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import Pincode from './pincode';
+import Pincode from './Pincode';
 import { useLoaderData } from 'react-router-dom';
-import SignInoptions from './signInoptions';
+import SignInoptions from './SignInoptions';
 import { useCart } from '../../context/userCartContext';
 
 // import { useParams } from 'react-router-dom';
