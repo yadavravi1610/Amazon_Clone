@@ -6,7 +6,9 @@ const initialState = {
   isAuthenticated: false,
   buyNowProduct: null,
   allProducts:[],
-  cart:[]
+  orders: [],
+  cancelOrders: [],
+  returnOrders: [],
 };
 
 export const amazonSlice = createSlice({
@@ -61,11 +63,40 @@ export const amazonSlice = createSlice({
       state.buyNowProduct = null;
     },
 
+    addToOrders: (state, action) => {
+      state.orders = action.payload;
+      //  state.orders.push(action.payload);
+    },
+    cancelOrder: (state, action) => {
+      state.cancelOrders = state.cancelOrders.push(action.payload);
+      state.orders = state.orders.filter((product) => product.title !== action.payload);
+    },
+    resetOrders: (state) => {
+      state.orders = [];
+    },
+
+    addTocancelOrders: (state, action) => {
+      state.cancelOrders = action.payload;
+    },
+ 
+    resetCancelOrders: (state) => {
+      state.cancelOrders = [];
+    },
+
+
+    addToreturnOrders: (state, action) => {
+      state.returnOrders = action.payload;
+    },
+   
+    resetReturnOrders: (state) => {
+      state.returnOrders = [];
+    },
+
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { addToCart, deleteProduct, resetCart, decreaseQuantity, increaseQuantity, setUserInfo, userSignOut, setUserAuthentication,buyNow,resetBuyNowProduct } = amazonSlice.actions;
+export const { addToCart, deleteProduct, resetCart, decreaseQuantity, increaseQuantity, setUserInfo, userSignOut, setUserAuthentication,buyNow,resetBuyNowProduct, addToOrders, cancelOrder, resetOrders, addToreturnOrders, addTocancelOrders } = amazonSlice.actions;
 // addToUserCart, resetUserCart
 
 export default amazonSlice.reducer;

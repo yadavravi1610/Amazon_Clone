@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { correct } from '../assets/index';
-import { deleteProduct, resetCart, increaseQuantity, decreaseQuantity } from '../Redux/amazonSlice';
+import { correct } from '../../assets/index';
+import { deleteProduct, resetCart, increaseQuantity, decreaseQuantity } from '../../Redux/amazonSlice';
 import { Link, useLoaderData} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase.config";
-import { useCart } from '../context/userCartContext';
-import ProductsSlider from '../Home/productSlider';
+import { db } from "../../firebase.config";
+import { useCart } from '../../context/userCartContext';
+import ProductsSlider from '../../Home/productSlider';
 
 const CartItems = () => {
     const data = useLoaderData();

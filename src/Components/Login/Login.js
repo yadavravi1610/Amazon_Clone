@@ -155,8 +155,7 @@ const SignIn = () => {
                 setLoading(false);
                 setSuccessMsg("Successfully Logged-in! Welcome back.");
                 setTimeout(() => {
-                    navigate("/");
-                    setSuccessMsg("");
+                    navigate(-1);
                 }, 2000);
             })
             .catch((error) => {
@@ -210,8 +209,7 @@ const SignIn = () => {
                 setLoading(false);
                 setSuccessMsg("Successfully Logged-in! Welcome back.");
                 setTimeout(() => {
-                    navigate("/");
-                    setSuccessMsg("");
+                    navigate(-1);
                 }, 2000);
 
             }).catch((error) => {
@@ -253,8 +251,7 @@ const SignIn = () => {
                 setLoading(false);
                 setSuccessMsg("Successfully Logged-in! Welcome back.");
                 setTimeout(() => {
-                    navigate("/");
-                    setSuccessMsg("");
+                    navigate(-1);
                 }, 2000);
             })
             .catch((error) => {
@@ -295,8 +292,7 @@ const SignIn = () => {
                                                 setLoading(false);
                                                 setSuccessMsg("Successfully Logged-in! Welcome back.");
                                                 setTimeout(() => {
-                                                    navigate("/");
-                                                    setSuccessMsg("");
+                                                    navigate(-1);
                                                 }, 2000);
                                             });
                                     })
@@ -322,8 +318,7 @@ const SignIn = () => {
                                                 setLoading(false);
                                                 setSuccessMsg("Successfully Logged-in! Welcome back.");
                                                 setTimeout(() => {
-                                                    navigate("/");
-                                                    setSuccessMsg("");
+                                                    navigate(-1);
                                                 }, 2000);
                                             });
                                     })

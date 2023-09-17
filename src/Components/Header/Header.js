@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-// import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -13,8 +12,8 @@ import Pincode from './Pincode';
 import { useLoaderData } from 'react-router-dom';
 import SignInoptions from './SignInoptions';
 import { useCart } from '../../context/userCartContext';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-// import { useParams } from 'react-router-dom';
 
 
 const Header = () => {
@@ -22,10 +21,8 @@ const Header = () => {
     const auth = getAuth();
 
     const { cartTotalQty } = useCart();
-    // console.log(cartTotalQty);
     const product = useLoaderData();
     const productsData = product.data.products;
-    // console.log(productsData);
     var productCategories = [];
     productsData.forEach(product => {
         if (!productCategories.includes(product.category)) {
@@ -37,8 +34,6 @@ const Header = () => {
     const products = useSelector((state) => state.amazon.products);
     const userInfo = useSelector((state) => state.amazon.userInfo);
     const authenticated = useSelector((state) => state.amazon.isAuthenticated);
-    // console.log(userInfo);
-    // console.log(authenticated);
     const [quantity, setQuantity] = useState(0);
 
     useEffect(() => {
@@ -49,27 +44,22 @@ const Header = () => {
         setQuantity(allQty);
     }, [products]);
 
-    // console.log(products);
     const ref = useRef();
     useEffect(() => {
         document.body.addEventListener("click", (e) => {
             if (e.target.contains(ref.current)) {
                 setShowAll(false);
             }
-            // console.log(e.target.contains(ref.current));
-
         })
     }, [ref, showAll]);
 
     const handleLogout = () => {
-        // e.preventDefault();
         signOut(auth)
             .then(() => {
                 dispatch(userSignOut());
                 dispatch(setUserAuthentication(false));
 
             }).catch((error) => {
-                // An error happened.
             });
     }
     return (<>
@@ -166,7 +156,7 @@ const Header = () => {
                 </Link>
                 {/* Signin end */}
                 {/* Orders Start  */}
-                <Link to={authenticated ? "/orderDetails" : "/Login"}>
+                <Link to={authenticated ? "/orders" : "/Login"}>
                     <div className='hidden lgl:flex flex-col items-start justify-center headerHover'>
                         <p className='text-xs font-medium'>Returns</p>
                         <p className='text-sm font-semibold -mt-1 text-whiteText'>& Orders</p>
@@ -185,6 +175,18 @@ const Header = () => {
                     </div>
                 </Link>
                 {/* Cart End  */}
+
+                {/* Logout Start  */}
+                {
+                    userInfo && (
+                        <div onClick={handleLogout} className="headerHover flex flex-col justify-center items-center relative">
+                            <LogoutIcon />
+                            <p className="hidden mdl:inline-flex text-sm font-bold">Logout</p>
+                        </div>
+                    )
+                }
+
+                {/* Logout End */}
             </div>
 
         </div>

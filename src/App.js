@@ -12,15 +12,15 @@ import { productsData } from "./api/api";
 import Home from './Home/Home';
 import Login from './Components/Login/Login';
 import SignUp from './Components/Login/SignUp';
-import Cart from './Pages/Cart';
-import OrderDetails from './Pages/orderDetails';
+import Cart from './Components/Cart/Cart';
+import Orders from './Components/Orders/Orders';
 import Products from './Components/Products/Products';
 import ProductDetails from './Components/Products/productDetails';
 import { UserCartProvider } from './context/userCartContext';
 import { UserAddressProvider } from './context/userAddressContext';
-import Checkout from './Pages/Checkout';
-import CancelOrder from './Pages/cancelOrder';
+import Checkout from './Components/Checkout/Checkout';
 import ForgotPassword from './Components/Login/ForgotPassword';
+import { UserOrdersProvider } from './context/userOrderContext';
 
 // import { useEffect } from 'react';
 // import { setUserAuthentication } from './Redux/amazonSlice';
@@ -94,14 +94,9 @@ function App() {
           element: <Cart />
         },
         {
-          path: "/orderDetails",
+          path: "/orders",
           loader: productsData,
-          element:<OrderDetails />
-        },
-        {
-          path: "/cancelOrder",
-          loader: productsData,
-          element:<CancelOrder />
+          element:<Orders />
         },
       ],
     },
@@ -131,14 +126,15 @@ function App() {
 
 
   return (
+    <UserOrdersProvider>
     <UserCartProvider>
       < UserAddressProvider>
-
       <div className='overflow-x-hidden'>
         <RouterProvider router={router} />
       </div>
       </UserAddressProvider>
     </UserCartProvider>
+    </UserOrdersProvider>
   );
 }
 

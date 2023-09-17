@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { ScrollRestoration } from 'react-router-dom';
 import EmptyCart from './emptyCart';
 import CartItems from './cartItems';
-import { useCart } from '../context/userCartContext';
+import { useCart } from '../../context/userCartContext';
 
 const Cart = () => {
     // Get the list of products from the Redux store
