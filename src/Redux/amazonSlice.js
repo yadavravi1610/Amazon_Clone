@@ -96,7 +96,7 @@ export const amazonSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addToCart, deleteProduct, resetCart, decreaseQuantity, increaseQuantity, setUserInfo, userSignOut, setUserAuthentication,buyNow,resetBuyNowProduct, addToOrders, cancelOrder, resetOrders, addToreturnOrders, addTocancelOrders } = amazonSlice.actions;
+export const { addToCart, deleteProduct, resetCart, decreaseQuantity, increaseQuantity, setUserInfo, userSignOut, setUserAuthentication,buyNow,resetBuyNowProduct, addToOrders, cancelOrder, resetOrders, addToreturnOrders, addTocancelOrders, resetCancelOrders, resetReturnOrders} = amazonSlice.actions;
 // addToUserCart, resetUserCart
 
 export default amazonSlice.reducer;

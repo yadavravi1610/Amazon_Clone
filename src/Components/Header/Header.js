@@ -5,7 +5,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import { logo } from "../../assets/index"
 import { Link } from 'react-router-dom';
-import { setUserAuthentication, userSignOut } from '../../Redux/amazonSlice';
+import { setUserAuthentication, userSignOut, resetOrders, resetCancelOrders, resetReturnOrders } from '../../Redux/amazonSlice';
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import Pincode from './Pincode';
@@ -58,7 +58,9 @@ const Header = () => {
             .then(() => {
                 dispatch(userSignOut());
                 dispatch(setUserAuthentication(false));
-
+                dispatch(resetOrders());
+                dispatch(resetCancelOrders());
+                dispatch(resetReturnOrders());
             }).catch((error) => {
             });
     }
@@ -121,32 +123,32 @@ const Header = () => {
                             showSignin &&
                             <div className='w-full h-screen text-black fixed top-16 left-0 bg-amazon_blue bg-opacity-50 flex justify-end'>
                                 <div className='w-full absolute left-[40%] md:left-[45%] lgl:left-[60%]'>
-                                {
-                                    userInfo ?
-                                        <div onMouseLeave={() => setShowSignin(false)} onClick={(e) => e.preventDefault()} className='mdl:w-[50%] lgl:w-[32%] sml:w-[50%] mr-10 rounded-sm h-[96] overflow-hidden -mt-2 bg-white border border-transparent '>
-                                            <SignInoptions />
-                                            <div className='flex flex-col gap-1 text-xs lgl:text-sm font-normal items-start mt-3 ml-[53%] '>
-                                                <hr className='w-32' />
-                                                <h4 className='hover:text-orange-500 hover:underline'>Switch Accounts</h4>
-                                                <h4 className='hover:text-orange-500 hover:underline' onClick={handleLogout}>Sign Out</h4>
+                                    {
+                                        userInfo ?
+                                            <div onMouseLeave={() => setShowSignin(false)} onClick={(e) => e.preventDefault()} className='mdl:w-[50%] lgl:w-[32%] sml:w-[50%] mr-10 rounded-sm h-[96] overflow-hidden -mt-2 bg-white border border-transparent '>
+                                                <SignInoptions />
+                                                <div className='flex flex-col gap-1 text-xs lgl:text-sm font-normal items-start mt-3 ml-[53%] '>
+                                                    <hr className='w-32' />
+                                                    <h4 className='hover:text-orange-500 hover:underline'>Switch Accounts</h4>
+                                                    <h4 className='hover:text-orange-500 hover:underline' onClick={handleLogout}>Sign Out</h4>
+                                                </div>
                                             </div>
-                                        </div>
-                                        : 
-                                        <div onMouseLeave={() => setShowSignin(false)} onClick={(e) => e.preventDefault()} className='mdl:w-[50%] lgl:w-[32%] sml:w-[50%] mr-10 rounded-sm  overflow-hidden sml:h-[60%] mdl:h-[55%] lg:h-[70%] lgl:h-[60%] -mt-2 bg-white border border-transparent '>
-                                            <div className='flex flex-col justify-center gap-1 mb-2 mt-5 text-center'>
-                                                <Link to="/Login">
-                                                    <button className='w-60 h-8 text-sm bg-yellow-400 rounded-md py-1 font-semibold cursor-pointer'>
-                                                        Sign in
-                                                    </button>
-                                                </Link>
-                                                <p className='text-xs'>New Customer?{""}
-                                                    <Link to='/SignUp'><span className='text-green-600 ml-1 cursor-pointer hover:text-orange-500 hover:underline'>Start here.</span></Link>
-                                                </p>
+                                            :
+                                            <div onMouseLeave={() => setShowSignin(false)} onClick={(e) => e.preventDefault()} className='mdl:w-[50%] lgl:w-[32%] sml:w-[50%] mr-10 rounded-sm  overflow-hidden sml:h-[60%] mdl:h-[55%] lg:h-[70%] lgl:h-[60%] -mt-2 bg-white border border-transparent '>
+                                                <div className='flex flex-col justify-center gap-1 mb-2 mt-5 text-center'>
+                                                    <Link to="/Login">
+                                                        <button className='w-60 h-8 text-sm bg-yellow-400 rounded-md py-1 font-semibold cursor-pointer'>
+                                                            Sign in
+                                                        </button>
+                                                    </Link>
+                                                    <p className='text-xs'>New Customer?{""}
+                                                        <Link to='/SignUp'><span className='text-green-600 ml-1 cursor-pointer hover:text-orange-500 hover:underline'>Start here.</span></Link>
+                                                    </p>
+                                                </div>
+                                                <hr className='w-[80%] mx-auto' />
+                                                <SignInoptions />
                                             </div>
-                                            <hr className='w-[80%] mx-auto' />
-                                            <SignInoptions />
-                                        </div>
-                                }
+                                    }
                                 </div>
                             </div>
 
