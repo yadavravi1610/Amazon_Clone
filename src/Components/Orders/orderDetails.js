@@ -26,7 +26,7 @@ const OrderDetails = ({ ordersData, reversedOrders, handleCancelOrder, handleRet
                                     <div className='w-auto text-xs h-auto'>
                                         <p>TOTAL</p>
                                         <p className='font-semibold'>
-                                            ₹<p>{order.price}</p>
+                                            ₹{order.price}
                                         </p>
 
                                     </div>
