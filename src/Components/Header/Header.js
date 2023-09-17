@@ -70,7 +70,7 @@ const Header = () => {
                 {/* amazon logo start */}
                 <Link to='/'>
                     <div className='headerHover'>
-                        <img className='w-24 mt-2' src={logo} alt="logo" />
+                        <img className='sm:w-24 mt-2' src={logo} alt="logo" />
                     </div>
                 </Link>
                 {/* amazon_logo end */}
@@ -115,9 +115,9 @@ const Header = () => {
                 {/* Signin Start  */}
                 <Link to='/Login'>
                     <div className='flex flex-col items-start justify-center headerHover' onMouseEnter={() => setShowSignin(true)} onMouseLeave={() => setShowSignin(false)}>
-                        {userInfo ? <p className='xs:text-sm md:text-xs lg:text-sm font-medium'>Hello, {userInfo.name}</p> :
-                            <p className='xs:text-sm md:text-xs font-medium'>Hello, Sign in</p>}
-                        <p className='text-xs lg:text-sm font-semibold -mt-1 text-whiteText hidden mdl:inline-flex'>Accounts & Lists {""}<span><ArrowDropDownOutlinedIcon /></span>
+                        {userInfo ? <p className='xs:text-xs font-medium'>Hello, {userInfo.name}</p> :
+                            <p className='xs:text-xs md:text-xs font-medium'>Hello, Sign in</p>}
+                        <p className='text-xs font-semibold -mt-1 text-whiteText hidden lg:inline-flex'>Accounts & Lists {""}<span><ArrowDropDownOutlinedIcon /></span>
                         </p>
                         {
                             showSignin &&
@@ -159,9 +159,9 @@ const Header = () => {
                 {/* Signin end */}
                 {/* Orders Start  */}
                 <Link to={authenticated ? "/orders" : "/Login"}>
-                    <div className='hidden lgl:flex flex-col items-start justify-center headerHover'>
-                        <p className='text-xs font-medium'>Returns</p>
-                        <p className='text-sm font-semibold -mt-1 text-whiteText'>& Orders</p>
+                    <div className='lgl:flex flex-col items-start justify-center headerHover'>
+                        <p className='text-xs mdl:text-sm font-medium'>Returns</p>
+                        <p className='text-xs mdl:text-sm font-semibold -mt-1 text-whiteText'>& Orders</p>
                     </div>
                 </Link>
                 {/* Orders End */}

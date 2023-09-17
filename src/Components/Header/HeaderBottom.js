@@ -56,14 +56,13 @@ const HeaderBottom = () => {
         <li className='headerHover h-8 mt-1'>Best Seller</li>
         <li className='headerHover h-8 mt-1'>Today's Deals</li>
         <Link to="/Smartphones" ><li className='headerHover h-8 mt-1'>Mobiles</li></Link>
-        <li className='headerHover h-8 mt-1'>New Releases</li>
       </ul>
       {/* items end  */}
       {/* SideNavContent Start  */}
       {sidebar && (
         <div className='w-full h-screen text-black fixed top-0 left-0 bg-amazon_blue bg-opacity-50 z-50 flex'>
 
-          <motion.div ref={ref} initial={{ x: -500, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: .5 }} className='mdl:w-[30%] lgl:w-[20%] sml:w-[50%]  h-full bg-white border border-black'>
+          <motion.div ref={ref} initial={{ x: -500, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: .5 }} className=' sml:w-[50%] mdl:w-[35%] h-full bg-white border border-black'>
             <div className='w-full bg-amazon_light sticky top-0 left-0 text-white py-2 px-6 flex items-center gap-4'>
               {
                 userInfo ? <img src={userInfo.image} className='w-10 h-10 rounded-full' alt='user' /> : <AccountCircleIcon />
@@ -77,7 +76,7 @@ const HeaderBottom = () => {
               }
 
             </div>
-            <h1 className='text-xl font-semibold py-3'>Categories</h1>
+            <h1 className='text-xl px-2 font-semibold py-3'>Categories</h1>
             <hr className='py-1' />
             <div ref={ref}>
               <ul className='flex flex-col ml-3 justify-between py-2 cursor-pointer'>
@@ -95,7 +94,7 @@ const HeaderBottom = () => {
             }
             
           </motion.div>
-          <div onClick={() => setSideBar(false)} className='w-10 absolute cursor-pointer h-10 ml-[51%] mdl:ml-[31%] lgl:ml-[21%] sml:ml-[51%] text-black flex items-center justify-center border bg-gray-200 hover:bg-red-500 hover:text-white duration-300'><CloseIcon />
+          <div onClick={() => setSideBar(false)} className='w-10 absolute cursor-pointer h-10 ml-[69%] sml:ml-[51%] mdl:ml-[36%] text-black flex items-center justify-center border bg-gray-200 hover:bg-red-500 hover:text-white duration-300'><CloseIcon />
           </div>
 
         </div>
