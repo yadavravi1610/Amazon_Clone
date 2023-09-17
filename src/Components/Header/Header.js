@@ -115,9 +115,9 @@ const Header = () => {
                 {/* Signin Start  */}
                 <Link to='/Login'>
                     <div className='flex flex-col items-start justify-center headerHover' onMouseEnter={() => setShowSignin(true)} onMouseLeave={() => setShowSignin(false)}>
-                        {userInfo ? <p className='xs:text-xs font-medium'>Hello, {userInfo.name}</p> :
-                            <p className='xs:text-xs md:text-xs font-medium'>Hello, Sign in</p>}
-                        <p className='text-xs font-semibold -mt-1 text-whiteText hidden lg:inline-flex'>Accounts & Lists {""}<span><ArrowDropDownOutlinedIcon /></span>
+                        {userInfo ? <p className='xs:text-xs md:text-xs lg:text-base font-medium'>Hello, {userInfo.name}</p> :
+                            <p className='xs:text-xs md:text-xs lg:text-lg font-medium'>Hello, Sign in</p>}
+                        <p className='text-xs mdl:text-base font-semibold -mt-1 text-whiteText hidden lg:inline-flex'>Accounts & Lists {""}<span><ArrowDropDownOutlinedIcon /></span>
                         </p>
                         {
                             showSignin &&
