@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductsSlider from '../../Home/ProductSlider';
+import ProductsSlider from '../../Home/productSlider';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 

@@ -5,7 +5,7 @@ import { useOrders } from '../../context/userOrderContext';
 import { addToOrders, addTocancelOrders, addToreturnOrders } from '../../Redux/amazonSlice';
 import { collection, doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase.config";
-import OrderDetails from './OrderDetails';
+import OrderDetails from './orderDetails';
 
 const Orders = () => {
   const dispatch = useDispatch();

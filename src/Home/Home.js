@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from './Slider';
 import { bannerImgOne, bannerImgTwo, bannerImgThree, bannerImgFour, bannerImgFive} from "../assets/assets/index"
 import Category from './Category';
-import ProductsSlider from './ProductSlider';
+import ProductsSlider from './productSlider';
 import { ScrollRestoration } from 'react-router-dom';
 
 const Home = () => {

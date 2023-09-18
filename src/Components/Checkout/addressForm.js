@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { countryList, states } from "../../Constants/index";
+import { countryList, states } from "../../constants/index";
 import { RotatingLines } from "react-loader-spinner";
 import { motion } from "framer-motion";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";

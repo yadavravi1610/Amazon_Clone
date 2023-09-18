@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase.config";
 import { useCart } from '../../context/userCartContext';
-import ProductsSlider from '../../Home/ProductSlider';
+import ProductsSlider from '../../Home/productSlider';
 
 const CartItems = () => {
     const data = useLoaderData();

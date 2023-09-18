@@ -1,5 +1,5 @@
 import React from 'react'
-import { BottomList } from '../../Constants'
+import { BottomList } from '../../constants'
 
 const FooterBottom = () => {
   return (

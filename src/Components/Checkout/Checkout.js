@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { logoBlack } from '../../assets/index';
 import { resetBuyNowProduct } from '../../Redux/amazonSlice';
 import { useAddress } from '../../context/userAddressContext';
-import AddressForm from './AddressForm';
-import UserAddresses from './UserAddresses';
-import PaymentMethod from './PaymentMethod';
+import AddressForm from './addressForm';
+import UserAddresses from './userAddresses';
+import PaymentMethod from './paymentMethod';
 import OrderSummary from './OrderSummary';
 
 
