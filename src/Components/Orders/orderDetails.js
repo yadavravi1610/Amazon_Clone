@@ -71,8 +71,8 @@ const OrderDetails = ({ ordersData, reversedOrders, handleCancelOrder, handleRet
                                                 <div className='flex items-center font-semibold '>
                                                     Qty : {order.quantity}
                                                 </div>
-                                                <div className='flex items-center font-medium'>
-                                                    Payment Method : <span className='capitalize font-semibold text-blue-600'>&nbsp;{order.paymentMethod}</span>
+                                                <div className='flex items-center font-semibold'>
+                                                    Payment Method : <span className='capitalize  text-blue-600'>&nbsp;{order.paymentMethod}</span>
                                                 </div>
                                             </div>
                                             {
