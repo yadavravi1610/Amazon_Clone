@@ -88,7 +88,7 @@ const Pincode = () => {
                         <div className='w-96 h-auto bg-white rounded-md '>
                             <div className='flex pl-10 items-center h-16 rounded-md bg-slate-100 text-lg font-semibold'>
                                 Choose Your Location
-                            </div> <p className='px-5 my-3 text-sm text-slate-500 '>Select a delivery to see product availability and delivery options</p>
+                            </div> <p className='px-5 my-3 mdl:text-xs lg:text-sm text-slate-500 '>Select a delivery to see product availability and delivery options</p>
 
 
                             {

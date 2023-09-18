@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
@@ -27,7 +27,7 @@ const Header = () => {
             productCategories.push(product.category);
         }
     });
-    
+
     const [showSignin, setShowSignin] = useState(false);
     const products = useSelector((state) => state.amazon.products);
     const userInfo = useSelector((state) => state.amazon.userInfo);
@@ -42,8 +42,8 @@ const Header = () => {
         setQuantity(allQty);
     }, [products]);
 
-  
-   
+
+
     const handleLogout = () => {
         signOut(auth)
             .then(() => {
@@ -68,10 +68,12 @@ const Header = () => {
                 <Pincode />
                 {/* Address End */}
                 {/* search start  */}
-                 <Search />
+                <div className='w-[45%] hidden mdl:block'>
+                    <Search />
+                </div>
                 {/* search end  */}
                 {/* Language Start */}
-                <div className='headerHover hidden sml:inline-flex'>
+                <div className='headerHover hidden lgl:inline-flex'>
                     <p className='flex'><img src='https://cdn-icons-png.flaticon.com/128/206/206606.png' alt='flag' className='w-[18px] mt-2 h-6' />
                         <span className='pl-1 pt-[11px] font-bold text-sm'>EN</span>
                         <span className='pt-2'><ArrowDropDownIcon /></span></p>
@@ -80,9 +82,9 @@ const Header = () => {
                 {/* Signin Start  */}
                 <Link to='/Login'>
                     <div className='flex flex-col items-start justify-center headerHover' onMouseEnter={() => setShowSignin(true)} onMouseLeave={() => setShowSignin(false)}>
-                        {userInfo ? <p className='xs:text-xs md:text-xs lg:text-base font-medium'>Hello, {userInfo.name}</p> :
-                            <p className='xs:text-xs md:text-xs lg:text-base font-medium'>Hello, Sign in</p>}
-                        <p className='text-xs mdl:text-base font-semibold -mt-1 text-whiteText hidden lg:inline-flex'>Accounts & Lists {""}<span><ArrowDropDownOutlinedIcon /></span>
+                        {userInfo ? <p className='xs:text-xs md:text-xs lgl:text-base font-medium'>Hello, {userInfo.name}</p> :
+                            <p className='xs:text-xs md:text-xs lgl:text-base font-medium'>Hello, Sign in</p>}
+                        <p className='lg:text-xs xl:text-sm font-semibold -mt-1 text-whiteText hidden lg:inline-flex'>Accounts & Lists {""}<span><ArrowDropDownOutlinedIcon /></span>
                         </p>
                         {
                             showSignin &&
@@ -155,7 +157,9 @@ const Header = () => {
 
                 {/* Logout End */}
             </div>
-
+            <div className='mdl:hidden w-full pr-2 bg-amazon_blue text-white pb-2 flex flex-col px:[2%] sml:px-[5%]'>
+                <Search />
+            </div>
         </div>
     </>
     )

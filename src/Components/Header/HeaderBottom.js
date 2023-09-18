@@ -44,7 +44,7 @@ const HeaderBottom = () => {
     })
 }
   return (
-    <div className='w-full mt-16 px-2 h-[36px] bg-amazon_light text-white flex items-center'>
+    <div className='w-full mt-28 mdl:mt-16 px-2 h-[36px] bg-amazon_light text-white flex items-center'>
       {/* Items start  */}
       <ul className='flex items-center gap-2 mdl:text-sm tracking-wide xs:text-xs'>
         <li ref={ref} onClick={() => setSideBar(true)} className='headerHover h-8 mt-1 flex items-center gap-1'><MenuIcon />All</li>
