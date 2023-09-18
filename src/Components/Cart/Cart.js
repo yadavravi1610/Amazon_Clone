@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { ScrollRestoration } from 'react-router-dom';
-import EmptyCart from './emptyCart';
-import CartItems from './cartItems';
+import EmptyCart from './EmptyCart';
+import CartItems from './CartItems';
 import { useCart } from '../../context/userCartContext';
 
 const Cart = () => {

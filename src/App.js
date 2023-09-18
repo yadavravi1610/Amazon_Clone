@@ -15,7 +15,7 @@ import SignUp from './Components/Login/SignUp';
 import Cart from './Components/Cart/Cart';
 import Orders from './Components/Orders/Orders';
 import Products from './Components/Products/Products';
-import ProductDetails from './Components/Products/productDetails';
+import ProductDetails from './Components/Products/ProductDetails';
 import { UserCartProvider } from './context/userCartContext';
 import { UserAddressProvider } from './context/userAddressContext';
 import Checkout from './Components/Checkout/Checkout';

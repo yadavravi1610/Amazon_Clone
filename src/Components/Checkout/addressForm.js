@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { countryList, states } from "../../constants/index";
+import { countryList, states } from "../../Constants/index";
 import { RotatingLines } from "react-loader-spinner";
 import { motion } from "framer-motion";
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
@@ -95,11 +95,8 @@ const AddressForm = ({ setShowAddressForm }) => {
     }
 
     const saveShippingAddressToFirebase = async (userInfo, shippingAddress) => {
-        const usersCollectionRef = collection(db, "users");
-        const userRef = doc(usersCollectionRef, userInfo.email);
+        const addressRef = doc(collection(db, "users", userInfo.email, "shippingAddresses"), userInfo.id);
         try {
-            const shippingAddressesCollectionRef = collection(userRef, "shippingAddresses");
-            const addressRef = doc(shippingAddressesCollectionRef, userInfo.id);
             const addressRefSnapshot = await getDoc(addressRef);
             if (!addressRefSnapshot.exists()) {
                 await setDoc(addressRef, { Addresses: [shippingAddress] }, { merge: true });

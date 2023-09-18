@@ -23,10 +23,7 @@ const Product = (props) => {
       ...product,
       quantity: 1,
     };
-    const usersCollectionRef = collection(db, "users");
-    const userRef = doc(usersCollectionRef, userInfo.email);
-    const userCartRef = collection(userRef, "cart");
-    const cartRef = doc(userCartRef, userInfo.id);
+    const cartRef = doc(collection(db, "users", userInfo.email, "cart" ), userInfo.id);
     const snap = await getDoc(cartRef);
     if (snap.exists()) {
       const cart = snap.data().cart || [];

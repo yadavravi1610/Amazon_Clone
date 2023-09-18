@@ -35,7 +35,7 @@ const PaymentMethod = () => {
                             <span className="ml-2">UPI Apps</span>
                         </label>
 
-                        {(selectedPaymentMethod === "Upi Apps") &&
+                        {/* {(selectedPaymentMethod === "Upi Apps") &&
                             <div className="w-[40%] mx-auto border-[1px] border-gray-400 rounded-lg ">
                                 <form className="flex flex-col my-2 gap-2 ml-8 ">
                                     <label className=' flex flex-col gap-2'>
@@ -47,7 +47,7 @@ const PaymentMethod = () => {
                                     </button>
                                 </form>
                             </div>
-                        }
+                        } */}
 
                         <label className="inline-flex items-center">
                             <input type="radio" name="paymentMethod" value="EMI" onChange={handleSelectPaymentMethod} />

@@ -5,7 +5,6 @@ const initialState = {
   userInfo: null,
   isAuthenticated: false,
   buyNowProduct: null,
-  allProducts: [],
   orders: [],
   cancelOrders: [],
   returnOrders: [],
@@ -65,10 +64,6 @@ export const amazonSlice = createSlice({
 
     addToOrders: (state, action) => {
       state.orders = action.payload;
-    },
-    cancelOrder: (state, action) => {
-      state.cancelOrders = state.cancelOrders.push(action.payload);
-      state.orders = state.orders.filter((product) => product.title !== action.payload);
     },
     resetOrders: (state) => {
       state.orders = [];

@@ -48,10 +48,7 @@ const ProductDetails = () => {
       ...product,
       quantity: selectedQuantity,
     };
-    const usersCollectionRef = collection(db, "users");
-    const userRef = doc(usersCollectionRef, userInfo.email);
-    const userCartRef = collection(userRef, "cart");
-    const cartRef = doc(userCartRef, userInfo.id);
+    const cartRef = doc(collection(db,"users",userInfo.email,"cart"), userInfo.id);
     try {
       const snap = await getDoc(cartRef);
       if (snap.exists()) {
@@ -117,9 +114,6 @@ const ProductDetails = () => {
     }
   }
 
-  if (!product) {
-    return <h1>Details of this product available in its category page. please go back to this product's category page then select this product to see its details.</h1>
-  }
   return (
     <div className='flex flex-col mdl:flex-row bg-white justify-between'>
       <ScrollRestoration />
@@ -257,12 +251,6 @@ const ProductDetails = () => {
         }
 
         <p className='text-blue-500 pt-3'>Secure transaction</p>
-        {userInfo &&
-          <button
-            className={`pb-2  w-full text-center rounded-md bg-gray-100 hover:bg-gray-200 p-[4px] mt-3 shadow active:ring-2 active:ring-offset-1 active:ring-blue-500`}>
-            Add to Wish List
-          </button>
-        }
       </div>
     </div>
   )

@@ -21,7 +21,7 @@ const OrderSummary = () => {
     var productPrice = product.price;
     var productTotalPrice = productPrice * productQty;
   }
-  const { cartTotalQty, cartTotalPrice, updateUserCart } = useCart(); 
+  const { cartTotalQty, cartTotalPrice, updateUserCart } = useCart();
   const { selectedAddress, selectedPayment } = useAddress();
 
   let deliveryCharges = 0;
@@ -54,59 +54,56 @@ const OrderSummary = () => {
   };
 
   const makePayment = async () => {
-    if (selectedPayment === "cash on Delivery") {
-      const uniqueNumber = generateUniqueNumber();
+    const uniqueNumber = generateUniqueNumber();
 
-      if (product) {
-        const productOrderDetails = {
-          uniqueNumber,
-          id: product.id,
-          title: product.title,
-          price: product.price,
-          description: product.description,
-          category: product.category,
-          images: product.images,
-          thumbnail: product.thumbnail,
-          brand: product.brand,
-          discountPercentage: product.discountPercentage,
-          rating: product.rating,
-          stock: product.stock,
-          address: selectedAddress,
-          paymentMethod: selectedPayment,
-          quantity: product.quantity,
-          date: new Date().toISOString(),
-        };
+    if (product) {
+      const productOrderDetails = {
+        uniqueNumber,
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        description: product.description,
+        category: product.category,
+        images: product.images,
+        thumbnail: product.thumbnail,
+        brand: product.brand,
+        discountPercentage: product.discountPercentage,
+        rating: product.rating,
+        stock: product.stock,
+        address: selectedAddress,
+        paymentMethod: selectedPayment,
+        quantity: product.quantity,
+        date: new Date().toISOString(),
+      };
 
-        dispatch(addToOrders([...orders, productOrderDetails]));
-        updateUserOrders([...orders, productOrderDetails]);
-        await saveOrderToFirebase([...orders, productOrderDetails]);
-      } else {
-        const updatedCart = userCart.map((cartItem) => ({
-          ...cartItem,
-          address: selectedAddress,
-          paymentMethod: selectedPayment,
-          date: new Date().toISOString(),
-          uniqueNumber: generateUniqueNumber(),
-        }));
-        dispatch(addToOrders([...orders, ...updatedCart]));
-        updateUserOrders([...orders, ...updatedCart]);
-        await saveOrderToFirebase([...orders, ...updatedCart]);
+      dispatch(addToOrders([...orders, productOrderDetails]));
+      updateUserOrders([...orders, productOrderDetails]);
+      await saveOrderToFirebase([...orders, productOrderDetails]);
+    } 
+    else {
+      const updatedCart = userCart.map((cartItem) => ({
+        ...cartItem,
+        address: selectedAddress,
+        paymentMethod: selectedPayment,
+        date: new Date().toISOString(),
+        uniqueNumber: generateUniqueNumber(),
+      }));
+      dispatch(addToOrders([...orders, ...updatedCart]));
+      updateUserOrders([...orders, ...updatedCart]);
+      await saveOrderToFirebase([...orders, ...updatedCart]);
 
-        const userCartRef = doc(collection(db, 'users', userInfo.email, 'cart'), userInfo.id);
-        await setDoc(userCartRef, { cart: [] }, { merge: true }); 
-        updateUserCart([]); 
-      }
-
-      resetBuyNow();
-      navigate("/orders");
+      const userCartRef = doc(collection(db, 'users', userInfo.email, 'cart'), userInfo.id);
+      await setDoc(userCartRef, { cart: [] }, { merge: true });
+      updateUserCart([]);
     }
+
+    resetBuyNow();
+    navigate("/orders");
+
   };
 
   const saveOrderToFirebase = async (order) => {
-    const usersCollectionRef = collection(db, "users");
-    const userRef = doc(usersCollectionRef, userInfo.email);
-    const userOrdersRef = collection(userRef, "orders");
-    const OrdersRef = doc(userOrdersRef, userInfo.id);
+    const OrdersRef = doc(collection(db, "users", userInfo.email, "orders"), userInfo.id);
     try {
       await setDoc(OrdersRef, { orders: order }, { merge: true });
     } catch (error) {

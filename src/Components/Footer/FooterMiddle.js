@@ -1,6 +1,6 @@
 import React from 'react'
 import FooterMiddlelist from './FooterMiddlelist'
-import { middleList } from '../../constants'
+import { middleList } from '../../Constants'
 import { logo } from '../../assets'
 
 

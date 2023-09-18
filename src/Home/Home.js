@@ -1,8 +1,9 @@
 import React from 'react';
 import Slider from './Slider';
 import { bannerImgOne, bannerImgTwo, bannerImgThree, bannerImgFour, bannerImgFive} from "../assets/assets/index"
-import Category from '../Components/Category/Category';
-import ProductsSlider from './productSlider';
+import Category from './Category';
+import ProductsSlider from './ProductSlider';
+import { ScrollRestoration } from 'react-router-dom';
 
 const Home = () => {
     const sampleImage = [
@@ -17,6 +18,7 @@ const Home = () => {
             <Slider images={sampleImage} />
             <div className='sml:-mt-28 mdl:-mt-60' ><Category /></div>
             <div><ProductsSlider /></div>
+            <ScrollRestoration />
         </div>
     )
 }

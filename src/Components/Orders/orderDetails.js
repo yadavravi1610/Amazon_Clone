@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductsSlider from '../../Home/productSlider';
+import ProductsSlider from '../../Home/ProductSlider';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -70,6 +70,9 @@ const OrderDetails = ({ ordersData, reversedOrders, handleCancelOrder, handleRet
                                                 </div>
                                                 <div className='flex items-center font-semibold '>
                                                     Qty : {order.quantity}
+                                                </div>
+                                                <div className='flex items-center font-medium'>
+                                                    Payment Method : <span className='capitalize font-semibold text-blue-600'>&nbsp;{order.paymentMethod}</span>
                                                 </div>
                                             </div>
                                             {

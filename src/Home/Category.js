@@ -1,5 +1,5 @@
 import React from 'react';
-import { categoryData } from '../../constants';
+import { categoryData } from '../Constants';
 import { useNavigate } from 'react-router-dom';
 
 const Category = () => {

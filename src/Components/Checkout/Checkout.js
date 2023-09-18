@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 import { logoBlack } from '../../assets/index';
 import { resetBuyNowProduct } from '../../Redux/amazonSlice';
 import { useAddress } from '../../context/userAddressContext';
-import AddressForm from './addressForm';
-import UserAddresses from './userAddresses';
-import PaymentMethod from './paymentMethod';
+import AddressForm from './AddressForm';
+import UserAddresses from './UserAddresses';
+import PaymentMethod from './PaymentMethod';
 import OrderSummary from './OrderSummary';
 
 
@@ -14,6 +14,10 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const { userAddress } = useAddress();
   const [showAddressForm, setShowAddressForm] = useState(userAddress.length === 0);
+
+  useEffect(() => {
+    setShowAddressForm(userAddress.length === 0);
+  }, [userAddress]);
 
   return (
     <div className='w-full h-full  bg-white '>
