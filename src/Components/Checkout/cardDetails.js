@@ -32,51 +32,41 @@ function CardDetails() {
     const [cardNumberError, setCardNumberError] = useState('');
     const [cardNameError, setCardNameError] = useState('');
     const [loading, setLoading] = useState(false);
-    // const [cardExpiryMonthError, setCardExpiryMonthError] = useState('');
-    // const [cardExpiryYearError, setCardExpiryYearError] = useState('');
     const [cvvError, setCvvError] = useState('');
 
     const userInfo = useSelector((state) => state.amazon.userInfo);
-    // console.log(userInfo.email)
     var userEmail = userInfo.email;
 
-    // function to validate user Input of card
     const validate = () => {
         const reqName = /^[A-Za-z\s]+$/;
         const reqNumber = /^[0-9]{16}$/;
         const reqCvv = /^[0-9]{3}$/;
         let isValid = true;
 
-        // Validate name -1
         if (cardName === "") {
             setCardNameError("Please enter a name.");
             isValid = false;
         }
-        // Validate name - 2
         if (cardName.length > 0) {
             if (!reqName.test(cardName)) {
                 setCardNameError("Please enter a valid name.");
                 isValid = false;
             }
         }
-        // Validate Number -1 
         if (cardNumber === "") {
             setCardNumberError("Please enter a 16 digit card number.");
             isValid = false;
         }
-        // Validate Number - 2
         if (cardNumber.length > 0) {
             if (!reqNumber.test(cardNumber)) {
                 setCardNumberError("Please enter a valid card number.");
                 isValid = false;
             }
         }
-        // Validate cvv - 1
         if (cvv === "") {
             setCvvError("Please enter a CVV number.");
             isValid = false;
         }
-        // Validate cvv - 2
         if (cvv.length > 0) {
             if (!reqCvv.test(cvv)) {
                 setCvvError("Please enter a valid CVV number.");
@@ -101,11 +91,10 @@ function CardDetails() {
                 name: cardName,
             })
             .then((customer) => {
-                // have access to the customer object
                 return stripe.invoiceItems
                     .create({
-                        customer: customer.id, // set the customer id
-                        amount: orderPrice*100, // 25
+                        customer: customer.id,
+                        amount: orderPrice*100,
                         currency: 'inr',
                         description: 'One-time setup fee',
                     })
@@ -116,14 +105,12 @@ function CardDetails() {
                         });
                     })
                     .then((invoice) => {
-                        // New invoice created on a new customer
                         return stripe.invoices.create({
                             collection_method: 'send_invoice',
                             customer: invoice.customer
                         })
                     })
                     .catch((err) => {
-                        // Deal with an error
                     });
             });
     }

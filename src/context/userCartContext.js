@@ -12,9 +12,7 @@ export const UserCartProvider = ({ children }) => {
     const authenticated = useSelector((state) => state.amazon.isAuthenticated);
 
     useEffect(() => {
-        // You can fetch the user's cart data if authenticated and userInfo is available
         if (authenticated && userInfo) {
-            // Function to fetch the user's cart data from Firebase
             const getUserCartFromFirebase = async (userInfo) => {
                 try {
                     const userCartRef = doc(collection(db, 'users', userInfo.email, 'cart'), userInfo.id);
@@ -28,11 +26,10 @@ export const UserCartProvider = ({ children }) => {
             };
             getUserCartFromFirebase(userInfo);
         } else {
-            setUserCart([]); // reset the userCart if user is not authenticated
+            setUserCart([]);
         }
     }, [authenticated, userInfo]);
 
-    // Function to update the userCart in the cartItem
     const updateUserCart = (updatedCart) => {
         setUserCart(updatedCart);
     };
@@ -43,7 +40,7 @@ export const UserCartProvider = ({ children }) => {
     useEffect(() => {
         let allPrice = 0;
         let allQty = 0;
-          if (userCart.length > 0 && authenticated) {
+        if (userCart.length > 0 && authenticated) {
             userCart.forEach((product) => {
                 allPrice += product.quantity * product.price;
                 allQty += product.quantity;
@@ -51,20 +48,19 @@ export const UserCartProvider = ({ children }) => {
             setCartTotalPrice(allPrice);
             setCartTotalQty(allQty);
         }
-        else{
+        else {
             setCartTotalQty(0);
             setCartTotalPrice(0);
         }
-    }, [userCart,authenticated]);
+    }, [userCart, authenticated]);
 
     return (
-        <UserCartContext.Provider value={{ userCart, updateUserCart,cartTotalQty,cartTotalPrice }}>
+        <UserCartContext.Provider value={{ userCart, updateUserCart, cartTotalQty, cartTotalPrice }}>
             {children}
         </UserCartContext.Provider>
     );
 };
 
-// custom hook to use it anywhere in app
 export const useCart = () => {
     return useContext(UserCartContext);
 };

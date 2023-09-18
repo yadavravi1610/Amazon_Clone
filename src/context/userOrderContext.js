@@ -12,9 +12,7 @@ export const UserOrdersProvider = ({ children }) => {
     const authenticated = useSelector((state) => state.amazon.isAuthenticated);
 
     useEffect(() => {
-        // You can fetch the user's Orders data if authenticated and userInfo is available
         if (authenticated && userInfo) {
-            // Function to fetch the user's Orders data from Firebase
             const getUserOrdersFromFirebase = async (userInfo) => {
                 try {
                     const userOrdersRef = doc(collection(db, 'users', userInfo.email, 'orders'), userInfo.id);
@@ -22,7 +20,7 @@ export const UserOrdersProvider = ({ children }) => {
                     if (docSnapshot.exists()) {
                         setUserOrders(docSnapshot.data().orders);
                     } else {
-                        setUserOrders([]); // reset the userOrders if the user is not authenticated
+                        setUserOrders([]);
                     }
                 } catch (error) {
                     console.error('Error fetching user Orders data:', error);
@@ -30,11 +28,10 @@ export const UserOrdersProvider = ({ children }) => {
             };
             getUserOrdersFromFirebase(userInfo);
         } else {
-            setUserOrders([]); // reset the userOrders if user is not authenticated
+            setUserOrders([]);
         }
     }, [authenticated, userInfo]);
 
-    // Function to update the userOrders
     const updateUserOrders = (updatedOrders) => {
         setUserOrders(updatedOrders);
     };
@@ -46,7 +43,6 @@ export const UserOrdersProvider = ({ children }) => {
     );
 };
 
-// custom hook to use it anywhere in app
 export const useOrders = () => {
     return useContext(UserOrdersContext);
 };

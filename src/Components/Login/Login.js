@@ -4,19 +4,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { right, down, info, google, facebook } from "../../assets/index";
 import { RotatingLines } from "react-loader-spinner";
 import { motion } from "framer-motion";
-// import ScrollToTop from "../ScrollToTop";
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, linkWithCredential, FacebookAuthProvider, fetchSignInMethodsForEmail } from "firebase/auth";
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserInfo, setUserAuthentication, resetCart } from "../../Redux/amazonSlice";
+import { setUserInfo, setUserAuthentication, resetCart, addToOrders, addTocancelOrders, addToreturnOrders } from "../../Redux/amazonSlice";
 import { db } from "../../firebase.config";
 import { collection, doc, setDoc, getDoc } from 'firebase/firestore';
 import { useCart } from "../../context/userCartContext";
+import { useOrders} from "../../context/userOrderContext";
 
 
 const SignIn = () => {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.amazon.products)
-
+    const { updateUserCart } = useCart();
+    const { updateUserOrders } = useOrders();
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider();
     const facebookProvider = new FacebookAuthProvider();
@@ -60,77 +61,85 @@ const SignIn = () => {
         return isValid;
     }
 
+    const fetchOrdersFromFirebase =async (user) =>{
+        const orderRef = doc(collection(db, "users", user.email, "orders"), user.uid);
+        const docSnapshot = await getDoc(orderRef);
+        const ordersFromFirebase = docSnapshot.exists() ? docSnapshot.data().orders : [];
+        updateUserOrders(ordersFromFirebase);
+        dispatch(addToOrders(ordersFromFirebase));
+    }
+
+    const fetchCancelOrdersFromFirebase = async (user)=>{
+        const cancelRef = doc(collection(db, "users", user.email, "cancelOrders"), user.uid);
+        const docSnapshot = await getDoc(cancelRef);
+        const cancelledOrders = docSnapshot.exists() ? docSnapshot.data().cancelOrders :[];
+        dispatch(addTocancelOrders(cancelledOrders));
+    }
+
+    const fetchReturnedOrdersFromFirebase = async (user)=>{
+        const returnRef = doc(collection(db ,"users", user.email, "returnOrders"), user.uid);
+        const docSnapshot = await getDoc(returnRef);
+        const returnedOrders = docSnapshot.exists() ? docSnapshot.data().returnOrders : [];
+        dispatch(addToreturnOrders(returnedOrders));
+    }
+
+    const handleUser = (user) => {
+        dispatch(setUserInfo({
+            id: user.uid,
+            name: user.displayName,
+            email: user.email,
+            image: user.photoURL
+        }));
+        dispatch(setUserAuthentication(true));
+        saveUserDataToFirebase(user);
+        saveLocalCartToFirebase(user);
+        fetchOrdersFromFirebase(user);
+        fetchCancelOrdersFromFirebase(user);
+        fetchReturnedOrdersFromFirebase(user);
+        setLoading(false);
+        setSuccessMsg("Successfully Logged-in! Welcome back.");
+        setTimeout(() => {
+            navigate(-1);
+        }, 2000);
+    }
+
     const [loading, setLoading] = useState(false);
     const [successMsg, setSuccessMsg] = useState("");
 
     const saveUserDataToFirebase = async (user) => {
-        const usersCollectionRef = collection(db, "users");
-        const userRef = doc(usersCollectionRef, user.email);
-        try {
-            const userRefSnapshot = await getDoc(userRef);
-            // console.log(userRefSnapshot.exists())       
-            // console.log(userRefSnapshot)           
-            if (!userRefSnapshot.exists()) {
-                const userDetailsRef = doc(userRef, "details", user.uid);
-                const userDetailsSnapshot = await getDoc(userDetailsRef);
-                // console.log(userDetailsSnapshot.exists())       
-                // console.log(userDetailsSnapshot)            
-                if (!userDetailsSnapshot.exists()) {
-                    // If the user details don't exist, save them to Firestore
-                    await setDoc(userDetailsRef, {
-                        id: user.uid,
-                        name: user.displayName,
-                        email: user.email,
-                        image: user.photoURL,
-                        mobile: user.phoneNumber,
-                        createdOn: new Date(),
-                    }, { merge: true });
-                    // console.log("User details saved to Firestore.");
-                } else {
-                    console.log("User details already exist in Firestore.");
-                }
-            } else {
-                console.log("User email already exists in Firestore.");
-            }
-        } catch (error) {
-            console.error("Error fetching user details:", error);
-        }
+        const userDetailsRef = doc(collection(db, "users", user.email, "details"), user.uid);
+        const userDetailsSnapshot = await getDoc(userDetailsRef);
+        if (!userDetailsSnapshot.exists()) {
+            await setDoc(userDetailsRef, {
+                id: user.uid,
+                name: user.displayName,
+                email: user.email,
+                image: user.photoURL,
+                mobile: user.phoneNumber,
+                createdOn: new Date(),
+            }, { merge: true });
+        };
+
     };
 
-    // Use the updateUserCart function from custom hook created in userCartContext.js
-    const { updateUserCart } = useCart();
+
 
     const saveLocalCartToFirebase = async (user) => {
-        const usersCollectionRef = collection(db, "users");
-        const userRef = doc(usersCollectionRef, user.email);
-        const userCartRef = collection(userRef, "cart");
-        const cartRef = doc(userCartRef, user.uid);
+        const cartRef = doc(collection(db, "users", user.email, "cart"), user.uid);
         const docSnapshot = await getDoc(cartRef);
         const firebaseCartItems = docSnapshot.exists() ? docSnapshot.data().cart : [];
         const localCartItems = cartItems;
-        // Create a map to track items using their unique identifiers (e.g., product title)
-        const mergedItemsMap = new Map();
-        // Add Firebase cart items to the mergedItemsMap using set function
-        firebaseCartItems.forEach((item) => {
-            mergedItemsMap.set(item.title, item);
-        });
-        localCartItems.forEach((item) => {
-            if (mergedItemsMap.has(item.title)) {
-                // If the item already exists in the Firebase cart, update its quantity
-                const existingItem = mergedItemsMap.get(item.title);
-                existingItem.quantity += item.quantity; // Update the quantity
-            } else {
-                // If the item doesn't exist in the Firebase cart, add it to the mergedItemsMap
-                mergedItemsMap.set(item.title, item);
+        localCartItems.forEach((localItem) => {
+            const cartIItemIndex = firebaseCartItems.findIndex((item) => item.title === localItem.title);
+            if (cartIItemIndex < 0) {
+                firebaseCartItems.push(localItem);
+            }
+            else {
+                firebaseCartItems[cartIItemIndex].quantity += localItem.quantity;
             }
         });
-        // Convert the mergedItemsMap back to an array of items
-        const mergedCartItems = Array.from(mergedItemsMap.values());
-        // Update the cart in Firestore with the merged cart items
-        await setDoc(cartRef, { cart: mergedCartItems });
-        // Update the cart context with the merged cart items
-        updateUserCart(mergedCartItems);
-        // After successfully saving to Firebase, clear the local cart
+        await setDoc(cartRef, { cart: [...firebaseCartItems] });
+        updateUserCart([...firebaseCartItems]);
         dispatch(resetCart());
     };
 
@@ -144,19 +153,7 @@ const SignIn = () => {
         signInWithEmailAndPassword(auth, inputValue, passwordValue)
             .then((userCredential) => {
                 const user = userCredential.user;
-                dispatch(setUserInfo({
-                    id: user.uid,
-                    name: user.displayName,
-                    email: user.email,
-                    image: user.photoURL
-                }));
-                dispatch(setUserAuthentication(true));
-                saveLocalCartToFirebase(user);
-                setLoading(false);
-                setSuccessMsg("Successfully Logged-in! Welcome back.");
-                setTimeout(() => {
-                    navigate(-1);
-                }, 2000);
+                handleUser(user);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -177,85 +174,21 @@ const SignIn = () => {
     }
 
     const handleGoogle = async () => {
-        // e.preventDefault();
         signInWithPopup(auth, googleProvider)
             .then((result) => {
-                // const credential = GoogleAuthProvider.credentialFromResult(result);
-                // const token = credential.accessToken;
-                // console.log(token);
                 const user = result.user;
-                console.log(user);
-                dispatch(setUserInfo({
-                    id: user.uid,
-                    name: user.displayName,
-                    email: user.email,
-                    image: user.photoURL
-                }));
-                dispatch(setUserAuthentication(true));
-                saveLocalCartToFirebase(user);
-                const userRef = doc(db, "users", user.email);
-                getDoc(userRef)
-                    .then((docSnapshot) => {
-                        // console.log(docSnapshot);
-                        // console.log("!docSnapshot.exists()",!docSnapshot.exists());
-                        if (!docSnapshot.exists()) {
-                            // If the user data doesn't exist, save it to Firestore
-                            saveUserDataToFirebase(user);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error checking user data:", error);
-                    });
-                setLoading(false);
-                setSuccessMsg("Successfully Logged-in! Welcome back.");
-                setTimeout(() => {
-                    navigate(-1);
-                }, 2000);
-
-            }).catch((error) => {
-                const errorCode = error.code;
-                console.log("error", errorCode)
-                // The email of the user's account used.
-                const email = error.customData.email;
-                console.log(email)
-            });
+                handleUser(user);                
+            })
     }
 
     const handleFacebook = () => {
         signInWithPopup(auth, facebookProvider)
             .then((result) => {
-                // const credential = FacebookAuthProvider.credentialFromResult(result);
-                // const token = credential.accessToken;
-                // console.log(token);
                 const user = result.user;
                 user.emailVerified = true;
-                dispatch(setUserInfo({
-                    id: user.uid,
-                    name: user.displayName,
-                    email: user.email,
-                    image: user.photoURL
-                }));
-                dispatch(setUserAuthentication(true));
-                saveLocalCartToFirebase(user);
-                const userRef = doc(db, "users", user.email);
-                getDoc(userRef)
-                    .then((docSnapshot) => {
-                        if (!docSnapshot.exists()) {
-                            // If the user data doesn't exist, save it to Firestore
-                            saveUserDataToFirebase(user);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error checking user data:", error);
-                    });
-                setLoading(false);
-                setSuccessMsg("Successfully Logged-in! Welcome back.");
-                setTimeout(() => {
-                    navigate(-1);
-                }, 2000);
+                handleUser(user);
             })
             .catch((error) => {
-                // Check if the error is due to account linking
                 if (error.code === "auth/account-exists-with-different-credential") {
                     const pendingCred = FacebookAuthProvider.credentialFromError(error);
                     const email = error.customData.email;
@@ -270,30 +203,7 @@ const SignIn = () => {
                                             .then((result) => {
                                                 const user = result.user;
                                                 user.emailVerified = true;
-                                                dispatch(setUserInfo({
-                                                    id: user.uid,
-                                                    name: user.displayName,
-                                                    email: user.email,
-                                                    image: user.photoURL
-                                                }));
-                                                dispatch(setUserAuthentication(true));
-                                                saveLocalCartToFirebase(user);
-                                                const userRef = doc(db, "users", user.email);
-                                                getDoc(userRef)
-                                                    .then((docSnapshot) => {
-                                                        if (!docSnapshot.exists()) {
-                                                            // If the user data doesn't exist, save it to Firestore
-                                                            saveUserDataToFirebase(user);
-                                                        }
-                                                    })
-                                                    .catch((error) => {
-                                                        console.error("Error checking user data:", error);
-                                                    });
-                                                setLoading(false);
-                                                setSuccessMsg("Successfully Logged-in! Welcome back.");
-                                                setTimeout(() => {
-                                                    navigate(-1);
-                                                }, 2000);
+                                                handleUser(user);
                                             });
                                     })
                             }
@@ -306,20 +216,7 @@ const SignIn = () => {
                                             .then((result) => {
                                                 const user = result.user;
                                                 user.emailVerified = true;
-                                                dispatch(setUserInfo({
-                                                    id: user.uid,
-                                                    name: user.displayName,
-                                                    email: user.email,
-                                                    image: user.photoURL
-                                                }));
-                                                dispatch(setUserAuthentication(true));
-                                                saveUserDataToFirebase(user);
-                                                saveLocalCartToFirebase(user);
-                                                setLoading(false);
-                                                setSuccessMsg("Successfully Logged-in! Welcome back.");
-                                                setTimeout(() => {
-                                                    navigate(-1);
-                                                }, 2000);
+                                                handleUser(user);
                                             });
                                     })
                             }

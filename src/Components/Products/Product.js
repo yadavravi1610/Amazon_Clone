@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { star, halfStar, emptyStar} from "../../assets/index";
-// import { wishlist, cart, compare } from "../../assets/assets/index";
+import { star, halfStar, emptyStar } from "../../assets/index";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../Redux/amazonSlice';
 import { db } from '../../firebase.config';
@@ -17,10 +16,8 @@ const Product = (props) => {
   const userInfo = useSelector((state) => state.amazon.userInfo);
   const authenticated = useSelector((state) => state.amazon.isAuthenticated);
 
-  // Get the userCart and updateUserCart function from the context
   const { userCart, updateUserCart } = useCart();
 
-  // Function to save a product to Firebase cart
   const saveProductToFirsebase = async (product) => {
     const productWithDefaultQuantity = {
       ...product,
@@ -30,37 +27,27 @@ const Product = (props) => {
     const userRef = doc(usersCollectionRef, userInfo.email);
     const userCartRef = collection(userRef, "cart");
     const cartRef = doc(userCartRef, userInfo.id);
-    try {
-      const snap = await getDoc(cartRef);
-      if (snap.exists()) {
-        const cart = snap.data().cart || [];
-        const existingProductIndex = cart.findIndex(
-          (item) => item.title === product.title
-        );
-        if (existingProductIndex !== -1) {
-          // If the product already exists in the cart, increase its quantity
-          cart[existingProductIndex].quantity += 1;
-        } else {
-          // If the product is not in the cart, add it to the cart
-          cart.push(productWithDefaultQuantity);
-        }
-        await setDoc(cartRef, { cart: cart }, { merge: true });
-        // Update the user's cart in context to reflect the change
-        updateUserCart(cart);
+    const snap = await getDoc(cartRef);
+    if (snap.exists()) {
+      const cart = snap.data().cart || [];
+      const existingProductIndex = cart.findIndex(
+        (item) => item.title === product.title
+      );
+      if (existingProductIndex !== -1) {
+        cart[existingProductIndex].quantity += 1;
+      } else {
+        cart.push(productWithDefaultQuantity);
       }
-      else {
-        await setDoc(cartRef, { cart: [productWithDefaultQuantity] }, { merge: true });
-        // Update the user's cart in context to reflect the change immeditely in our website
-        updateUserCart([...userCart, productWithDefaultQuantity]);
-      }
-    } catch (error) {
-      console.error('Error saving product to Firebase cart:', error);
+      await setDoc(cartRef, { cart: cart }, { merge: true });
+      updateUserCart(cart);
+    }
+    else {
+      await setDoc(cartRef, { cart: [productWithDefaultQuantity] }, { merge: true });
+      updateUserCart([...userCart, productWithDefaultQuantity]);
     }
   }
 
-  // Function to handle the Add to Cart button click
   const handleButton = async (product) => {
-    // If user is not authenticated, add to Redux cart
     if (!authenticated) {
       dispatch(addToCart({
         id: product.id,
@@ -77,26 +64,17 @@ const Product = (props) => {
         stock: product.stock
       }));
     } else {
-      // If user is authenticated, save to Firebase cart
-     await saveProductToFirsebase(product);
+      await saveProductToFirsebase(product);
     }
   };
 
   return (
-    // Map through productsData and render product
     productsData.map((product, index) => (
       <div className='w-full mx-auto mdl:w-[30%] my-5 rounded border-[1px] border-gray-200 shadow-none hover:shadow-testShadow duration-200' key={index}>
         <div className=" bg-gray-100 border-b-[1px] border-gray-200 flex justify-center items-center cursor-pointer relative group" >
           <Link to={`${product.title}`} >
             <img className="w-full h-72" src={product.thumbnail} alt="productImage" />
           </Link>
-          {/* <ul className='w-full h-32  bg-gray-100 flex flex-col items-end justify-center gap-2 px-2 absolute bottom-0 opacity-0 group-hover:opacity-100 transition-opacity  duration-700'>
-            <li className='productLi'>Compare <img src={compare} alt="compare" className='w-4 h-4' /></li>
-            <li
-              onClick={() => handleButton(product)}
-              className='productLi'>Add to Cart <img src={cart} alt="cart" className='w-4 h-4' /></li>
-            <li className='productLi '>Add to WishList <img src={wishlist} alt="wishlist" className='w-4 h-4' /></li>
-          </ul> */}
         </div>
         <div className='p-2 '>
           <Link to={`${product.title}`} >

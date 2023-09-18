@@ -13,23 +13,16 @@ const ProductDetails = () => {
 
   const authenticated = useSelector((state) => state.amazon.isAuthenticated);
   const userInfo = useSelector((state) => state.amazon.userInfo);
-  // const allProducts = useSelector((state) => state.amazon.allProducts);  // Get the allProducts from Redux store
-  // const productsData = allProducts.products;
-  // console.log(productsData);
-
   const [cartButton, setCartButton] = useState(false);
 
-  const data = useLoaderData(); // Load the data from the router context
-  const productsData = data.data.products; //when productDetails open from products use this data
+  const data = useLoaderData(); 
+  const productsData = data.data.products; 
 
-  // Get the "title" parameter from the URL
   const { title } = useParams();
-  // Find the product based on the title from the URL parameters
   const product = productsData.find((product) =>
     product.title === title);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  // Automatically change images every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % product.images.length);
@@ -41,18 +34,15 @@ const ProductDetails = () => {
     setCurrentImageIndex(index);
   };
 
-  // Get the userCart and updateUserCart function from the context
   const { userCart, updateUserCart } = useCart();
 
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
-  // Function to handle quantity change
   const handleQuantityChange = (event) => {
     const newQuantity = parseInt(event.target.value, 10);
     setSelectedQuantity(newQuantity);
   };
 
-  // Function to save a product to Firebase cart
   const saveProductToFirsebase = async (product) => {
     const productWithDefaultQuantity = {
       ...product,
@@ -70,19 +60,15 @@ const ProductDetails = () => {
           (item) => item.title === product.title
         );
         if (existingProductIndex !== -1) {
-          // If the product already exists in the cart, increase its quantity
           cart[existingProductIndex].quantity += selectedQuantity;
         } else {
-          // If the product is not in the cart, add it to the cart
           cart.push(productWithDefaultQuantity);
         }
         await setDoc(cartRef, { cart: cart }, { merge: true });
-        // Update the user's cart in context to reflect the change
         updateUserCart(cart);
       }
       else {
         await setDoc(cartRef, { cart: [productWithDefaultQuantity] }, { merge: true });
-        // Update the user's cart in context to reflect the change immeditely in our website
         updateUserCart([...userCart, productWithDefaultQuantity]);
       }
     } catch (error) {
@@ -90,9 +76,7 @@ const ProductDetails = () => {
     }
   }
 
-  // Function to handle Add to Cart button click
   const handleAddToCart = (product) => {
-    // If user is not authenticated, add to Redux cart
     if (!authenticated) {
       dispatch(addToCart({
         id: product.id,
@@ -110,12 +94,10 @@ const ProductDetails = () => {
       }));
     }
     else {
-      // If user is authenticated, save to Firebase cart
       saveProductToFirsebase(product);
     }
   }
 
-  // function to handle Buy Now button
   const handleBuyNow = (product) => {
     if (authenticated) {
       dispatch(buyNow({

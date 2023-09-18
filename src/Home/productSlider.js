@@ -30,7 +30,7 @@ const ProductsSlider = () => {
             </div>
 
             <div ref={sliderRef}
-                className=" bg-white w-[97%] h-30 mdl:h-60 mx-auto flex flex-row gap-5 custom-scrollbar overflow-x-scroll overflow-y-hidden">
+                className=" bg-white w-[97%] pb-10 h-[100%] mdl:h-60 mx-auto flex flex-row gap-5 custom-scrollbar overflow-x-hidden group-hover:overflow-x-scroll overflow-y-hidden">
                 {
                     productsData.map((product, index) => (
                         <div key={index} className='cursor-pointer'>

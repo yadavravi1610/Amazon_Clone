@@ -1,9 +1,6 @@
-// yxyY3BFdEwIuNn8wwH5YgZlr
 
 import React, { useState } from "react";
 import { useAddress } from '../../context/userAddressContext';
-
-// import { CardElement, useStripe } from "react-stripe-js";
 
 const PaymentMethod = () => {
 
@@ -18,10 +15,7 @@ const PaymentMethod = () => {
         updateSelectedPayment(event.target.value);
     };
 
-    // const handleAddPaymentMethod = () => {
-    //     // TODO: Add a new payment method
-    // };
-
+  
     
 
     return (
@@ -36,8 +30,6 @@ const PaymentMethod = () => {
                             <span className="ml-2">Credit or debit card</span>
                         </label>
 
-                        {/* {(selectedPaymentMethod === "Credit/Debit Card") && <CardDetails />} */}
-
                         <label className="inline-flex items-center">
                             <input type="radio" name="paymentMethod" value="Upi Apps" onChange={handleSelectPaymentMethod} />
                             <span className="ml-2">UPI Apps</span>
@@ -45,9 +37,6 @@ const PaymentMethod = () => {
 
                         {(selectedPaymentMethod === "Upi Apps") &&
                             <div className="w-[40%] mx-auto border-[1px] border-gray-400 rounded-lg ">
-                                {/* <div className="w-full py-3 pl-5 border-b border-gray-400 rounded-tl-lg rounded-tr-lg bg-gray-100">
-                                    <h1 className="text-lg font-semibold">Enter card details</h1>
-                                </div> */}
                                 <form className="flex flex-col my-2 gap-2 ml-8 ">
                                     <label className=' flex flex-col gap-2'>
                                         <span> Please enter your UPI ID</span>
@@ -71,11 +60,7 @@ const PaymentMethod = () => {
                         <span className="ml-5 -mt-4 font-normal text-sm">Cash, UPI and Cards accepted.</span>
 
                     </div>
-                    {/* <button className="mt-3 bg-red-700 text-white py-2 px-4 rounded-lg"
-                        disabled={selectedPaymentMethod === null}
-                        onClick={handleAddPaymentMethod} >
-                        Add Payment Method
-                    </button> */}
+                    
                 </div>
             </div>
         </div>

@@ -22,10 +22,6 @@ import Checkout from './Components/Checkout/Checkout';
 import ForgotPassword from './Components/Login/ForgotPassword';
 import { UserOrdersProvider } from './context/userOrderContext';
 
-// import { useEffect } from 'react';
-// import { setUserAuthentication } from './Redux/amazonSlice';
-// import { useDispatch } from 'react-redux';
-
 const Layout = () => {
   return (
     <>
@@ -39,11 +35,6 @@ const Layout = () => {
   );
 }
 function App() {
-
-  // const dispatch = useDispatch();
-  // useEffect(()=>{
-  //   dispatch(setUserAuthentication(false));
-  // },[dispatch])
 
   const router = createBrowserRouter([
     {

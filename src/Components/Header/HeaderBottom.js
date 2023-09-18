@@ -2,13 +2,12 @@ import React, { useRef, useEffect, useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// import SideNavContent from './SideNavContent';
 import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { useLoaderData } from 'react-router-dom';
-import { setUserAuthentication, userSignOut} from '../../Redux/amazonSlice';
+import { setUserAuthentication, userSignOut, resetCancelOrders, resetReturnOrders, resetOrders} from '../../Redux/amazonSlice';
 
 
 const HeaderBottom = () => {
@@ -25,32 +24,30 @@ const HeaderBottom = () => {
   const userInfo = useSelector((state) => state.amazon.userInfo);
   const ref = useRef();
   const [sidebar, setSideBar] = useState(false);
-  // console.log(sidebar);
   useEffect(() => {
     document.body.addEventListener("click", (e) => {
-      if (e.target.contains(ref.current)) {
+      if (ref.current && !ref.current.contains(e.target)) {
         setSideBar(false);
       }
-      // console.log(e.target.contains(ref.current));
     })
   }, [ref, sidebar])
 
   const handleLogout = () => {
-    // e.preventDefault();
     signOut(auth)
     .then(() => {
-        dispatch(userSignOut());
-        dispatch(setUserAuthentication(false));
+      dispatch(userSignOut());
+      dispatch(setUserAuthentication(false));
+      dispatch(resetOrders());
+      dispatch(resetCancelOrders());
+      dispatch(resetReturnOrders());
 
-    }).catch((error) => {
-        // An error happened.
-    });
+    })
 }
   return (
     <div className='w-full mt-16 px-2 h-[36px] bg-amazon_light text-white flex items-center'>
       {/* Items start  */}
       <ul className='flex items-center gap-2 mdl:text-sm tracking-wide xs:text-xs'>
-        <li onClick={() => setSideBar(true)} className='headerHover h-8 mt-1 flex items-center gap-1'><MenuIcon />All</li>
+        <li ref={ref} onClick={() => setSideBar(true)} className='headerHover h-8 mt-1 flex items-center gap-1'><MenuIcon />All</li>
         <li className='headerHover h-8 mt-1'>Amazon miniTV</li>
         <li className='headerHover h-8 mt-1'>Sell</li>
         <li className='headerHover h-8 mt-1'>Best Seller</li>
@@ -60,9 +57,9 @@ const HeaderBottom = () => {
       {/* items end  */}
       {/* SideNavContent Start  */}
       {sidebar && (
-        <div className='w-full h-screen text-black fixed top-0 left-0 bg-amazon_blue bg-opacity-50 z-50 flex'>
+        <div  className='w-full h-screen text-black fixed top-0 left-0 bg-amazon_blue bg-opacity-50 z-50 flex'>
 
-          <motion.div ref={ref} initial={{ x: -500, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: .5 }} className=' xs:w-[65%] mdl:w-[35%] lgl:w-[25%] h-full bg-white border border-black'>
+          <motion.div  initial={{ x: -500, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: .5 }} className=' xs:w-[65%] mdl:w-[35%] lgl:w-[25%] h-full bg-white border border-black'>
             <div className='w-full bg-amazon_light sticky top-0 left-0 text-white py-2 px-6 flex items-center gap-4'>
               {
                 userInfo ? <img src={userInfo.image} className='w-10 h-10 rounded-full' alt='user' /> : <AccountCircleIcon />
@@ -78,7 +75,7 @@ const HeaderBottom = () => {
             </div>
             <h1 className='text-xl px-2 font-semibold py-3'>Categories</h1>
             <hr className='py-1' />
-            <div ref={ref}>
+            <div >
               <ul className='flex flex-col ml-3 justify-between py-2 cursor-pointer'>
                 {productCategories.map((category) => (
                   <Link to={`${category}`}>

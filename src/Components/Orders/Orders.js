@@ -16,7 +16,6 @@ const Orders = () => {
   const authenticated = useSelector((state) => state.amazon.isAuthenticated);
   const userInfo = useSelector((state) => state.amazon.userInfo);
 
-  // Reverse the orders array
   const reversedOrders = [...orders].reverse();
   const reversedCancelOrders = [...cancelOrders].reverse();
   const reversedReturnOrders = [...returnOrders].reverse();
@@ -25,9 +24,8 @@ const Orders = () => {
   const [showCancelOrders, setShowCancelOrders] = useState(false);
   const [showReturnOrders, setShowReturnOrders] = useState(false);
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
-  // Use useEffect to navigate when isAuthenticated is false
   useEffect(() => {
     if (!authenticated) {
       navigate('/Login');

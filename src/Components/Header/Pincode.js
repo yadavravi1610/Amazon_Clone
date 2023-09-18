@@ -10,10 +10,9 @@ const Pincode = () => {
 
     const ref = useRef();
     const [showpin, setShowpin] = useState(false);
-    // console.log(showpin);
     const authenticated = useSelector((state) => state.amazon.isAuthenticated);
 
-    const [userZipCode, setUserZipCode] = useState(''); // State for the user's entered ZIP code
+    const [userZipCode, setUserZipCode] = useState(''); 
     const [locationName, setLocationName] = useState(null);
     const [warning, setWarning] = useState(false);
     const [loading, setLoading] = useState(false);

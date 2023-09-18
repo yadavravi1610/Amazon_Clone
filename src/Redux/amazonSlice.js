@@ -5,7 +5,7 @@ const initialState = {
   userInfo: null,
   isAuthenticated: false,
   buyNowProduct: null,
-  allProducts:[],
+  allProducts: [],
   orders: [],
   cancelOrders: [],
   returnOrders: [],
@@ -56,16 +56,15 @@ export const amazonSlice = createSlice({
     },
 
     // Buy Now Product Reducers
-    buyNow: (state,action)=>{
+    buyNow: (state, action) => {
       state.buyNowProduct = action.payload;
-    }, 
+    },
     resetBuyNowProduct: (state) => {
       state.buyNowProduct = null;
     },
 
     addToOrders: (state, action) => {
       state.orders = action.payload;
-      //  state.orders.push(action.payload);
     },
     cancelOrder: (state, action) => {
       state.cancelOrders = state.cancelOrders.push(action.payload);
@@ -78,7 +77,7 @@ export const amazonSlice = createSlice({
     addTocancelOrders: (state, action) => {
       state.cancelOrders = action.payload;
     },
- 
+
     resetCancelOrders: (state) => {
       state.cancelOrders = [];
     },
@@ -87,7 +86,7 @@ export const amazonSlice = createSlice({
     addToreturnOrders: (state, action) => {
       state.returnOrders = action.payload;
     },
-   
+
     resetReturnOrders: (state) => {
       state.returnOrders = [];
     },
@@ -95,8 +94,6 @@ export const amazonSlice = createSlice({
   },
 })
 
-// Action creators are generated for each case reducer function
-export const { addToCart, deleteProduct, resetCart, decreaseQuantity, increaseQuantity, setUserInfo, userSignOut, setUserAuthentication,buyNow,resetBuyNowProduct, addToOrders, cancelOrder, resetOrders, addToreturnOrders, addTocancelOrders, resetCancelOrders, resetReturnOrders} = amazonSlice.actions;
-// addToUserCart, resetUserCart
+export const { addToCart, deleteProduct, resetCart, decreaseQuantity, increaseQuantity, setUserInfo, userSignOut, setUserAuthentication, buyNow, resetBuyNowProduct, addToOrders, cancelOrder, resetOrders, addToreturnOrders, addTocancelOrders, resetCancelOrders, resetReturnOrders } = amazonSlice.actions;
 
 export default amazonSlice.reducer;

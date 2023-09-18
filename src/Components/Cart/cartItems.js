@@ -122,7 +122,6 @@ const CartItems = () => {
 
     return (
         <div className='flex flex-col-reverse lgl:flex-row gap-5'>
-            {/* <ScrollRestoration /> */}
             <div className='w-[92%] lgl:w-[74%] flex flex-col gap-6  lgl:my-10 mx-auto lgl:ml-5' >
                 <div className='w-full  bg-white py-7 px-5' >
                     <h1 className='text-3xl font-semibold mb-1'>Shopping Cart</h1>

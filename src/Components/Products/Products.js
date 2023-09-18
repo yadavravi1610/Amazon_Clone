@@ -6,46 +6,34 @@ import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 
-// import { useSelector } from 'react-redux';
-
 const Products = () => {
   const navigate = useNavigate();
 
   const ref = useRef();
-  // Function to handle the category filter
   const handleCategoryClick = (category) => {
-    navigate(`/${category}`); // Navigate to the products page with the selected category as a URL parameter
+    navigate(`/${category}`); 
   };
-
-  //   const allProducts = useSelector((state) => state.amazon.allProducts);  // Get the allProducts from Redux store
-  //   const productsData = allProducts.products;
-  //   console.log(productsData);
-
   const data = useLoaderData();
-  const productsData = data.data.products;  // getting array of available products
+  const productsData = data.data.products;
 
-  const { category } = useParams(); // Get the category parameter from the URL
-  // Filter products based on the selected category
+  const { category } = useParams();
   const categoryProducts = category ? productsData.filter((product) => product.category === category) : productsData;
 
   const uniqueCategories = Array.from(new Set(productsData.map(product => product.category)));
 
-  const [priceRange, setPriceRange] = useState(""); // State for the selected price range
-  const [starRange, setStarRange] = useState(""); // State for the selected star range
-  const [sortOrder, setSortOrder] = useState("default"); // "default", "lowToHigh", "highToLow", "avgReview"
+  const [priceRange, setPriceRange] = useState("");
+  const [starRange, setStarRange] = useState(""); 
+  const [sortOrder, setSortOrder] = useState("default"); 
 
 
-  // Function to handle the price range filter
   const handlePriceFilter = (selectedRange) => {
     if (priceRange === selectedRange) {
-      // Clicking on the same range again, unselect
       setPriceRange("");
     } else {
       setPriceRange(selectedRange);
     }
   };
 
-  // Filter products based on the selected price range
   const priceFilteredProducts = priceRange
     ? categoryProducts.filter(product => {
       const [min, max] = priceRange.split(" - ").map(str => parseFloat(str.replace(/[^0-9.-]+/g, "")));
@@ -53,27 +41,22 @@ const Products = () => {
     })
     : categoryProducts;
 
-  // Function to handle the star rating filter
   const handleStarFilter = (selectedRating) => {
     if (starRange === selectedRating) {
-      // Clicking on the same rating again, unselect
       setStarRange("");
     } else {
       setStarRange(selectedRating);
     }
   };
 
-  // Filter products based on the selected star rating
   const starFilteredProducts = starRange
     ? priceFilteredProducts.filter(product => product.rating >= parseFloat(starRange))
     : priceFilteredProducts;
 
-  // Function to handle the sorting change
   const handleSortingChange = (event) => {
     setSortOrder(event.target.value);
   };
 
-  // Sorting logic
   let sortedProducts = [...starFilteredProducts];
   if (sortOrder === "lowToHigh") {
     sortedProducts.sort((a, b) => a.price - b.price);
@@ -84,14 +67,13 @@ const Products = () => {
   }
 
   const [filter, setFilter] = useState(false);
-  console.log(filter);
+  // console.log(filter);
 
   useEffect(() => {
     document.body.addEventListener("click", (e) => {
       if (e.target.contains(ref.current)) {
         setFilter(false);
       }
-      // console.log(e.target.contains(ref.current));
     })
   }, [ref, filter])
 
