@@ -19,7 +19,7 @@ const persistConfig = {
 }
 
 const persistedReducer = persistReducer(persistConfig, amazonReducer)
-
+  
 export const store = configureStore({
   reducer: {amazon:persistedReducer},
   middleware: (getDefaultMiddleware) =>

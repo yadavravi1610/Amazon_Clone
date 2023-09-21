@@ -1,144 +1,215 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { exclamation, location } from '../../assets/index';
-import axios from 'axios';
-import { RotatingLines } from 'react-loader-spinner';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useRef } from "react";
+import { location, required } from '../../assets/assets/index';
+import axios from "axios";
+import { RotatingLines } from "react-loader-spinner";
 
+const Location = () => {
 
-const Pincode = () => {
-
-    const ref = useRef();
-    const [showpin, setShowpin] = useState(false);
-    const authenticated = useSelector((state) => state.amazon.isAuthenticated);
-
-    const [userZipCode, setUserZipCode] = useState(''); 
+    const [selectedLocation, setSelectedLocation] = useState(false);
+    const [userZipCode, setUserZipCode] = useState(''); // State for the user's entered ZIP code
     const [locationName, setLocationName] = useState(null);
-    const [warning, setWarning] = useState(false);
+    const [warning, setWarning] = useState("");
+    const [autoLocationWarning, setAutoLocationWarning] = useState("")
     const [loading, setLoading] = useState(false);
-    const [locationWarning, setLocationWarning] = useState(false);
-
-    async function fetchLocationData(userZipCode) {
-        const response = await axios.get(`https://api.postalpincode.in/pincode/${userZipCode}`);
-        if (response.data[0].PostOffice != null) {
-            setLocationName(response.data);
-            setWarning(false);
-            setLoading(false);
-            setShowpin(false);
-        }
-        else {
-            setLocationWarning(true);
-            setLoading(false)
-        }
-    }
+    const [autoLocationLoading, setAutoLocationLoading] = useState(false);
 
     useEffect(() => {
-        document.body.addEventListener('click', (e) => {
-            if (e.target.contains(ref.current)) {
-                setShowpin(false);
-            }
+        // Check local storage for existing values and set them in state
+        const storedLocationName = localStorage.getItem("locationName");
+        const storedUserZipCode = localStorage.getItem("userZipCode");
+        if (storedLocationName && storedUserZipCode) {
+            setLocationName(storedLocationName);
+            setUserZipCode(storedUserZipCode);
+        }
+    }, []);
+
+    // Ref for the location dropdown
+    const locationRef = useRef(null);
+
+    // Effect to close the location when clicking outside
+    useEffect(() => {
+        document.body.addEventListener("click", (e) => {
+            if (e.target.contains(locationRef.current)) {
+                setSelectedLocation(false);
+                setWarning(false);
+                setAutoLocationWarning(false);
+            };
         })
-    }, [ref, showpin])
+    }, [locationRef])
 
-    const validate = () => {
-        const reqPincode = /^[0-9]{6}$/;
-        let valid = true;
+    // Fetch location data from API based on user's ZIP code
+    async function fetchLocationData(userZipCode) {
+        try {
+            const response = await axios.get(`https://api.postalpincode.in/pincode/${userZipCode}`);
+            if (response.data[0].PostOffice != null) {
+                const locationCity = response.data[0].PostOffice[0].District;
+                const locationPincode = response.data[0].PostOffice[0].Pincode;
+                setLocationName(locationCity);
+                setUserZipCode(locationPincode);
+                setWarning("");
+                setLoading(false);
+                setSelectedLocation(false);
 
-        if (userZipCode === "") {
-            setWarning("Please enter Pincode");
-            valid = false;
-        }
-
-        if (userZipCode.length > 0) {
-            if (!reqPincode.test(userZipCode)) {
-                setWarning("Please enter a valid Pincode");
-                valid = false;
+                // Store the values in local storage
+                localStorage.setItem("locationName", locationCity);
+                localStorage.setItem("userZipCode", locationPincode);
+            } else {
+                setLoading(false);
+                setUserZipCode("");
+                setWarning("Location not found");
             }
+        } catch (error) {
+            setLoading(false);
+            setUserZipCode("");
+            setWarning(error.message);
         }
-        return valid
     }
 
-    const handleSumit = async (e) => {
+    // function to validate the userZipCode
+    const validate = () => {
+        const reqPincode = /^[0-9]{6}$/;
+        let isValid = true;
+        // Validate pincode - 1
+        if (userZipCode === "") {
+            setWarning("Please enter a ZIP or postal code.");
+            isValid = false;
+        }
+        // Validate pincode - 2
+        if (userZipCode.length > 0) {
+            if (!reqPincode.test(userZipCode)) {
+                setWarning("Please enter a valid ZIP or postal code.");
+                isValid = false;
+            }
+        }
+        return isValid
+    }
+
+    //   Handle form submission
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const valid = validate();
-        if (!valid) {
+        const isValid = validate();
+        if (!isValid) {
             return;
         }
         setLoading(true);
         fetchLocationData(userZipCode);
         setUserZipCode("");
-    };
+    }
 
+    // function to auto detect your location
+    function getLocation() {
+        setWarning("");
+        setAutoLocationWarning("");
+        setAutoLocationLoading(true);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    try {
+                        const response = await axios.get(
+                            `https://secure.geonames.org/findNearbyPostalCodesJSON?lat=${latitude}&lng=${longitude}&username=yadavravi1610`
+                        );
+                        if (response.data.postalCodes[0] != null) {
+                            const locationPincode = response.data.postalCodes[0].postalCode;
+                            const locationCity = response.data.postalCodes[0].placeName;
+                            setLocationName(locationCity);
+                            setUserZipCode(locationPincode);
+                            setAutoLocationLoading(false);
+                            setSelectedLocation(false);
+                            // Store the values in local storage
+                            localStorage.setItem("locationName", locationCity);
+                            localStorage.setItem("userZipCode", locationPincode);
+                        } else {
+                            setAutoLocationLoading(false);
+                            setAutoLocationWarning("Location not found");
+                        }
+                    } catch (error) {
+                        setAutoLocationLoading(false);
+                        setAutoLocationWarning(error.message);
+                    }
+                },
+                (error) => {
+                    setAutoLocationLoading(false);
+                    setAutoLocationWarning(error.message);
+                }
+            );
+        }
+    }
 
     return (
-        <>
-            <div className='headerHover hidden mdl:inline-flex' onClick={() => setShowpin(!showpin)}>
-                <img className='pt-2' alt='' src={location} />
+        <div>
+            <div className="headerHover" onClick={() => setSelectedLocation(!selectedLocation)}>
+                <img className="w-6 h-5 mt-1" src={location} alt="locationIcon" />
                 <div className="text-xs text-lightText font-medium flex flex-col items-start">
                     {locationName ? 'Deliver to' : 'Hello'}
                     <span className="text-sm font-bold -mt-1 text-whiteText">
-                        {locationName ? <p>{locationName[0].PostOffice[0].District} {locationName[0].PostOffice[0].Pincode}</p> : 'Select your address'}
+                        {locationName ? <p>{locationName} {userZipCode}</p> : 'Select your address'}
                     </span>
                 </div>
             </div>
-            {
-                showpin &&
-                <div className='w-full h-screen text-black bg-amazon_blue fixed left-0 top-16 bg-opacity-50'>
-                    <div ref={ref} className='flex justify-center mt-40'>
-                        <div className='w-96 h-auto bg-white rounded-md '>
-                            <div className='flex pl-10 items-center h-16 rounded-md bg-slate-100 text-lg font-semibold'>
-                                Choose Your Location
-                            </div> <p className='px-5 my-3 mdl:text-xs lg:text-sm text-slate-500 '>Select a delivery to see product availability and delivery options</p>
-
-
-                            {
-                                authenticated ? ""
-                                    :
-                                    <div className='flex flex-col gap-4 my-3 px-5'>
-                                        <Link to="/Login">
-                                            <button className='w-72 ml-3 h-8 text-sm bg-yellow-400 rounded-md py-1 font-semibold cursor-pointer'>
-                                                Sign in
-                                            </button>
-
-                                        </Link><hr className='w-80' />
-                                    </div>}
-
-                            <form className='w-full h-full px-5 pb-4'>
-                                <input type='text' placeholder='Enter your Pincode' className='w-56 pl-2 rounded h-7 border border-black ' onChange={(e) => { setUserZipCode(e.target.value); setWarning(false); setLocationWarning(false) }} />
-                                <button onClick={handleSumit} className='mx-5 p-1 w-20 border rounded border-slate-400 hover:bg-slate-100 text-sm active:ring-2 active:ring-offset-1 active:ring-blue-300'>Apply</button>
-                                {
-                                    warning && <div className="flex items-center pl- mt-1 pb-2">
-                                        <img src={exclamation} className="w-4 h-4" alt="warning" />
-                                        <div className="text-zsm text-[#FF0000]">Please enter a valid pincode</div>
-                                    </div>
-                                }
-                                {
-                                    locationWarning && <div className="flex items-center pl- mt-1 pb-2">
-                                        <img src={exclamation} className="w-4 h-4" alt="warning" />
-                                        <div className="text-zsm text-[#FF0000]">Address not found</div>
-                                    </div>
-                                }
-                                {
-                                    loading && <div className='flex justify-center mt-2'>
-                                        <RotatingLines
-                                            strokeColor="#febd69"
-                                            strokeWidth="5"
-                                            animationDuration="0.75"
-                                            width="50"
-                                            visible={true}
-                                        />
-                                    </div>
-                                }
-                            </form>
-
-
+            {selectedLocation &&
+                <div className='w-screen h-screen text-black fixed z-50 top-0 left-0  bg-amazon_black bg-opacity-50 flex items-center justify-center' >
+                    <div ref={locationRef} className=" w-[320px] bg-white rounded-lg">
+                        <div className="rounded-tr-lg rounded-tl-lg  bg-gray-100 border-b-[0.066rem] border-gray-200 p-4 font-bold">
+                            Choose your location
                         </div>
-
+                        <form className=" p-4 flex flex-col gap-5" onSubmit={handleSubmit}>
+                            <p className="text-xs text-gray-400">Enter an Indian pincode to see product availability and delivery options for your location.</p>
+                            <div className="flex justify-center" >
+                                <input type="text" maxLength={6} placeholder="Enter 6-digit ZIP code" className="w-[65%] border-[1px] border-[#a6a6a6] rounded p-1 font-medium"
+                                    onChange={(e) => { setUserZipCode(e.target.value); setWarning("");setAutoLocationWarning("") }} />
+                                <button className="w-[33%] p-2 ml-2 text-center font-medium rounded-md bg-gray-200 border-[0.066rem] border-gray-300 hover:bg-gray-300 active:ring-2 active:ring-offset-1 active:ring-blue-500"> Apply</button>
+                            </div>
+                            {
+                                loading && <div className='flex justify-center mt-2'>
+                                    <RotatingLines
+                                        strokeColor="#febd69"
+                                        strokeWidth="5"
+                                        animationDuration="0.75"
+                                        width="50"
+                                        visible={true}
+                                    />
+                                </div>
+                            }
+                        </form>
+                        {
+                            warning && <div className="flex flex-row gap-1 items-center pl-4 -mt-3 pb-2">
+                                <img src={required} className="w-4 h-4" alt="warning" />
+                                <div className="text-zsm text-red-700 ">{warning}</div>
+                            </div>
+                        }
+                        <div className=" flex flex-row justify-between items-center px-4 ">
+                            <hr className="w-[45%]" />
+                            <p className="text-sm font-semibold">or</p>
+                            <hr className="w-[45%]" />
+                        </div>
+                        <div onClick={getLocation} className="p-2 m-4 text-center font-medium rounded-md bg-gray-200 border-[0.066rem] border-gray-300 cursor-pointer hover:bg-gray-300 active:ring-2 active:ring-offset-1 active:ring-blue-500">
+                            <p>Auto detect your location</p>
+                        </div>
+                        {
+                            autoLocationLoading && <div className='flex justify-center mt-2 pb-3'>
+                                <RotatingLines
+                                    strokeColor="#febd69"
+                                    strokeWidth="5"
+                                    animationDuration="0.75"
+                                    width="50"
+                                    visible={true}
+                                />
+                            </div>
+                        }
+                        {
+                            autoLocationWarning && <div className="flex flex-row gap-1 items-center pl-4 -mt-3 pb-2">
+                                <img src={required} className="w-4 h-4" alt="warning" />
+                                <div className="text-zsm text-red-700 ">{autoLocationWarning}</div>
+                            </div>
+                        }
                     </div>
                 </div>
             }
-        </>
+        </div>
     )
 }
 
-export default Pincode
+export default Location

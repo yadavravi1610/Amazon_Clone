@@ -335,7 +335,7 @@ const SignIn = () => {
                         {
                             needHelp ?
                                 (<div className=' text-xs  text-blue-500 cursor-pointer hover:underline hover:text-red-500 ml-4 mt-2 mb-5'>
-                                    <Link to="/forgotPassword">
+                                    <Link to="forgotPassword">
                                         Forgot password
                                     </Link>
                                 </div>)

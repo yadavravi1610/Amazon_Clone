@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const SignInoptions = () => {
     return (
-        <div className='grid grid-cols-2 mt-1 ml-8'>
+        <div className='grid grid-cols-2 my-1 ml-8'>
             <div className='flex flex-col gap-2 '>
                 <h3 className='font-medium text-xs mdl:text-sm lgl:text-lg'>Your Lists</h3>
                 <ul className='text-xs lgl:text-sm font-normal flex flex-col gap-3 '>

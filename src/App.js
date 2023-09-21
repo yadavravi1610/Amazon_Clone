@@ -2,12 +2,7 @@ import Footer from './Components/Footer/Footer'
 import Header from './Components/Header/Header';
 import HeaderBottom from './Components/Header/HeaderBottom';
 import ErrorPage from './Components/Error/Error';
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Outlet,
-  ScrollRestoration,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet, ScrollRestoration, } from "react-router-dom";
 import { productsData } from "./api/api";
 import Home from './Home/Home';
 import Login from './Components/Login/Login';
@@ -30,7 +25,6 @@ const Layout = () => {
       <ScrollRestoration />
       <Outlet />
       <Footer />
-
     </>
   );
 }
@@ -76,7 +70,7 @@ function App() {
               path: ":title",
               loader: productsData,
               element: <ProductDetails />,
-            }, 
+            },
           ],
         },
         {
@@ -87,7 +81,7 @@ function App() {
         {
           path: "/orders",
           loader: productsData,
-          element:<Orders />
+          element: <Orders />
         },
       ],
     },
@@ -98,13 +92,14 @@ function App() {
           index: true,
           element: <Login />
         },
-       
+        {
+          path: "forgotPassword",
+          element: <ForgotPassword />,
+        },
+
       ],
     },
-    {
-      path: "/forgotPassword",
-    element: <ForgotPassword />,
-    },
+
     {
       path: "/createAccount",
       element: <SignUp />,
@@ -118,13 +113,13 @@ function App() {
 
   return (
     <UserOrdersProvider>
-    <UserCartProvider>
-      < UserAddressProvider>
-      <div className='overflow-x-hidden'>
-        <RouterProvider router={router} />
-      </div>
-      </UserAddressProvider>
-    </UserCartProvider>
+      <UserCartProvider>
+        < UserAddressProvider>
+          <div className='overflow-x-hidden'>
+            <RouterProvider router={router} />
+          </div>
+        </UserAddressProvider>
+      </UserCartProvider>
     </UserOrdersProvider>
   );
 }

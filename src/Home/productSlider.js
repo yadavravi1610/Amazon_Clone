@@ -30,7 +30,7 @@ const ProductsSlider = () => {
             </div>
 
             <div ref={sliderRef}
-                className=" bg-white w-[97%] pb-10 h-[100%] mdl:h-60 mx-auto flex flex-row gap-5 custom-scrollbar overflow-x-hidden group-hover:overflow-x-scroll overflow-y-hidden">
+                className=" bg-white w-[97%] pb-5 mdl:pb-12 h-30 mdl:h-60 mx-auto flex border border-transparent flex-row gap-5 custom-scrollbar mdl:overflow-x-hidden group-hover:overflow-x-scroll overflow-y-hidden">
                 {
                     productsData.map((product, index) => (
                         <div key={index} className='cursor-pointer'>
@@ -46,14 +46,12 @@ const ProductsSlider = () => {
                     ))
                 }
             </div>
-            <div className="prev-btn text-[32px] bg-[rgba(245,245,245,0.3)] font-bold  mdl:text-gray-700 mdl:w-12 mdl:h-24 ml-2 mdl:ml-5 absolute bottom-[123px] 
-      flex justify-center border border-transparent items-center rounded hover:border-[1px] hover:border-white group-hover:none opacity-100 mdl:opacity-0 mdl:group-hover:opacity-100 transition-opacity duration-700" onClick={() => handleScroll('left')} >
+            <div className="prev-btn text-[32px] bg-[rgba(245,245,245,0.3)] font-bold  mdl:text-gray-700 mdl:w-12 mdl:h-24 ml-2 mdl:ml-5 absolute bottom-[123px] flex justify-center border border-transparent items-center rounded hover:border-[1px] hover:border-white group-hover:none opacity-100 mdl:opacity-0 mdl:group-hover:opacity-100 transition-opacity duration-700" onClick={() => handleScroll('left')} >
                 <button >
                     &lt;
                 </button>
             </div>
-            <div className="prev-btn text-[32px] bg-[rgba(245,245,245,0.3)] font-bold  mdl:text-gray-700 mdl:w-12 mdl:h-24  absolute bottom-[123px] left-[94%] mdl:left-[96%]
-      flex justify-center border border-transparent items-center rounded hover:border-[1px] hover:border-white opacity-100 mdl:opacity-0 group-hover:none mdl:group-hover:opacity-100 transition-opacity duration-700" onClick={() => handleScroll('right')} >
+            <div className="prev-btn text-[32px] bg-[rgba(245,245,245,0.3)] font-bold  mdl:text-gray-700 mdl:w-12 mdl:h-24  absolute bottom-[123px] left-[94%] mdl:left-[96%] flex justify-center border border-transparent items-center rounded hover:border-[1px] hover:border-white opacity-100 mdl:opacity-0 group-hover:none mdl:group-hover:opacity-100 transition-opacity duration-700" onClick={() => handleScroll('right')} >
                 <button >
                     &gt;
                 </button>
