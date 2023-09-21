@@ -60,8 +60,11 @@ const SignUp = () => {
             if (!emailValidation(email)) {
                 setErrorEmail("Enter a valid email");
                 isvalid = false;
-
             }
+        }
+        if (mobileNumber.length < 10) {
+            setErrorMobile("Enter a valid Mobile Number");
+            isvalid = false;
         }
         if (!password) {
             setErrorPassword("Enter your password");
@@ -84,11 +87,7 @@ const SignUp = () => {
 
     const handleMobileNumber = (e) => {
         setMobileNumber(e.target.value);
-        if (e.target.value.length > 10) {
-            setErrorMobile("Enter Mobile Number of 10 digits");
-        }
-        else
-            setErrorMobile("");
+        setErrorMobile("");
     }
 
     const handleEmail = (e) => {
@@ -150,7 +149,7 @@ const SignUp = () => {
                                 Account Created Successfully!
                             </li >
                             <li className='text-base font-semibold ' >
-                                We've sent you a Verification Email 
+                                We've sent you a Verification Email
                             </li >
                             <li className='text-base font-semibold text-red-600 ' >
                                 Please Verify Your Email to avoid Data Loss!
@@ -171,7 +170,7 @@ const SignUp = () => {
                                     <select className='font-medium rounded-sm border border-gray-400 h-7'>
                                         <option>IN +91</option>
                                     </select>
-                                    <input type='tel' value={mobileNumber} onChange={handleMobileNumber} className='ml-4 border border-gray-400 h-7 w-[78%] rounded-sm font-normal p-2' placeholder='Mobile Number' />
+                                    <input type='tel' maxLength={10} value={mobileNumber} onChange={handleMobileNumber} className='ml-4 border border-gray-400 h-7 w-[78%] rounded-sm font-normal p-2' placeholder='Mobile Number' />
                                 </span>
                                 {errorMobile &&
                                     <div className="text-xs font-normal italic text-red-500 pl-2 flex flex-row">
