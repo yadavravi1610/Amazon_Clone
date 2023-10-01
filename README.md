@@ -118,7 +118,7 @@ amazon-clone/
 └── README.md
 ```
 ## Installation :notebook:
-1. To install the Todo List app, use git:
+1. To install the Amazon Clone, use git:
 ```
 git clone https://github.com/yadavravi1610/amazon_clone.git
 ```
