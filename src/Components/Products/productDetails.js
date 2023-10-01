@@ -221,7 +221,7 @@ const ProductDetails = () => {
         </div>
         {cartButton
           ? <Link to="/cart">
-            <button className={`pt-2 w-full text-center text-blue-600 rounded-2xl  bg-gray-100 border-gray-200 p-[4px] mt-3 active:ring-2     active:ring-offset-1 active:ring-blue-600`}>
+            <button className={`pt-2 w-full text-center text-blue-600 rounded-2xl  bg-gray-100 border-gray-200 p-[4px] mt-3 active:ring-2 active:ring-offset-1 active:ring-blue-600`}>
               Go to Cart
             </button>
           </Link>

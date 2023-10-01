@@ -202,10 +202,10 @@ const CartItems = () => {
                             className='lgl:w-[200px] border-[1px] bg-gray-100 border-gray-200 py-1 text-sm text-blue-600 rounded-lg
                           text-center p-[4px] mt-1 active:ring-2 active:ring-offset-1 active:ring-blue-600
                          '>Clear Cart</button>
-                        <div className='text-sm mdl:text-[22px] items-baseline mt-5 mdl:mt-0 font-medium flex justify-center mdl:justify-end'>SubTotal ({userCart.length > 0 > 0 ? cartTotalQty : totalQty} items) :&nbsp;
+                        <div className='text-sm mdl:text-[22px] items-baseline mt-5 mdl:mt-0 font-medium flex justify-center mdl:justify-end'>SubTotal ({userCart.length > 0  ? cartTotalQty : totalQty} items) :&nbsp;
                             <div className='flex justify-center items-center '>
                                 <p className='font-medium text-sm mdl:text-lg '>₹&nbsp;</p>
-                                <span className='text-sm mdl:text-2xl font-bold'>{userCart.length > 0 > 0 ? cartTotalPrice : totalPrice}.00</span>
+                                <span className='text-sm mdl:text-2xl font-bold'>{userCart.length > 0 ? cartTotalPrice : totalPrice}.00</span>
                             </div>
                         </div>
                     </div>
