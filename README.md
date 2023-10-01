@@ -1,70 +1,136 @@
-# Getting Started with Create React App
+# Amazon Clone :tv:
+The Amazon Clone is a feature-rich, fully functional e-commerce web application developed using React,  Redux Toolkit, Firebase,Tailwind CSS, Framer Motion, and other modern tools to create a seamless and user-friendly shopping environment.It faithfully replicates the shopping experience found on the popular Amazon platform.</br>
+</br>
+<img src="/screenshots/amazon homepage.png">
+</br>
+## Features :fire:
+:tv: 1. Product Listings, Product Search and Product Details.</br>
+:tv: 2. Filter based on Rating, Price and Category.</br>
+:tv: 3. Sort based on High Price, Low Price and Rating.</br>
+</br>
+<img src="/screenshots/Filter page.png"></br>
+</br>
+:tv: 4. Add to cart and Buy Now.</br>
+</br>
+<img src="/screenshots/details page.png"></br>
+</br>
+:tv: 5. Cart Page with Quantity increase/decrease, Delate Product and Clear Cart.</br>
+</br>
+<img src="/screenshots/cart page.png"></br>
+</br>
+:tv: 6. User Registration and Login.</br>
+</br>
+<img src="/screenshots/login page.png"></br>
+</br>
+:tv: 7. Save Multiple Addresses.</br>
+</br>
+<img src="/screenshots/address page.png"></br>
+</br>
+:tv: 8. Order History, Cancel and Return Order.</br>
+</br>
+<img src="/screenshots/orders page.png"></br>
+</br>
+</br>
+:tv: 9. Efficiently manage app state with Redux Toolkit.</br>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Tech Stack :computer:
+:bulb: **Front-end** React, Redux Toolkit, Tailwind-CSS, Framer Motion, Loading Spinner</br>
+:bulb: **Back-end** Firebase</br>
 
-## Available Scripts
+## Usage :pencil:
+:zap: 1. Visit the live demo or run the app locally.<br>
+:zap: 2. Browse products, add items to your cart, and proceed to checkout.<br>
+:zap: 3. Sign in or create an account for a personalized experience.<br>
+:zap: 4. Enjoy a smooth and intuitive shopping experience!<br>
 
-In the project directory, you can run:
+## Folder Structure
+```
+amazon-clone/
+├── node_modules/
+├── public/
+│   ├── index.html
+│   └── ... (other public assets)
+├── src/
+│   ├── api/
+│   │   └── api.js
+│   ├── assets/
+│   │   ├── index.js
+|   |   └── assets/
+|   |        └── index.js
+│   ├── Components/
+│   │   ├── Cart/
+│   │   │   ├── Cart.js
+│   │   │   ├── cartItems.js
+│   │   │   └── emptyCart.js
+│   │   ├── Checkout/
+│   │   │   ├── addressForm.js
+│   │   │   ├── cardDetails.js
+│   │   │   ├── Checkout.js
+│   │   │   ├── OrderSummary.js
+│   │   │   ├── PaymentMethods.js
+│   │   │   └── userAddresses.js
+│   │   ├── Error/
+│   │   │   └── Error.js
+│   │   ├── Footer/
+│   │   │   ├── Footer.js
+│   │   │   ├── FooterTop.js
+│   │   │   ├── FooterMiddle.js
+│   │   │   ├── FooterMiddlelist.js
+│   │   │   └── FooterBottom.js
+│   │   ├── Header/
+│   │   │   ├── Header.js
+│   │   │   ├── HeaderBottom.js
+│   │   │   ├── Pincode.js
+│   │   │   ├── Search.js
+│   │   │   └── SignInOprtions.js
+│   │   ├── Login/
+│   │   │   ├── SignUp.js
+│   │   │   ├── ForgotPassword.js
+│   │   │   └── Login.js
+│   │   ├── Orders/
+│   │   │   ├── orderDetails.js
+│   │   │   └── Orders.js
+│   │   └── Products/
+│   │       ├── Product.js
+│   │       ├── productDetails.js
+│   │       └── Products.js
+│   ├── constants/
+│   │   ├── index.js
+│   │   └── SideNavContent.js
+│   ├── context/
+│   │   ├── userAddressContext.js
+│   │   ├── userCartContext.js
+│   │   └── userOrderContext.js
+│   ├── Home/
+│   │   ├── Category.js
+│   │   ├── Home.js
+│   │   ├── productsSlider.js
+│   │   ├── scrollbar.css
+│   │   └── Slider.js
+│   ├── Redux/
+│   │   ├── amazonSlice.js
+│   │   └── store.js
+│   ├── firebase.config.js
+│   ├── App.js
+│   ├── index.js
+│   └── index.css
+├── tailwind.config.js
+└── README.md
+```
+## Installation :notebook:
+1. To install the Todo List app, use git:
+```
+git clone https://github.com/yadavravi1610/amazon_clone.git
+```
+To deploy this project, simply open the index.html file in your browser.
+2. Install dependencies: 
+```
+npm install
+```
+3. Start the development server: 
+```
+npm start
+```
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Live Demo
+Check out the live demo of Amazon Clone: https://amazon-clone-eta-mocha.vercel.app
