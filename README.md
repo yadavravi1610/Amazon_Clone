@@ -133,4 +133,4 @@ npm start
 ```
 
 ## Live Demo
-Check out the live demo of Amazon Clone: https://amazon-clone-eta-mocha.vercel.app
+Check out the live demo of Amazon Clone: https://amazon-clone-yadavravi1610.vercel.app/
